@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detalhe Mecânico — Excêntrico e Dupla Biela (Vários Ângulos)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --background: #f8fafc;
+      --card: #ffffff;
+      --card-border: #cbd5e1;
+      --foreground: #0f172a;
+      --muted-foreground: #475569;
+      --primary: #0284c7;
+      --success: #059669;
+      --warning: #d97706;
+      --danger: #dc2626;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #0f172a;
+        --card: #1e293b;
+        --card-border: #334155;
+        --foreground: #f1f5f9;
+        --muted-foreground: #94a3b8;
+        --primary: #38bdf8;
+        --success: #34d399;
+        --warning: #fbbf24;
+        --danger: #f87171;
+      }
+    }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased min-h-screen p-4 md:p-6 select-none">
+  <nav class="max-w-5xl mx-auto mb-4 bg-[var(--card)] border border-[var(--card-border)] rounded-xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs shadow-sm">
+    <a href="../index.html" class="font-bold text-[var(--primary)]">🌊 Aquaponia &amp; Aeradores</a>
+    <div class="flex flex-wrap items-center gap-1.5">
+      <a href="../index.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Início</a>
+      <a href="../documentacao.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Documentação</a>
+      <a href="./planta_aquaponia_6000l.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Aquaponia 6.000 L</a>
+      <a href="./planta_aerador_eolico_5000l.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Eólico 5.000 L</a>
+      <a href="./detalhe_excentrico_duplo.html" class="px-2 py-1 rounded bg-[var(--primary)] text-white font-semibold">Excêntrico 3D</a>
+      <a href="./planta_aerador_eolico_mecanico.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Eólico 3.000 L</a>
+      <a href="./planta_aerador_solar_12v.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Solar 12V</a>
+    </div>
+  </nav>
+  <div class="max-w-5xl mx-auto bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-4 md:p-6 shadow-sm space-y-4">
+    <!-- Header & Controls -->
+    <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[var(--card-border)]">
+      <div>
+        <h1 class="font-bold text-base md:text-lg">Mecanismo Excêntrico (Manivela) + Dupla Biela Oposta (180°)</h1>
+        <p class="text-xs text-[var(--muted-foreground)]">Raio excêntrico r = 1,5 cm → Curso linear total = 3,0 cm • Mesmo princípio de um virabrequim simples</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <button id="playBtn" class="px-3 py-1.5 rounded bg-[var(--primary)] text-white font-semibold cursor-pointer hover:opacity-90">Pausar</button>
+        <button data-deg="0" class="presetBtn px-2 py-1.5 rounded border border-[var(--card-border)] bg-[var(--background)] cursor-pointer hover:opacity-80">0°</button>
+        <button data-deg="90" class="presetBtn px-2 py-1.5 rounded border border-[var(--card-border)] bg-[var(--background)] cursor-pointer hover:opacity-80">90°</button>
+        <button data-deg="180" class="presetBtn px-2 py-1.5 rounded border border-[var(--card-border)] bg-[var(--background)] cursor-pointer hover:opacity-80">180°</button>
+        <button data-deg="270" class="presetBtn px-2 py-1.5 rounded border border-[var(--card-border)] bg-[var(--background)] cursor-pointer hover:opacity-80">270°</button>
+      </div>
+    </div>
+
+    <!-- Angle Slider + Phase Status -->
+    <div class="flex flex-wrap items-center justify-between gap-3 bg-[var(--background)] border border-[var(--card-border)] rounded-lg p-3 text-xs">
+      <label class="flex items-center gap-3 flex-1 min-w-[220px]">
+        <span class="font-semibold text-[var(--muted-foreground)]">Ângulo do eixo:</span>
+        <input id="angleSlider" type="range" min="0" max="360" value="0" step="1" class="flex-1 accent-[var(--primary)]" />
+        <span id="angleVal" class="font-mono font-bold text-sm w-12 text-right">0°</span>
+      </label>
+      <div id="phaseStatus" class="font-mono font-semibold px-2.5 py-1 rounded bg-[var(--card)] border border-[var(--card-border)]">
+        Câmara A: Fim de aspiração | Câmara B: Fim de compressão
+      </div>
+    </div>
+
+    <!-- 3 VIEWS GRID -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <!-- VIEW 1: TOP VIEW (VISTA SUPERIOR) -->
+      <div class="border border-[var(--card-border)] rounded-lg p-3 bg-[var(--background)]">
+        <div class="text-xs font-bold mb-1 flex justify-between">
+          <span>1. Vista Superior (Olhando de cima do eixo)</span>
+          <span class="text-[var(--primary)]">Movimento circular → linear</span>
+        </div>
+        <svg viewBox="0 0 420 220" class="w-full h-auto block" xmlns="http://www.w3.org/2000/svg">
+          <!-- Center crosshairs -->
+          <line x1="210" y1="20" x2="210" y2="200" stroke="var(--muted-foreground)" stroke-opacity="0.25" stroke-dasharray="4 4" />
+          <line x1="20" y1="110" x2="400" y2="110" stroke="var(--muted-foreground)" stroke-opacity="0.25" stroke-dasharray="4 4" />
+
+          <!-- Left Chamber (A) -->
+          <rect x="18" y="76" width="44" height="68" rx="4" fill="var(--card)" stroke="var(--foreground)" stroke-width="2" />
+          <path id="topDiaphA" d="M 62,78 Q 56,110 62,142" fill="none" stroke="#f59e0b" stroke-width="4" stroke-linecap="round" />
+          <text x="40" y="68" text-anchor="middle" font-size="10" font-weight="700" fill="var(--foreground)">Câmara A</text>
+          <text id="topStateA" x="40" y="160" text-anchor="middle" font-size="9.5" font-weight="600" fill="#0ea5e9">Aspira</text>
+
+          <!-- Right Chamber (B) -->
+          <rect x="358" y="76" width="44" height="68" rx="4" fill="var(--card)" stroke="var(--foreground)" stroke-width="2" />
+          <path id="topDiaphB" d="M 358,78 Q 364,110 358,142" fill="none" stroke="#f59e0b" stroke-width="4" stroke-linecap="round" />
+          <text x="380" y="68" text-anchor="middle" font-size="10" font-weight="700" fill="var(--foreground)">Câmara B</text>
+          <text id="topStateB" x="380" y="160" text-anchor="middle" font-size="9.5" font-weight="600" fill="#ef4444">Comprime</text>
+
+          <!-- Eccentric Disk -->
+          <circle cx="210" cy="110" r="46" fill="var(--card)" stroke="var(--foreground)" stroke-width="2" />
+          <!-- Orbit path of pin (r = 1.5 cm -> 24 px) -->
+          <circle cx="210" cy="110" r="24" fill="none" stroke="#ef4444" stroke-opacity="0.45" stroke-width="1.5" stroke-dasharray="3 3" />
+          <!-- Central Shaft Ø 25 mm -->
+          <circle cx="210" cy="110" r="9" fill="var(--foreground)" />
+          <text x="210" y="176" text-anchor="middle" font-size="9.5" fill="var(--muted-foreground)">Disco Ø 10 cm • Pino a r = 1,5 cm do centro</text>
+
+          <!-- Radius line -->
+          <line id="topRadius" x1="210" y1="110" x2="234" y2="110" stroke="#ef4444" stroke-width="2" />
+
+          <!-- Connecting Rods (Bielas) -->
+          <line id="topRodA" x1="234" y1="110" x2="62" y2="110" stroke="#0284c7" stroke-width="5" stroke-linecap="round" opacity="0.88" />
+          <line id="topRodB" x1="234" y1="110" x2="358" y2="110" stroke="#059669" stroke-width="5" stroke-linecap="round" opacity="0.88" />
+
+          <!-- Rod end pins -->
+          <circle id="topPinA" cx="62" cy="110" r="4" fill="var(--foreground)" />
+          <circle id="topPinB" cx="358" cy="110" r="4" fill="var(--foreground)" />
+
+          <!-- Eccentric Pin -->
+          <circle id="topCrankPin" cx="234" cy="110" r="6.5" fill="#ef4444" stroke="var(--foreground)" stroke-width="1.5" />
+          <text x="210" y="200" text-anchor="middle" font-size="9" fill="var(--muted-foreground)">Curso total = 2 × r = 3,0 cm em cada diafragma</text>
+        </svg>
+      </div>
+
+      <!-- VIEW 2: SIDE CUTAWAY VIEW (VISTA LATERAL / CORTE) -->
+      <div class="border border-[var(--card-border)] rounded-lg p-3 bg-[var(--background)]">
+        <div class="text-xs font-bold mb-1 flex justify-between">
+          <span>2. Vista Lateral (Corte de montagem no eixo)</span>
+          <span class="text-[var(--warning)]">Como evitar que as bielas batam</span>
+        </div>
+        <svg viewBox="0 0 420 220" class="w-full h-auto block" xmlns="http://www.w3.org/2000/svg">
+          <!-- Vertical Shaft from Savonius -->
+          <rect x="200" y="10" width="20" height="128" fill="var(--foreground)" rx="2" />
+          <text x="228" y="24" font-size="9.5" font-weight="600" fill="var(--muted-foreground)">Eixo vertical Ø 25 mm</text>
+          <text x="228" y="37" font-size="9" fill="var(--muted-foreground)">(vem do rotor Savonius)</text>
+
+          <!-- Lower Bearing -->
+          <rect x="188" y="48" width="44" height="14" rx="2" fill="#f59e0b" stroke="var(--foreground)" stroke-width="1.4" />
+          <text x="180" y="59" text-anchor="end" font-size="9" font-weight="600" fill="var(--muted-foreground)">Mancal P205</text>
+
+          <!-- Eccentric Disk (side profile) -->
+          <rect x="164" y="128" width="92" height="12" rx="2" fill="var(--card)" stroke="var(--foreground)" stroke-width="2" />
+          <text x="158" y="138" text-anchor="end" font-size="9" fill="var(--muted-foreground)">Disco de aço/madeira</text>
+
+          <!-- Eccentric Pin (vertical bolt pointing down, moves left/right with cos(angle)) -->
+          <rect id="sidePin" x="230" y="140" width="8" height="44" rx="2" fill="#ef4444" stroke="var(--foreground)" stroke-width="1.2" />
+
+          <!-- Spacer washer between rods -->
+          <rect id="sideSpacer" x="227" y="159" width="14" height="4" fill="#f59e0b" />
+
+          <!-- Rod A (upper level on pin) -->
+          <rect id="sideRodA" x="62" y="146" width="172" height="11" rx="3" fill="#0284c7" stroke="var(--foreground)" stroke-width="1.2" />
+          <!-- Rod B (lower level on pin - stacked so they never collide!) -->
+          <rect id="sideRodB" x="234" y="164" width="124" height="11" rx="3" fill="#059669" stroke="var(--foreground)" stroke-width="1.2" />
+
+          <!-- Left Chamber A (side) -->
+          <rect x="20" y="120" width="42" height="64" rx="4" fill="var(--card)" stroke="var(--foreground)" stroke-width="2" />
+          <line id="sideDiaphA" x1="62" y1="124" x2="62" y2="180" stroke="#f59e0b" stroke-width="4" />
+          <text x="41" y="112" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--foreground)">Câmara A</text>
+
+          <!-- Right Chamber B (side) -->
+          <rect x="358" y="120" width="42" height="64" rx="4" fill="var(--card)" stroke="var(--foreground)" stroke-width="2" />
+          <line id="sideDiaphB" x1="358" y1="124" x2="358" y2="180" stroke="#f59e0b" stroke-width="4" />
+          <text x="379" y="112" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--foreground)">Câmara B</text>
+
+          <!-- Callouts -->
+          <text x="210" y="202" text-anchor="middle" font-size="9.5" font-weight="600" fill="var(--foreground)">As 2 bielas vão empilhadas no mesmo pino (com arruela espaçadora)</text>
+          <text x="210" y="215" text-anchor="middle" font-size="8.8" fill="var(--muted-foreground)">Use rolamento pequeno (608) ou bucha de nylon na ponta de cada biela</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- VIEW 3: 3D ISOMETRIC PERSPECTIVE -->
+    <div class="border border-[var(--card-border)] rounded-lg p-3 bg-[var(--background)]">
+      <div class="text-xs font-bold mb-1 flex justify-between">
+        <span>3. Vista em Perspectiva (3D Esquemático)</span>
+        <span class="text-[var(--success)]">Pino único acionando os 2 lados em oposição</span>
+      </div>
+      <svg viewBox="0 0 820 190" class="w-full h-auto block" xmlns="http://www.w3.org/2000/svg">
+        <!-- Vertical Shaft -->
+        <line x1="410" y1="12" x2="410" y2="96" stroke="var(--foreground)" stroke-width="12" stroke-linecap="round" />
+        <!-- Isometric Disk -->
+        <ellipse cx="410" cy="100" rx="68" ry="26" fill="var(--card)" stroke="var(--foreground)" stroke-width="2.2" />
+        <ellipse cx="410" cy="100" rx="38" ry="14" fill="none" stroke="#ef4444" stroke-opacity="0.45" stroke-width="1.5" stroke-dasharray="4 3" />
+        <ellipse cx="410" cy="100" rx="10" ry="4" fill="var(--foreground)" />
+
+        <!-- Chamber A (Left) -->
+        <ellipse cx="145" cy="112" rx="14" ry="34" fill="var(--card)" stroke="var(--foreground)" stroke-width="2" />
+        <path d="M 145,78 L 95,78 A 14,34 0 0,0 95,146 L 145,146" fill="var(--card)" stroke="var(--foreground)" stroke-width="2" />
+        <ellipse id="isoDiaphA" cx="145" cy="112" rx="9" ry="28" fill="#f59e0b" fill-opacity="0.45" stroke="#f59e0b" stroke-width="2.5" />
+        <text x="115" y="168" text-anchor="middle" font-size="10" font-weight="700" fill="var(--foreground)">Câmara A (PVC 75)</text>
+
+        <!-- Chamber B (Right) -->
+        <path d="M 675,78 L 725,78 A 14,34 0 0,1 725,146 L 675,146" fill="var(--card)" stroke="var(--foreground)" stroke-width="2" />
+        <ellipse cx="675" cy="112" rx="14" ry="34" fill="var(--card)" stroke="var(--foreground)" stroke-width="2" />
+        <ellipse id="isoDiaphB" cx="675" cy="112" rx="9" ry="28" fill="#f59e0b" fill-opacity="0.45" stroke="#f59e0b" stroke-width="2.5" />
+        <text x="705" y="168" text-anchor="middle" font-size="10" font-weight="700" fill="var(--foreground)">Câmara B (PVC 75)</text>
+
+        <!-- Eccentric Pin (3D vertical drop) -->
+        <line id="isoPinStem" x1="448" y1="100" x2="448" y2="128" stroke="#ef4444" stroke-width="7" stroke-linecap="round" />
+
+        <!-- Rods in 3D -->
+        <line id="isoRodA" x1="448" y1="112" x2="145" y2="112" stroke="#0284c7" stroke-width="6" stroke-linecap="round" />
+        <line id="isoRodB" x1="448" y1="122" x2="675" y2="112" stroke="#059669" stroke-width="6" stroke-linecap="round" />
+
+        <!-- Pin head -->
+        <circle id="isoPinTop" cx="448" cy="100" r="5.5" fill="#ef4444" stroke="var(--foreground)" stroke-width="1.4" />
+      </svg>
+    </div>
+  </div>
+
+  <script>
+    const angleSlider = document.getElementById('angleSlider');
+    const angleVal = document.getElementById('angleVal');
+    const phaseStatus = document.getElementById('phaseStatus');
+    const playBtn = document.getElementById('playBtn');
+    const presetBtns = document.querySelectorAll('.presetBtn');
+
+    // Top view elements
+    const topRadius = document.getElementById('topRadius');
+    const topCrankPin = document.getElementById('topCrankPin');
+    const topRodA = document.getElementById('topRodA');
+    const topRodB = document.getElementById('topRodB');
+    const topPinA = document.getElementById('topPinA');
+    const topPinB = document.getElementById('topPinB');
+    const topDiaphA = document.getElementById('topDiaphA');
+    const topDiaphB = document.getElementById('topDiaphB');
+    const topStateA = document.getElementById('topStateA');
+    const topStateB = document.getElementById('topStateB');
+
+    // Side view elements
+    const sidePin = document.getElementById('sidePin');
+    const sideSpacer = document.getElementById('sideSpacer');
+    const sideRodA = document.getElementById('sideRodA');
+    const sideRodB = document.getElementById('sideRodB');
+    const sideDiaphA = document.getElementById('sideDiaphA');
+    const sideDiaphB = document.getElementById('sideDiaphB');
+
+    // Iso view elements
+    const isoPinStem = document.getElementById('isoPinStem');
+    const isoPinTop = document.getElementById('isoPinTop');
+    const isoRodA = document.getElementById('isoRodA');
+    const isoRodB = document.getElementById('isoRodB');
+    const isoDiaphA = document.getElementById('isoDiaphA');
+    const isoDiaphB = document.getElementById('isoDiaphB');
+
+    let deg = 0;
+    let playing = true;
+    let lastTime = performance.now();
+
+    function render(degrees) {
+      const rad = (degrees * Math.PI) / 180;
+      const cos = Math.cos(rad);
+      const sin = Math.sin(rad);
+
+      angleVal.textContent = `${Math.round(degrees)}°`;
+      angleSlider.value = Math.round(degrees);
+
+      // Phase description
+      // Velocity along X is -sin(rad). When sin > 0, pin moves LEFT (A compresses, B expands).
+      if (sin > 0.15) {
+        phaseStatus.textContent = 'Câmara A: COMPRIMINDO (ar sai)  |  Câmara B: ASPIRANDO (ar entra)';
+        topStateA.textContent = 'Comprime ↑';
+        topStateA.setAttribute('fill', '#ef4444');
+        topStateB.textContent = 'Aspira ↓';
+        topStateB.setAttribute('fill', '#10b981');
+      } else if (sin < -0.15) {
+        phaseStatus.textContent = 'Câmara A: ASPIRANDO (ar entra)  |  Câmara B: COMPRIMINDO (ar sai)';
+        topStateA.textContent = 'Aspira ↓';
+        topStateA.setAttribute('fill', '#10b981');
+        topStateB.textContent = 'Comprime ↑';
+        topStateB.setAttribute('fill', '#ef4444');
+      } else {
+        phaseStatus.textContent = cos > 0
+          ? 'Ponto morto direito: B no máx. compressão | A no máx. aspiração'
+          : 'Ponto morto esquerdo: A no máx. compressão | B no máx. aspiração';
+        topStateA.textContent = 'Inversão';
+        topStateA.setAttribute('fill', 'var(--muted-foreground)');
+        topStateB.textContent = 'Inversão';
+        topStateB.setAttribute('fill', 'var(--muted-foreground)');
+      }
+
+      // 1. TOP VIEW (r = 24 px -> represents 1.5 cm)
+      const rTop = 24;
+      const px = 210 + rTop * cos;
+      const py = 110 + rTop * sin;
+      const dAx = 62 + cos * 10;
+      const dBx = 358 + cos * 10;
+
+      topRadius.setAttribute('x2', px.toFixed(1));
+      topRadius.setAttribute('y2', py.toFixed(1));
+      topCrankPin.setAttribute('cx', px.toFixed(1));
+      topCrankPin.setAttribute('cy', py.toFixed(1));
+
+      topRodA.setAttribute('x1', px.toFixed(1));
+      topRodA.setAttribute('y1', py.toFixed(1));
+      topRodA.setAttribute('x2', dAx.toFixed(1));
+      topPinA.setAttribute('cx', dAx.toFixed(1));
+      topDiaphA.setAttribute('d', `M 62,78 Q ${(dAx - 4).toFixed(1)},110 62,142`);
+
+      topRodB.setAttribute('x1', px.toFixed(1));
+      topRodB.setAttribute('y1', py.toFixed(1));
+      topRodB.setAttribute('x2', dBx.toFixed(1));
+      topPinB.setAttribute('cx', dBx.toFixed(1));
+      topDiaphB.setAttribute('d', `M 358,78 Q ${(dBx + 4).toFixed(1)},110 358,142`);
+
+      // 2. SIDE VIEW
+      const sidePinX = 210 + rTop * cos;
+      sidePin.setAttribute('x', (sidePinX - 4).toFixed(1));
+      sideSpacer.setAttribute('x', (sidePinX - 7).toFixed(1));
+
+      const sAx = 62 + cos * 10;
+      const sBx = 358 + cos * 10;
+      sideDiaphA.setAttribute('x1', sAx.toFixed(1));
+      sideDiaphA.setAttribute('x2', sAx.toFixed(1));
+      sideDiaphB.setAttribute('x1', sBx.toFixed(1));
+      sideDiaphB.setAttribute('x2', sBx.toFixed(1));
+
+      sideRodA.setAttribute('x', sAx.toFixed(1));
+      sideRodA.setAttribute('width', Math.max(10, sidePinX - sAx).toFixed(1));
+      sideRodB.setAttribute('x', sidePinX.toFixed(1));
+      sideRodB.setAttribute('width', Math.max(10, sBx - sidePinX).toFixed(1));
+
+      // 3. ISOMETRIC VIEW
+      const isoX = 410 + 38 * cos;
+      const isoY = 100 + 14 * sin;
+      const iAx = 145 + cos * 12;
+      const iBx = 675 + cos * 12;
+
+      isoPinTop.setAttribute('cx', isoX.toFixed(1));
+      isoPinTop.setAttribute('cy', isoY.toFixed(1));
+      isoPinStem.setAttribute('x1', isoX.toFixed(1));
+      isoPinStem.setAttribute('y1', isoY.toFixed(1));
+      isoPinStem.setAttribute('x2', isoX.toFixed(1));
+      isoPinStem.setAttribute('y2', (isoY + 26).toFixed(1));
+
+      isoRodA.setAttribute('x1', isoX.toFixed(1));
+      isoRodA.setAttribute('y1', (isoY + 12).toFixed(1));
+      isoRodA.setAttribute('x2', iAx.toFixed(1));
+      isoDiaphA.setAttribute('cx', iAx.toFixed(1));
+
+      isoRodB.setAttribute('x1', isoX.toFixed(1));
+      isoRodB.setAttribute('y1', (isoY + 22).toFixed(1));
+      isoRodB.setAttribute('x2', iBx.toFixed(1));
+      isoDiaphB.setAttribute('cx', iBx.toFixed(1));
+    }
+
+    playBtn.addEventListener('click', () => {
+      playing = !playing;
+      playBtn.textContent = playing ? 'Pausar' : 'Girar';
+    });
+
+    angleSlider.addEventListener('input', () => {
+      playing = false;
+      playBtn.textContent = 'Girar';
+      deg = +angleSlider.value;
+      render(deg);
+    });
+
+    presetBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        playing = false;
+        playBtn.textContent = 'Girar';
+        deg = +btn.dataset.deg;
+        render(deg);
+      });
+    });
+
+    function loop(now) {
+      const dt = Math.min((now - lastTime) / 1000, 0.05);
+      lastTime = now;
+      if (playing) {
+        deg = (deg + 75 * dt) % 360;
+        render(deg);
+      }
+      requestAnimationFrame(loop);
+    }
+
+    render(0);
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>

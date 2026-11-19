@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documentação Técnica Completa — Aquaponia &amp; Aeradores Autônomos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --background: #f8fafc;
+      --card: #ffffff;
+      --card-border: #cbd5e1;
+      --foreground: #0f172a;
+      --muted-foreground: #475569;
+      --primary: #0284c7;
+      --success: #059669;
+      --warning: #d97706;
+      --danger: #dc2626;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #0f172a;
+        --card: #1e293b;
+        --card-border: #334155;
+        --foreground: #f1f5f9;
+        --muted-foreground: #94a3b8;
+        --primary: #38bdf8;
+        --success: #34d399;
+        --warning: #fbbf24;
+        --danger: #f87171;
+      }
+    }
+    html { scroll-behavior: smooth; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid var(--card-border); padding: 0.55rem 0.75rem; text-align: left; }
+    th { background: var(--background); font-weight: 700; }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased min-h-screen flex flex-col">
+
+  <!-- Top Navigation Bar -->
+  <nav class="sticky top-0 z-30 bg-[var(--card)]/95 backdrop-blur border-b border-[var(--card-border)]">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-2 text-xs md:text-sm">
+      <a href="./index.html" class="font-bold text-[var(--primary)]">🌊 Aquaponia &amp; Aeradores</a>
+      <div class="flex flex-wrap items-center gap-1.5">
+        <a href="./index.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Início</a>
+        <a href="./documentacao.html" class="px-2.5 py-1 rounded bg-[var(--primary)] text-white font-semibold">Documentação</a>
+        <a href="./plantas/planta_aquaponia_6000l.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Aquaponia 6.000 L</a>
+        <a href="./plantas/planta_aerador_eolico_5000l.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Eólico 5.000 L</a>
+        <a href="./plantas/detalhe_excentrico_duplo.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Excêntrico 3D</a>
+        <a href="./plantas/planta_aerador_eolico_mecanico.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Eólico 3.000 L</a>
+        <a href="./plantas/planta_aerador_solar_12v.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Solar 12V</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Content Layout -->
+  <div class="max-w-6xl w-full mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
+
+    <!-- Sidebar TOC -->
+    <aside class="lg:col-span-3">
+      <div class="lg:sticky lg:top-20 bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-4 space-y-2 text-xs">
+        <div class="font-bold uppercase tracking-wider text-[var(--muted-foreground)] mb-2">Índice da Documentação</div>
+        <a href="#auditoria" class="block py-1 hover:text-[var(--primary)]">1. Auditoria Física Inicial</a>
+        <a href="#projeto-solar" class="block py-1 hover:text-[var(--primary)]">2. Projeto 1 — Solar 12V (24h)</a>
+        <a href="#projeto-eolico-3000" class="block py-1 hover:text-[var(--primary)]">3. Projeto 2A — Eólico (1.000–3.000 L)</a>
+        <a href="#projeto-eolico-5000" class="block py-1 hover:text-[var(--primary)]">4. Projeto 2B — Eólico (5.000 L)</a>
+        <a href="#excentrico" class="block py-1 hover:text-[var(--primary)] pl-3 text-[var(--muted-foreground)]">4.1 Mecanismo Excêntrico</a>
+        <a href="#impressao-3d" class="block py-1 hover:text-[var(--primary)] pl-3 text-[var(--muted-foreground)]">4.2 Impressão 3D &amp; OpenSCAD</a>
+        <a href="#aquaponia-6000" class="block py-1 hover:text-[var(--primary)] font-semibold text-[var(--success)]">5. Projeto 3 — Aquaponia 6.000 L</a>
+        <a href="#comparativo" class="block py-1 hover:text-[var(--primary)]">6. Comparativo Geral</a>
+      </div>
+    </aside>
+
+    <!-- Main Documentation Column -->
+    <main class="lg:col-span-9 space-y-8 text-sm leading-relaxed">
+
+      <!-- Title Banner -->
+      <header class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-6 space-y-2">
+        <h1 class="text-2xl md:text-3xl font-extrabold">Documentação Técnica Completa</h1>
+        <p class="text-[var(--muted-foreground)]">
+          Estudo de viabilidade física, dimensionamento mecânico/elétrico, listas de materiais, guia de impressão 3D e arquitetura hidráulica de todos os projetos do repositório.
+        </p>
+      </header>
+
+      <!-- SECTION 1: AUDITORIA -->
+      <section id="auditoria" class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-6 space-y-4">
+        <h2 class="text-xl font-bold border-b border-[var(--card-border)] pb-2">1. Auditoria Técnica da Proposta Inicial (O que funciona vs. Alucinação)</h2>
+
+        <div class="overflow-x-auto text-xs">
+          <table>
+            <thead>
+              <tr>
+                <th>Conceito avaliado</th>
+                <th>Veredito</th>
+                <th>Observação técnica</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Rastreador solar eletrônico / passivo industrial (Zomeworks)</td>
+                <td class="font-bold text-[var(--success)]">Real / Funciona</td>
+                <td>Ganhos reais de 20–45%, mas exige proteção contra vento.</td>
+              </tr>
+              <tr>
+                <td>Clepsidra (relógio d'água com gotejador e contrapeso)</td>
+                <td class="font-bold text-[var(--success)]">Funciona</td>
+                <td>Princípio real; equipo entope fácil e vazão varia com o nível.</td>
+              </tr>
+              <tr>
+                <td>Rastreador flutuante com minicélula na sombra</td>
+                <td class="font-bold text-[var(--success)]">Funciona</td>
+                <td>Reduz atrito drasticamente; controle analógico real por realimentação negativa.</td>
+              </tr>
+              <tr>
+                <td>Músculo de nylon torcido (Ray Baughman, <em>Science</em>, 2014)</td>
+                <td class="font-bold text-[var(--warning)]">Ciência real, aplicação inviável assim</td>
+                <td>Exige tratamento térmico (<em>annealing</em>) e altas temperaturas; não move placa real desse jeito.</td>
+              </tr>
+              <tr>
+                <td>Rastreador de 2 garrafas PET (ar + água)</td>
+                <td class="font-bold text-[var(--danger)]">Erro de sinal + fraco demais</td>
+                <td>Aquecer o Leste e pesar o Oeste inclina a placa para o Oeste (contra o sol da manhã).</td>
+              </tr>
+              <tr>
+                <td><strong>Roda de Minto "Invertida" de PET + Água/Álcool + Conchas</strong></td>
+                <td class="font-bold text-[var(--danger)]">Impossível (Alucinação)</td>
+                <td>Viola conservação de energia, Lei de Boyle e limites térmicos do PET.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="font-bold text-base pt-2">Por que a "Roda de Minto Invertida" de PET não funciona</h3>
+        <ol class="list-decimal pl-5 space-y-1.5 text-[var(--muted-foreground)]">
+          <li><strong class="text-[var(--foreground)]">Inverter o ciclo cria um freio/pêndulo:</strong> A Roda de Minto real aquece <em>embaixo</em> para bombear líquido <em>para cima</em> (ganhando energia potencial <em>mgh</em>). Aquecer em cima e resfriar na água embaixo empurra líquido para baixo — trabalho líquido sempre negativo.</li>
+          <li><strong class="text-[var(--foreground)]">Ar preso trava a transferência (Lei de Boyle):</strong> O ar na garrafa fria comprime como uma mola contra o líquido. Para empurrar 1 L completo contra ar preso, seria necessário aquecer a ~900 °C. Rodas de Minto reais operam a <strong>vácuo</strong> com fluido refrigerante puro que condensa no lado frio.</li>
+          <li><strong class="text-[var(--foreground)]">Mistura água + 30% álcool 70° / acetona:</strong> Resulta em apenas ~21% de etanol em água (ganho mínimo de pressão). Acetona ataca/trinca PET e dissolve cola quente e silicone.</li>
+          <li><strong class="text-[var(--foreground)]">Conchas de cascata travam a roda:</strong> Erguer 3 conchas de 400 mL (~1,2 kg) do fundo até o topo consome mais torque contra o giro do que a roda inteira produziria.</li>
+          <li><strong class="text-[var(--foreground)]">Limite térmico do PET:</strong> PET amolece e deforma a <strong>65–75 °C</strong>. Uma calha de 45×40 cm (~110 W úteis) leva mais de 6 minutos para aquecer 1 L de água em 10 °C.</li>
+          <li><strong class="text-[var(--foreground)]">Limitação biológica em piscicultura:</strong> O pico de falta de oxigênio em tanques ocorre <strong>de madrugada</strong> (sem sol), quando algas e plantas param a fotossíntese e consomem O₂.</li>
+        </ol>
+      </section>
+
+      <!-- SECTION 2: PROJETO 1 SOLAR -->
+      <section id="projeto-solar" class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-6 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--card-border)] pb-2">
+          <h2 class="text-xl font-bold">2. Projeto 1 — Aerador Solar Fotovoltaico 12V (Autônomo 24h)</h2>
+          <a href="./plantas/planta_aerador_solar_12v.html" class="text-xs font-semibold px-3 py-1.5 rounded bg-[var(--primary)] text-white hover:opacity-90">Abrir Planta Interativa →</a>
+        </div>
+
+        <ul class="list-disc pl-5 space-y-1 text-[var(--muted-foreground)]">
+          <li><strong class="text-[var(--foreground)]">Painel 50 W (12V):</strong> No Brasil (~4,5 h sol pleno × 0,75 rendimento) gera <strong>~170 Wh úteis/dia</strong>. Sustenta <strong>24h/dia</strong> um compressor 12V de <strong>5–6 W</strong> (~120–144 Wh/dia) ou <strong>10–12 W por 12h/dia</strong> com timer (priorizando 20h–8h).</li>
+          <li><strong class="text-[var(--foreground)]">Bateria 12V 30 Ah Estacionária/AGM:</strong> Limitando a descarga a 50%, entrega <strong>180 Wh úteis</strong> com boa vida útil (baterias de nobreak 7 Ah entregam apenas ~42 Wh úteis e degradam rápido).</li>
+        </ul>
+
+        <div class="overflow-x-auto text-xs">
+          <table>
+            <thead>
+              <tr><th>Item</th><th>Qtd.</th><th>Especificação</th><th>Função</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Painel Solar</strong></td><td>1</td><td>50 W (12V, Vmp ≈ 18 V)</td><td>Gera energia e recarrega a bateria</td></tr>
+              <tr><td><strong>Controlador de Carga</strong></td><td>1</td><td>PWM 10A 12V/24V (saída LOAD)</td><td>Regula carga e corta em ~11,5 V</td></tr>
+              <tr><td><strong>Bateria</strong></td><td>1</td><td>12V 30 Ah Estacionária/AGM (ou LiFePO4 20 Ah)</td><td>Garante aeração na madrugada e dias nublados</td></tr>
+              <tr><td><strong>Porta-fusível + Fusível</strong></td><td>1</td><td>Automotivo lâmina 10 A</td><td>Proteção contra curto no polo +</td></tr>
+              <tr><td><strong>Compressor de Ar 12V</strong></td><td>1</td><td>Diafragma 12V DC, 6 W (24h) ou 10–12 W (c/ timer)</td><td>Injeta ar sem partes elétricas submersas</td></tr>
+              <tr><td><strong>Válvula de Retenção</strong></td><td>1</td><td>Anti-retorno Ø 4–6 mm</td><td>Impede retorno de água por sifão</td></tr>
+              <tr><td><strong>Mangueira + Pedra Porosa</strong></td><td>1 conj.</td><td>3–5 m silicone Ø 4–6 mm + 1–2 difusores</td><td>Gera microbolhas e efeito <em>airlift</em></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="p-3 rounded-lg bg-[var(--background)] border border-[var(--card-border)] text-xs space-y-1">
+          <div class="font-bold">Cuidados críticos de montagem:</div>
+          <div>1. Ordem de ligação no PWM: <strong>1º bateria → 2º painel solar → 3º compressor (LOAD)</strong>.</div>
+          <div>2. Instale o compressor em caixa ventilada <strong>acima do nível da água</strong>; mantenha a pedra porosa suspensa 10–15 cm acima do fundo.</div>
+          <div>3. Alternativa com bomba d'água: use sempre <strong>bomba 12V Brushless (sem escovas)</strong> com Venturi ou queda d'água.</div>
+        </div>
+      </section>
+
+      <!-- SECTION 3: PROJETO 2A EOLICO 1000-3000L -->
+      <section id="projeto-eolico-3000" class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-6 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--card-border)] pb-2">
+          <h2 class="text-xl font-bold">3. Projeto 2A — Aerador Eólico Savonius Compacto (1.000–3.000 L)</h2>
+          <a href="./plantas/planta_aerador_eolico_mecanico.html" class="text-xs font-semibold px-3 py-1.5 rounded bg-[var(--primary)] text-white hover:opacity-90">Abrir Planta Interativa →</a>
+        </div>
+
+        <ul class="list-disc pl-5 space-y-1 text-[var(--muted-foreground)]">
+          <li><strong class="text-[var(--foreground)]">Rotor Savonius 2 estágios (90°):</strong> H = 1,40 m × Ø = 0,70 m (tubo PVC Ø 200 mm cortado ao meio, 15% de sobreposição central). Capta vento 360° sem leme, mangueira fixa, autolimitado em tempestades.</li>
+          <li><strong class="text-[var(--foreground)]">Verificação física:</strong> Difusor a 0,6–0,8 m (~0,09 kgf/cm²), diafragma PVC Ø 75 mm (38 cm² → 33 N), excêntrico r = 1,25 cm (curso 2,5 cm) → exige <strong>~0,41 N·m</strong>. O rotor gera <strong>~0,90 N·m a 12 km/h</strong> e bombeia <strong>~5 a 14 L/min</strong> (11 a 25 km/h).</li>
+          <li><strong class="text-[var(--foreground)]">Materiais chave:</strong> Eixo aço Ø 16 mm (5/8") × 1,80 m, 2 rolamentos 6203-2RS (ou mancais P203), 1 câmara PVC Ø 75 mm com membrana de câmara de ar, 2 válvulas de retenção de mola leve (Ø 6 mm).</li>
+        </ul>
+      </section>
+
+      <!-- SECTION 4: PROJETO 2B EOLICO 5000L + EXCENTRICO + 3D -->
+      <section id="projeto-eolico-5000" class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-6 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--card-border)] pb-2">
+          <h2 class="text-xl font-bold">4. Projeto 2B — Aerador Eólico Savonius para 5.000 L (Duplo Diafragma 180°)</h2>
+          <div class="flex flex-wrap gap-2">
+            <a href="./plantas/planta_aerador_eolico_5000l.html" class="text-xs font-semibold px-3 py-1.5 rounded bg-[var(--primary)] text-white hover:opacity-90">Planta 5.000 L →</a>
+            <a href="./plantas/detalhe_excentrico_duplo.html" class="text-xs font-semibold px-3 py-1.5 rounded border border-[var(--card-border)] hover:border-[var(--primary)]">Excêntrico (3 Ângulos) →</a>
+          </div>
+        </div>
+
+        <p class="text-[var(--muted-foreground)]">
+          Para escalar para 5.000 L sem travar a partida em vento fraco, usamos <strong>2 câmaras de PVC Ø 75 mm em oposição (180°)</strong> em vez de aumentar para 1 câmara gigante de 100 mm: dobramos a vazão (~170 mL úteis/volta) mantendo o torque suave.
+        </p>
+
+        <div class="overflow-x-auto text-xs">
+          <table>
+            <thead>
+              <tr><th>Componente</th><th>Original (1.000–3.000 L)</th><th>Versão 5.000 L</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Rotor Savonius (2 estágios a 90°)</strong></td><td>1,40 m × 0,70 m (PVC 200 mm)</td><td><strong>1,80 m × 0,95 m</strong> (2 tambores de 200 L cortados ao meio)</td></tr>
+              <tr><td><strong>Torque de partida (12 km/h)</strong></td><td>~0,90 N·m</td><td><strong>~2,1 N·m</strong> (fator de segurança &gt; 2,5× sobre ~0,80 N·m exigidos)</td></tr>
+              <tr><td><strong>Bomba de Diafragma</strong></td><td>1 câmara PVC Ø 75 mm (curso 2,5 cm)</td><td><strong>2 câmaras PVC Ø 75 mm opostas (180°)</strong>, curso <strong>3,0 cm</strong></td></tr>
+              <tr><td><strong>Eixo e Mancais</strong></td><td>Aço Ø 16 mm + rolamento 6203</td><td><strong>Aço Ø 20–25 mm (3/4"–1")</strong> + mancais <strong>P204 / P205</strong> + estaiamento</td></tr>
+              <tr><td><strong>Profundidade e Difusão</strong></td><td>0,6–0,8 m • 1 pedra porosa</td><td><strong>0,8–1,0 m • 2 pedras porosas</strong> em pontos opostos</td></tr>
+              <tr><td><strong>Vazão estimada (12–25 km/h)</strong></td><td>~5 a 14 L/min</td><td><strong>~9 a 20 L/min</strong> (até ~25 L/min em rajadas)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 4.1 Eccentric -->
+        <div id="excentrico" class="pt-2 space-y-2">
+          <h3 class="font-bold text-base">4.1 Como funciona o Mecanismo Excêntrico + Dupla Biela</h3>
+          <p class="text-[var(--muted-foreground)]">
+            Na base do eixo vertical (Ø 25 mm) fixa-se um disco rígido (Ø 100 mm) com um pino de aço <strong>M8</strong> deslocado a exatos <strong>r = 15 mm</strong> do centro. A cada volta completa, o pino percorre 15 mm para a esquerda e 15 mm para a direita (<strong>curso linear total = 30 mm</strong>). As duas bielas são montadas <strong>empilhadas no mesmo pino M8</strong>, separadas por uma arruela espaçadora de 3 mm, com rolamentos <strong>608-2RS</strong> nas pontas para atrito mínimo. Enquanto a Câmara A comprime, a Câmara B aspira.
+          </p>
+        </div>
+
+        <!-- 4.2 3D Printing -->
+        <div id="impressao-3d" class="pt-2 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="font-bold text-base">4.2 Impressão 3D do Mecanismo (Arquivo Paramétrico OpenSCAD)</h3>
+            <a href="./3d/excentrico_duplo_5000l.scad" download class="text-xs font-semibold px-3 py-1 rounded bg-[var(--warning)]/15 text-[var(--warning)] border border-[var(--warning)]/40 hover:opacity-85">
+              ⬇ Baixar excentrico_duplo_5000l.scad
+            </a>
+          </div>
+          <ul class="list-disc pl-5 space-y-1 text-[var(--muted-foreground)]">
+            <li><strong class="text-[var(--foreground)]">O que imprimir:</strong> Disco excêntrico com cubo para eixo Ø 25 mm, as 2 bielas (180 mm entre centros, alojamento para rolamento 608-2RS) e a arruela espaçadora. Tudo imprime <strong>sem suportes</strong>.</li>
+            <li><strong class="text-[var(--foreground)]">O que manter em metal/borracha:</strong> Eixo de aço Ø 25 mm, pino excêntrico (parafuso de aço M8), rolamentos P205 + 608-2RS e diafragma de câmara de ar.</li>
+            <li><strong class="text-[var(--foreground)]">Configuração de impressão:</strong> Filamento <strong>PETG ou ASA/ABS</strong> (evite PLA no sol/calor), <strong>4–5 paredes</strong>, <strong>35–40% preenchimento</strong> (gyroid/cubic), bielas impressas <strong>deitadas na mesa</strong>.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- SECTION 5: PROJETO 3 AQUAPONIA 6000L -->
+      <section id="aquaponia-6000" class="bg-[var(--card)] border-2 border-[var(--success)]/50 rounded-xl p-6 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--card-border)] pb-2">
+          <h2 class="text-xl font-bold text-[var(--success)]">5. Projeto 3 — Aquaponia Completa (2 × 3.000 L + Horta Hidropônica)</h2>
+          <a href="./plantas/planta_aquaponia_6000l.html" class="text-xs font-semibold px-3 py-1.5 rounded bg-[var(--success)] text-white hover:opacity-90">Abrir Simulação Aquaponia →</a>
+        </div>
+
+        <p class="text-[var(--muted-foreground)]">
+          Evolução do projeto para dois tanques de 3.000 L em desnível (6.000 L totais) integrados a uma horta hidropônica em ciclo fechado. Os dejetos dos peixes nutrem as plantas e as plantas devolvem água limpa e oxigenada ao tanque inferior.
+        </p>
+
+        <!-- Fluxo -->
+        <pre class="p-4 rounded-lg bg-[var(--background)] border border-[var(--card-border)] text-xs font-mono overflow-x-auto leading-relaxed">
+[Tanque A - 3.000 L (Nível Alto)]
+       │  Ladrão de fundo (SLO - PVC 50 mm com respiro anti-sifão)
+       ▼
+[Decantador - Bombona 200 L] ──► Registro no fundo (drenagem semanal do lodo)
+       │  Água sem sólidos (clarificada)
+       ▼
+[Horta Hidropônica: Cama de Cultivo c/ Argila Expandida ou DWC] (Biofiltro: NH₃ → NO₂⁻ → NO₃⁻)
+       │  Retorno por gravidade (queda d'água oxigenante)
+       ▼
+[Tanque B - 3.000 L (Nível Baixo) + Boia de Reposição (evaporação)]
+       │  Pré-filtro na sucção + Bomba (Airlift Eólico / Diafragma Água / Solar 12V)
+       └──────────────────────────────────────────────────────► Volta ao Tanque A</pre>
+
+        <h3 class="font-bold text-base">Comparativo das 3 Opções de Bombeamento (Tanque B → Tanque A)</h3>
+        <div class="overflow-x-auto text-xs">
+          <table>
+            <thead>
+              <tr><th>Modo de Bombeamento</th><th>Desnível Viável</th><th>Vazão Estimada</th><th>Análise Técnica</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1. Eólico Airlift</strong> <em>(mantém aerador de ar)</em></td>
+                <td><strong>30 a 40 cm</strong></td>
+                <td>~800 a 1.500 L/h</td>
+                <td>Bomba fica 100% seca (zero entupimento com sujeira) e já oxigena a água na subida pelo tubo Ø 50 mm. Para sem vento.</td>
+              </tr>
+              <tr>
+                <td><strong>2. Eólico Diafragma (Água)</strong></td>
+                <td>Até <strong>1,2 m</strong></td>
+                <td>~600 a 900 L/h</td>
+                <td>Usa as 2 câmaras Ø 75 mm com 4 válvulas p/ água Ø 25 mm (baixa perda), tubulação Ø 25–32 mm e instalação afogada abaixo do nível do Tanque B.</td>
+              </tr>
+              <tr>
+                <td><strong>3. Híbrido Solar 12V + Eólico</strong></td>
+                <td><strong>1,5 a 2,5 m</strong></td>
+                <td><strong>1.800 L/h constante</strong></td>
+                <td>Bomba 12V Brushless (25 W) + Painel 200 W + Bateria 60–100 Ah garante 24h mesmo sem vento; Savonius reforça a oxigenação e economiza bateria.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="font-bold text-base">As 5 Alterações Obrigatórias para Aquaponia Funcionar</h3>
+        <ol class="list-decimal pl-5 space-y-1.5 text-[var(--muted-foreground)]">
+          <li><strong class="text-[var(--foreground)]">Decantador + Biofiltro antes da horta:</strong> Retém sólidos para não entupir/apodrecer raízes e converte amônia (NH₃) em nitrato (NO₃⁻), o adubo real das plantas.</li>
+          <li><strong class="text-[var(--foreground)]">Ladrão de fundo (SLO) no Tanque A:</strong> Tubo PVC 50 mm pescando a 2 cm do fundo com Tê aberto no nível d'água (anti-sifão) para remover fezes pesadas.</li>
+          <li><strong class="text-[var(--foreground)]">Escolha correta da horta:</strong> Se depender de vento, <strong>nunca use tubos NFT secos</strong> (plantas morrem em 2–4h de sol sem água). Use <strong>Cama de Cultivo com argila expandida/brita</strong> ou <strong>Sistema Flutuante (DWC)</strong>, que resistem a 24h+ de calmaria.</li>
+          <li><strong class="text-[var(--foreground)]">Pré-filtro e proteção de nível no Tanque B:</strong> Tela na sucção para proteger peixes/válvulas e captação a 30–40 cm do fundo (impede secagem total caso haja vazamento na horta).</li>
+          <li><strong class="text-[var(--foreground)]">Boia de reposição automática no Tanque B:</strong> Evaporação e transpiração consomem 1% a 3% do volume/dia (60 a 180 L/dia no verão). Toda a variação de nível ocorre no tanque mais baixo.</li>
+        </ol>
+      </section>
+
+      <!-- SECTION 6: COMPARATIVO GERAL -->
+      <section id="comparativo" class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-6 space-y-4">
+        <h2 class="text-xl font-bold border-b border-[var(--card-border)] pb-2">6. Resumo Comparativo de Todos os Projetos</h2>
+        <div class="overflow-x-auto text-xs">
+          <table>
+            <thead>
+              <tr><th>Projeto</th><th>Volume Atendido</th><th>Funciona sem vento de madrugada?</th><th>Melhor Aplicação</th><th>Planta</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Projeto 1 — Solar 12V</strong></td>
+                <td>1.000 – 3.000 L</td>
+                <td class="font-bold text-[var(--success)]">Sim (bateria 30 Ah)</td>
+                <td>Piscicultura que não pode ficar sem O₂ à noite</td>
+                <td><a href="./plantas/planta_aerador_solar_12v.html" class="text-[var(--primary)] underline">Abrir</a></td>
+              </tr>
+              <tr>
+                <td><strong>Projeto 2A — Eólico Compacto</strong></td>
+                <td>1.000 – 3.000 L</td>
+                <td class="font-bold text-[var(--warning)]">Não (vento ≥ 11 km/h)</td>
+                <td>Locais ventosos, baixo custo ou reforço 100% mecânico</td>
+                <td><a href="./plantas/planta_aerador_eolico_mecanico.html" class="text-[var(--primary)] underline">Abrir</a></td>
+              </tr>
+              <tr>
+                <td><strong>Projeto 2B — Eólico 5.000 L</strong></td>
+                <td>Até 5.000 L</td>
+                <td class="font-bold text-[var(--warning)]">Não (vento ≥ 8 km/h)</td>
+                <td>Tanques maiores em áreas ventosas + peças 3D</td>
+                <td><a href="./plantas/planta_aerador_eolico_5000l.html" class="text-[var(--primary)] underline">Abrir</a></td>
+              </tr>
+              <tr>
+                <td><strong>Projeto 3 — Aquaponia 6.000 L</strong></td>
+                <td>2 × 3.000 L + Horta</td>
+                <td class="font-bold text-[var(--success)]">Sim no modo Híbrido Solar+Eólico</td>
+                <td>Produção integrada de peixes + hortaliças em circuito fechado</td>
+                <td><a href="./plantas/planta_aquaponia_6000l.html" class="text-[var(--primary)] underline">Abrir</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-[var(--card-border)] bg-[var(--card)] mt-8">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--muted-foreground)]">
+      <a href="./index.html" class="text-[var(--primary)] hover:underline font-semibold">← Voltar para a Página Principal</a>
+      <a href="https://github.com/ronaldobr72/Aquaponia" target="_blank" rel="noopener noreferrer" class="text-[var(--primary)] hover:underline font-medium">
+        github.com/ronaldobr72/Aquaponia
+      </a>
+    </div>
+  </footer>
+
+</body>
+</html>
