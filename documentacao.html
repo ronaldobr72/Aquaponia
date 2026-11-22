@@ -247,68 +247,64 @@
         </div>
       </section>
 
-      <!-- SECTION 5: PROJETO 3 AQUAPONIA 6000L -->
+      <!-- SECTION 5: PROJETO 3 AQUAPONIA 6000L (CHOP2) -->
       <section id="aquaponia-6000" class="bg-[var(--card)] border-2 border-[var(--success)]/50 rounded-xl p-6 space-y-5">
         <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--card-border)] pb-2">
-          <h2 class="text-xl font-bold text-[var(--success)]">5. Projeto 3 — Aquaponia Completa (2 × 3.000 L + Horta Hidropônica)</h2>
-          <a href="./plantas/planta_aquaponia_6000l.html" class="text-xs font-semibold px-3 py-1.5 rounded bg-[var(--success)] text-white hover:opacity-90">Abrir Simulação Aquaponia →</a>
+          <h2 class="text-xl font-bold text-[var(--success)]">5. Projeto 3 — Aquaponia CHOP2 (2 × 3.000 L + Decantador + Horta + Sump)</h2>
+          <a href="./plantas/planta_aquaponia_6000l.html" class="text-xs font-semibold px-3 py-1.5 rounded bg-[var(--success)] text-white hover:opacity-90">Abrir Simulação CHOP2 →</a>
         </div>
 
         <p class="text-[var(--muted-foreground)]">
-          Evolução do projeto para dois tanques de 3.000 L em desnível (6.000 L totais) integrados a uma horta hidropônica em ciclo fechado. Os dejetos dos peixes nutrem as plantas e as plantas devolvem água limpa e oxigenada ao tanque inferior.
+          Na arquitetura profissional <strong>CHOP2</strong> (<em>Constant Height One Pump</em>), os <strong>dois tanques de 3.000 L ficam lado a lado no mesmo nível alto</strong> e descarregam por gravidade num <strong>Sump pequeno (300–500 L, sem peixes)</strong> no nível mais baixo. Isso resolve de vez três problemas reais: limpa os <strong>dois</strong> tanques igualmente, garante que a bomba trabalhe <strong>apenas com água já filtrada</strong> e mantém o nível de água dos peixes sempre constante.
         </p>
 
-        <!-- Fluxo -->
+        <!-- Fluxo CHOP2 -->
         <pre class="p-4 rounded-lg bg-[var(--background)] border border-[var(--card-border)] text-xs font-mono overflow-x-auto leading-relaxed">
-[Tanque A - 3.000 L (Nível Alto)]
-       │  Ladrão de fundo (SLO - PVC 50 mm com respiro anti-sifão)
-       ▼
-[Decantador - Bombona 200 L] ──► Registro no fundo (drenagem semanal do lodo)
-       │  Água sem sólidos (clarificada)
-       ▼
-[Horta Hidropônica: Cama de Cultivo c/ Argila Expandida ou DWC] (Biofiltro: NH₃ → NO₂⁻ → NO₃⁻)
-       │  Retorno por gravidade (queda d'água oxigenante)
-       ▼
-[Tanque B - 3.000 L (Nível Baixo) + Boia de Reposição (evaporação)]
-       │  Pré-filtro na sucção + Bomba (Airlift Eólico / Diafragma Água / Solar 12V)
-       └──────────────────────────────────────────────────────► Volta ao Tanque A</pre>
+[Tanque A - 3.000 L (Vórtex + SLO)] ──┐
+                                      ├──► [Decantador 200 L] ──► (Dreno lodo 1×/sem)
+[Tanque B - 3.000 L (Vórtex + SLO)] ──┘            │  Água clarificada (sem sólidos)
+                                                   ▼
+                                       [Horta / Cama de Cultivo (Argila Expandida)] (NH₃ → NO₃⁻)
+                                                   │  Água 100% filtrada (gravidade)
+                                                   ▼
+            ◄── (Bomba puxa SÓ água limpa!) ── [Sump 300–500 L (Baixo + Boia de reposição)]
+            (Divide 50% p/ Tanque A + 50% p/ Tanque B com jato tangencial)</pre>
 
-        <h3 class="font-bold text-base">Comparativo das 3 Opções de Bombeamento (Tanque B → Tanque A)</h3>
+        <h3 class="font-bold text-base">Comparativo dos 2 Modos Fisicamente Reais para CHOP2 (ΔH ≈ 1,1 m)</h3>
         <div class="overflow-x-auto text-xs">
           <table>
             <thead>
-              <tr><th>Modo de Bombeamento</th><th>Desnível Viável</th><th>Vazão Estimada</th><th>Análise Técnica</th></tr>
+              <tr><th>Modo de Bombeamento</th><th>Usa Placa Solar?</th><th>Vazão Estimada</th><th>Análise Técnica Honesta</th></tr>
             </thead>
             <tbody>
               <tr>
-                <td><strong>1. Eólico Airlift</strong> <em>(mantém aerador de ar)</em></td>
-                <td><strong>30 a 40 cm</strong></td>
-                <td>~800 a 1.500 L/h</td>
-                <td>Bomba fica 100% seca (zero entupimento com sujeira) e já oxigena a água na subida pelo tubo Ø 50 mm. Para sem vento.</td>
+                <td><strong>1. 100% Eólico — Bomba Dupla de Diafragma (Água)</strong></td>
+                <td class="font-bold text-[var(--primary)]">Não (Zero eletricidade)</td>
+                <td>~600 a 900 L/h *(300–450 L/h por tanque)*</td>
+                <td>Instalada <strong>afogada</strong> abaixo do nível do Sump, com 4 válvulas p/ água Ø 25 mm (baixa perda). Como o Sump só tem água limpa, as válvulas não entopem. <em>Limitação:</em> para em calmaria (&lt; 9 km/h) → exige cama de cultivo úmida e baixa/média densidade de peixes.</td>
               </tr>
               <tr>
-                <td><strong>2. Eólico Diafragma (Água)</strong></td>
-                <td>Até <strong>1,2 m</strong></td>
-                <td>~600 a 900 L/h</td>
-                <td>Usa as 2 câmaras Ø 75 mm com 4 válvulas p/ água Ø 25 mm (baixa perda), tubulação Ø 25–32 mm e instalação afogada abaixo do nível do Tanque B.</td>
-              </tr>
-              <tr>
-                <td><strong>3. Híbrido Solar 12V + Eólico</strong></td>
-                <td><strong>1,5 a 2,5 m</strong></td>
-                <td><strong>1.800 L/h constante</strong></td>
-                <td>Bomba 12V Brushless (25 W) + Painel 200 W + Bateria 60–100 Ah garante 24h mesmo sem vento; Savonius reforça a oxigenação e economiza bateria.</td>
+                <td><strong>2. Híbrido — Bomba Solar 12V + Aerador Eólico</strong></td>
+                <td class="font-bold text-[var(--success)]">Sim (200 W + Bat 60–100 Ah)</td>
+                <td><strong>~1.800 L/h constantes</strong> *(900 L/h por tanque)*</td>
+                <td>Bomba submersa <strong>12V Brushless (25–35 W)</strong> dentro do Sump garante circulação 24h mesmo com vento zero. O Savonius fica livre como <strong>aerador de ar seco</strong> injetando O₂ extra nos Tanques A e B.</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <h3 class="font-bold text-base">As 5 Alterações Obrigatórias para Aquaponia Funcionar</h3>
+        <div class="p-3.5 rounded-lg bg-[var(--background)] border border-[var(--warning)]/50 text-xs space-y-1.5">
+          <div class="font-bold text-[var(--warning)]">Notas de Física Honesta (Airlift &amp; Eficiência do SLO):</div>
+          <div><strong>• Por que não usar Airlift no CHOP2?</strong> Um Airlift funciona apenas em tubo vertical reto e eleva água em ~30–40% da profundidade submersa. Para vencer ΔH = 1,1 m do Sump até os tanques altos, exigiria um poço enterrado de ~2,5 m de profundidade (aumentando demais a contrapressão). Por isso usamos bomba pressurizada (diafragma ou 12V).</div>
+          <div><strong>• Eficiência real do SLO:</strong> Em fundo plano parado, o SLO só aspira ~15–25 cm ao redor da boca. Por isso os tanques devem ser <strong>circulares com entrada tangencial</strong> (efeito "xícara de chá"), empurrando os sólidos para o centro do fundo — mesmo assim remove ~60–80%, reduzindo (não eliminando 100%) a limpeza periódica.</div>
+        </div>
+
+        <h3 class="font-bold text-base">Pontos Obrigatórios de Montagem do CHOP2</h3>
         <ol class="list-decimal pl-5 space-y-1.5 text-[var(--muted-foreground)]">
-          <li><strong class="text-[var(--foreground)]">Decantador + Biofiltro antes da horta:</strong> Retém sólidos para não entupir/apodrecer raízes e converte amônia (NH₃) em nitrato (NO₃⁻), o adubo real das plantas.</li>
-          <li><strong class="text-[var(--foreground)]">Ladrão de fundo (SLO) no Tanque A:</strong> Tubo PVC 50 mm pescando a 2 cm do fundo com Tê aberto no nível d'água (anti-sifão) para remover fezes pesadas.</li>
-          <li><strong class="text-[var(--foreground)]">Escolha correta da horta:</strong> Se depender de vento, <strong>nunca use tubos NFT secos</strong> (plantas morrem em 2–4h de sol sem água). Use <strong>Cama de Cultivo com argila expandida/brita</strong> ou <strong>Sistema Flutuante (DWC)</strong>, que resistem a 24h+ de calmaria.</li>
-          <li><strong class="text-[var(--foreground)]">Pré-filtro e proteção de nível no Tanque B:</strong> Tela na sucção para proteger peixes/válvulas e captação a 30–40 cm do fundo (impede secagem total caso haja vazamento na horta).</li>
-          <li><strong class="text-[var(--foreground)]">Boia de reposição automática no Tanque B:</strong> Evaporação e transpiração consomem 1% a 3% do volume/dia (60 a 180 L/dia no verão). Toda a variação de nível ocorre no tanque mais baixo.</li>
+          <li><strong class="text-[var(--foreground)]">Entradas tangenciais + registros 50%/50%:</strong> Garantem fluxo circular suave nos dois tanques circulares e permitem balancear a vazão igual entre A e B.</li>
+          <li><strong class="text-[var(--foreground)]">SLO central nos dois tanques + Decantador 200 L:</strong> Cada tanque tem seu ladrão de fundo (PVC 50 mm com Tê anti-sifão), convergindo para o decantador antes da horta.</li>
+          <li><strong class="text-[var(--foreground)]">Horta em Cama de Cultivo (argila expandida/brita) ou DWC:</strong> Faz a biofiltragem (amônia → nitrito → nitrato) e resiste à calmaria se usar o Modo 100% Eólico (nunca use tubos NFT secos sem bomba elétrica/bateria).</li>
+          <li><strong class="text-[var(--foreground)]">Sump sem peixes + Boia de reposição automática:</strong> Absorve 100% da variação de nível (evaporação de 1% a 3%/dia = 60–180 L/dia) e protege a bomba contra sujeira e secagem dos tanques de peixes.</li>
         </ol>
       </section>
 

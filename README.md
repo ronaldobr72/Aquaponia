@@ -61,29 +61,26 @@ Este repositório reúne a auditoria física inicial, o dimensionamento completo
 
 ---
 
-## 5. Projeto 3 — Aquaponia Completa (2 × 3.000 L + Horta Hidropônica)
+## 5. Projeto 3 — Aquaponia CHOP2 (2 × 3.000 L no Mesmo Nível + Decantador + Horta + Sump)
 
 ```text
-[Tanque A - 3.000 L (Alto)]
-       │  (Ladrão de fundo / SLO - PVC 50 mm com respiro anti-sifão)
-       ▼
-[Decantador 200 L]  ──► (Registro no fundo p/ drenar lodo 1x/semana)
-       │
-       ▼
-[Horta Hidropônica: Cama de Cultivo c/ argila expandida ou DWC] (NH₃ → NO₂⁻ → NO₃⁻)
-       │  (Retorno por gravidade com queda d'água oxigenante)
-       ▼
-[Tanque B - 3.000 L (Baixo) + Boia de reposição automática]
-       │  (Pré-filtro + Bomba: Airlift Eólico / Diafragma Água / Solar 12V)
-       └──────────────────────────────────────► Volta para o Tanque A
+[Tanque A - 3.000 L (Vórtex + SLO)] ──┐
+                                      ├──► [Decantador 200 L] ──► (Dreno lodo 1×/sem)
+[Tanque B - 3.000 L (Vórtex + SLO)] ──┘            │  Água clarificada (sem sólidos)
+                                                   ▼
+                                       [Horta / Cama de Cultivo (Argila Expandida)] (NH₃ → NO₃⁻)
+                                                   │  Água 100% filtrada (gravidade)
+                                                   ▼
+            ◄── (Bomba puxa SÓ água limpa!) ── [Sump 300–500 L (Baixo + Boia de reposição)]
+            (Divide 50% p/ Tanque A + 50% p/ Tanque B com jato tangencial)
 ```
 
-### 3 Modos de Bombeamento (simulados em [planta_aquaponia_6000l.html](./plantas/planta_aquaponia_6000l.html))
-1. **Eólico Airlift (desnível 30–40 cm):** Mantém a bomba de ar 100% seca; tubo vertical Ø 50 mm eleva ~800–1.500 L/h já oxigenados.
-2. **Eólico Diafragma para Água (até 1,2 m):** Bomba dupla afogada abaixo do nível do Tanque B com 4 válvulas para água Ø 25 mm (~600–900 L/h).
-3. **Híbrido Solar 12V + Eólico (1,5–2,5 m):** Bomba 12V Brushless (25 W) + Painel 200 W + Bateria 60–100 Ah mantém **~1.800 L/h constantes 24h** mesmo sem vento, com o Savonius reforçando a aeração.
+### 2 Modos Fisicamente Reais para CHOP2 (ΔH ≈ 1,1 m) — simulados em [planta_aquaponia_6000l.html](./plantas/planta_aquaponia_6000l.html)
+1. **100% Eólico — Bomba Dupla de Diafragma (Zero Placa Solar):** Instalada **afogada** abaixo do nível do Sump, com 4 válvulas para água Ø 25 mm (~600–900 L/h). Como o Sump só recebe água filtrada da horta, as válvulas não entopem.
+2. **Híbrido Solar 12V + Aerador Eólico:** Bomba submersa 12V Brushless (25–35 W) + Painel 200 W + Bateria 60–100 Ah mantém **~1.800 L/h constantes 24h** mesmo sem vento, com o Savonius injetando ar seco nos 2 tanques.
 
-### Pontos Críticos da Aquaponia
-- **Decantador + Biofiltro obrigatórios** antes da horta (evita entupimento e converte amônia em nitrato).
-- **Horta resiliente à calmaria:** Em modos puramente eólicos, use **Cama de Cultivo (argila expandida/brita)** ou **DWC** — nunca tubos NFT secos.
-- **Boia de reposição no Tanque B** para compensar 1–3%/dia de evapotranspiração.
+### Pontos Críticos da Aquaponia CHOP2
+- **Limpeza igual dos 2 tanques:** Ambos os tanques circulares têm entrada tangencial (efeito "xícara de chá") + SLO central indo ao Decantador (remove ~60–80% dos sólidos pesados).
+- **Por que não Airlift aqui?** Um Airlift só eleva ~30–40% da sua profundidade submersa; para vencer ΔH = 1,1 m do Sump até os tanques altos, exigiria um poço enterrado de ~2,5 m — por isso usamos bomba pressurizada.
+- **Horta resiliente à calmaria:** No modo 100% eólico, use **Cama de Cultivo (argila expandida/brita)** ou **DWC** — nunca tubos NFT secos.
+- **Boia de reposição no Sump** para compensar 1–3%/dia de evapotranspiração mantendo os tanques de peixes sempre cheios.
