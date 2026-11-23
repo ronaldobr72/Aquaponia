@@ -75,9 +75,9 @@ Este repositório reúne a auditoria física inicial, o dimensionamento completo
             (Divide 50% p/ Tanque A + 50% p/ Tanque B com jato tangencial)
 ```
 
-### 2 Modos Fisicamente Reais para CHOP2 (ΔH ≈ 1,1 m) — simulados em [planta_aquaponia_6000l.html](./plantas/planta_aquaponia_6000l.html)
-1. **100% Eólico — Bomba Dupla de Diafragma (Zero Placa Solar):** Instalada **afogada** abaixo do nível do Sump, com 4 válvulas para água Ø 25 mm (~600–900 L/h). Como o Sump só recebe água filtrada da horta, as válvulas não entopem.
-2. **Híbrido Solar 12V + Aerador Eólico:** Bomba submersa 12V Brushless (25–35 W) + Painel 200 W + Bateria 60–100 Ah mantém **~1.800 L/h constantes 24h** mesmo sem vento, com o Savonius injetando ar seco nos 2 tanques.
+### 2 Modos Individualizados para CHOP2 (ΔH ≈ 0,85–1,1 m) — simulados em [planta_aquaponia_6000l.html](./plantas/planta_aquaponia_6000l.html)
+1. **100% Eólico — 2 Câmaras de Diafragma Independentes (Zero Placa Solar):** **Câmara A → Tanque A** e **Câmara B → Tanque B** (afogadas abaixo do Sump, cada linha com sua câmara de ar amortecedora). Por ser deslocamento positivo (~85 mL/volta em cada câmara), garante divisão **50% / 50% exata em qualquer vento** sem precisar estrangular registros.
+2. **Híbrido Solar 12V — 2 Bombas Brushless Independentes + Aerador Eólico:** **2 bombas 12V de 15 W (~900 L/h cada)** dentro do Sump (uma p/ Tanque A, outra p/ Tanque B) garantem **50/50 perfeito + redundância real** 24h mesmo sem vento, enquanto o Savonius injeta O₂ seco nos 2 tanques.
 
 ### Pontos Críticos da Aquaponia CHOP2
 - **Limpeza igual dos 2 tanques:** Ambos os tanques circulares têm entrada tangencial (efeito "xícara de chá") + SLO central indo ao Decantador (remove ~60–80% dos sólidos pesados).

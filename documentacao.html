@@ -260,17 +260,18 @@
 
         <!-- Fluxo CHOP2 -->
         <pre class="p-4 rounded-lg bg-[var(--background)] border border-[var(--card-border)] text-xs font-mono overflow-x-auto leading-relaxed">
-[Tanque A - 3.000 L (Vórtex + SLO)] ──┐
-                                      ├──► [Decantador 200 L] ──► (Dreno lodo 1×/sem)
-[Tanque B - 3.000 L (Vórtex + SLO)] ──┘            │  Água clarificada (sem sólidos)
-                                                   ▼
-                                       [Horta / Cama de Cultivo (Argila Expandida)] (NH₃ → NO₃⁻)
-                                                   │  Água 100% filtrada (gravidade)
-                                                   ▼
-            ◄── (Bomba puxa SÓ água limpa!) ── [Sump 300–500 L (Baixo + Boia de reposição)]
-            (Divide 50% p/ Tanque A + 50% p/ Tanque B com jato tangencial)</pre>
+[Tanque A - 3.000 L (Vórtex + SLO)] ──(reto 2%)──► [Decantador 200 L] ◄──(reto 2%)── [Tanque B - 3.000 L (Vórtex + SLO)]
+                                                          │  Água clarificada (gravidade)
+                                                          ▼
+                                             [Horta / Cama de Cultivo (Nível Constante)] (NH₃ → NO₃⁻)
+                                                          │  Retorna ~99,5% da vazão (água limpa)
+                                                          ▼
+                                             [Sump 500 L (Baixo + Boia de reposição)]
+                                                 │                             │
+                         (Linha A exclusiva 50%) ▼                             ▼ (Linha B exclusiva 50%)
+                       [Câmara A / Bomba 12V A] ──► Tanque A         [Câmara B / Bomba 12V B] ──► Tanque B</pre>
 
-        <h3 class="font-bold text-base">Comparativo dos 2 Modos Fisicamente Reais para CHOP2 (ΔH ≈ 1,1 m)</h3>
+        <h3 class="font-bold text-base">Comparativo dos 2 Modos Individualizados para CHOP2 (ΔH ≈ 0,85–1,1 m)</h3>
         <div class="overflow-x-auto text-xs">
           <table>
             <thead>
@@ -278,23 +279,24 @@
             </thead>
             <tbody>
               <tr>
-                <td><strong>1. 100% Eólico — Bomba Dupla de Diafragma (Água)</strong></td>
+                <td><strong>1. 100% Eólico — 2 Câmaras de Diafragma Independentes</strong></td>
                 <td class="font-bold text-[var(--primary)]">Não (Zero eletricidade)</td>
-                <td>~600 a 900 L/h *(300–450 L/h por tanque)*</td>
-                <td>Instalada <strong>afogada</strong> abaixo do nível do Sump, com 4 válvulas p/ água Ø 25 mm (baixa perda). Como o Sump só tem água limpa, as válvulas não entopem. <em>Limitação:</em> para em calmaria (&lt; 9 km/h) → exige cama de cultivo úmida e baixa/média densidade de peixes.</td>
+                <td>~600 a 900 L/h <em>(exato 50/50: 300–450 L/h em cada tanque)</em></td>
+                <td><strong>Câmara A → Tanque A</strong> e <strong>Câmara B → Tanque B</strong> (cada uma com sua pequena câmara de ar amortecedora). Como é deslocamento positivo (~85 mL/volta em cada câmara), os dois tanques recebem o <strong>mesmo volume exato em qualquer vento</strong>, sem registros estrangulando.</td>
               </tr>
               <tr>
-                <td><strong>2. Híbrido — Bomba Solar 12V + Aerador Eólico</strong></td>
+                <td><strong>2. Híbrido — 2 Bombas Solar 12V (15 W) + Aerador Eólico</strong></td>
                 <td class="font-bold text-[var(--success)]">Sim (200 W + Bat 60–100 Ah)</td>
-                <td><strong>~1.800 L/h constantes</strong> *(900 L/h por tanque)*</td>
-                <td>Bomba submersa <strong>12V Brushless (25–35 W)</strong> dentro do Sump garante circulação 24h mesmo com vento zero. O Savonius fica livre como <strong>aerador de ar seco</strong> injetando O₂ extra nos Tanques A e B.</td>
+                <td><strong>~1.800 L/h constantes</strong> <em>(900 L/h por bomba/tanque)</em></td>
+                <td><strong>2 bombas submersas 12V Brushless de 15 W</strong> dentro do Sump (uma exclusiva p/ Tanque A, outra p/ Tanque B). Mesmo consumo elétrico de 1 bomba de 30 W, divisão 50/50 sem regulagem e <strong>redundância real</strong> (se uma falhar, a outra mantém a horta viva). O Savonius injeta O₂ extra nos 2 tanques.</td>
               </tr>
             </tbody>
           </table>
         </div>
 
         <div class="p-3.5 rounded-lg bg-[var(--background)] border border-[var(--warning)]/50 text-xs space-y-1.5">
-          <div class="font-bold text-[var(--warning)]">Auditoria Física Rigorosa (Cotas, SLOs, Água Incompressível &amp; Retorno da Horta):</div>
+          <div class="font-bold text-[var(--warning)]">Auditoria Física Rigorosa (Individualização, Cotas, SLOs, Água Incompressível &amp; Retorno):</div>
+          <div><strong>• Por que NÃO dividir 1 cano em Tê entre Tanque A e Tanque B?</strong> A água sempre segue o caminho de menor perda de carga. Num cano único horizontal de baixo fluxo, quase toda a água cai na primeira saída (Tanque A) e o Tanque B fica sem vazão (pior ainda com vento variando!). <strong>Individualizar 1 câmara/bomba por tanque</strong> elimina o problema na raiz, reduz a perda de carga nos tubos em 4× e dispensa estrangular registros.</div>
           <div><strong>• SLOs Individuais Diretos (Sem "Barriga" / Sifão Invertido):</strong> Colocando o <strong>Decantador (200 L) entre o Tanque A e o Tanque B</strong>, cada SLO sai reto com caimento contínuo de 1–2% direto para o decantador. Nunca passe tubo por baixo de outro tanque subindo depois (cria U-trap onde fezes acumulam e travam o fluxo por <em>air-lock</em>).</div>
           <div><strong>• Cotas de Gravidade Verificadas:</strong> A água só desce (nunca sobe sem bomba): Tanques A e B (<strong>+1,10 m</strong>) → Decantador (<strong>+1,05 m</strong>) → Horta em bancada (<strong>+0,85 m a +0,60 m</strong>) → Sump 500 L (<strong>+0,40 m</strong>).</div>
           <div><strong>• Velocidade de arrasto do SLO:</strong> Fezes de peixes sedimentam a ~2–5 cm/s. Em tubo PVC 50 mm com 900 L/h (modo solar), a velocidade sobe a ~16 cm/s (arrasta bem). No modo eólico com vento fraco (300 L/h por tanque), PVC 50 mm cai para ~5,5 cm/s (no limite); usar <strong>PVC 40 mm</strong> melhora o arrasto (~9–10 cm/s).</div>
