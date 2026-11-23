@@ -8,7 +8,9 @@ Este repositório reúne a auditoria física inicial, o dimensionamento completo
 
 | Arquivo | Descrição |
 | :--- | :--- |
-| **[index.html](./index.html)** | **Página Principal (Portal Interativo)** — chama todas as plantas animadas, documentação e arquivo 3D. |
+| **[index.html](./index.html)** | **Página Principal (Portal Interativo)** — chama todas as plantas animadas, manuais e arquivos 3D. |
+| **[manual_tilapia_aquaponia.html](./manual_tilapia_aquaponia.html)** | **Manual Completo (9 Capítulos)** — construção passo a passo, tilápias (GIFT/sexagem/biometria), Azolla/Lemna/Taioba, horta, rotina de 20 min e falta de energia *(baseado na playlist Prof. Carlos Alan)*. |
+| **[plantas/modelo_tilapia_playlist.html](./plantas/modelo_tilapia_playlist.html)** | **Modelo Animado da Playlist + Calculadora de Ração** — Sifão de Sino em maré, Venturi de R$ 6,10, módulo Azolla/Lemna e simulação de TPA/falta de energia. |
 | **[documentacao.html](./documentacao.html)** | **Documentação Técnica Unificada (HTML)** — todos os cálculos, auditoria, listas de materiais e guias. |
 | **[plantas/planta_filtro_solar_alvenaria.html](./plantas/planta_filtro_solar_alvenaria.html)** | **Projeto 4 — Filtro Solar Duplo (2×100 L) para Tanque de Alvenaria** (sem horta, bomba na gaiola, tampas anti-mosquito). |
 | **[plantas/planta_aquaponia_6000l.html](./plantas/planta_aquaponia_6000l.html)** | **Projeto 3 — Aquaponia CHOP2 (2 × 3.000 L + Horta + Sump)** com bombeamento individualizado 50/50. |

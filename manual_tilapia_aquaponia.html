@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual Completo — Criação de Tilápias, Aquaponia, Plantas Forrageiras &amp; Manutenção</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --background: #f8fafc;
+      --card: #ffffff;
+      --card-border: #cbd5e1;
+      --foreground: #0f172a;
+      --muted-foreground: #475569;
+      --primary: #0284c7;
+      --success: #059669;
+      --warning: #d97706;
+      --danger: #dc2626;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #0f172a;
+        --card: #1e293b;
+        --card-border: #334155;
+        --foreground: #f1f5f9;
+        --muted-foreground: #94a3b8;
+        --primary: #38bdf8;
+        --success: #34d399;
+        --warning: #fbbf24;
+        --danger: #f87171;
+      }
+    }
+    html { scroll-behavior: smooth; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid var(--card-border); padding: 0.5rem 0.7rem; text-align: left; }
+    th { background: var(--background); font-weight: 700; }
+    @media print {
+      nav, aside, .no-print { display: none !important; }
+      body { background: #ffffff !important; color: #000000 !important; }
+    }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased min-h-screen flex flex-col">
+
+  <!-- Unified Navigation Bar -->
+  <nav class="sticky top-0 z-30 bg-[var(--card)]/95 backdrop-blur border-b border-[var(--card-border)]">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-2 text-xs md:text-sm">
+      <a href="./index.html" class="font-bold text-[var(--primary)]">🌊 Aquaponia &amp; Aeradores</a>
+      <div class="flex flex-wrap items-center gap-1.5">
+        <a href="./index.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Início</a>
+        <a href="./manual_tilapia_aquaponia.html" class="px-2.5 py-1 rounded bg-[var(--success)] text-white font-semibold">📖 Manual Completo</a>
+        <a href="./plantas/modelo_tilapia_playlist.html" class="px-2.5 py-1 rounded border border-[var(--primary)]/60 text-[var(--primary)] font-semibold hover:opacity-85 transition">Modelo Animado</a>
+        <a href="./plantas/planta_filtro_solar_alvenaria.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Filtro Alvenaria</a>
+        <a href="./plantas/planta_aquaponia_6000l.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Aquaponia CHOP2</a>
+        <a href="./documentacao.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Doc. Técnica</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Grid: Sticky TOC + Manual Chapters -->
+  <div class="max-w-6xl w-full mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
+
+    <!-- Sidebar Index -->
+    <aside class="lg:col-span-3">
+      <div class="lg:sticky lg:top-20 bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-4 space-y-1.5 text-xs">
+        <div class="font-bold uppercase tracking-wider text-[var(--muted-foreground)] mb-2">Capítulos do Manual</div>
+        <a href="#cap1" class="block py-1 hover:text-[var(--primary)]">1. Construção Passo a Passo</a>
+        <a href="#sifao" class="block py-0.5 pl-3 text-[var(--muted-foreground)] hover:text-[var(--primary)]">• Sifão de Sino (medidas exatas)</a>
+        <a href="#venturi" class="block py-0.5 pl-3 text-[var(--muted-foreground)] hover:text-[var(--primary)]">• Aerador Venturi (R$ 6,10)</a>
+        <a href="#cap2" class="block py-1 hover:text-[var(--primary)]">2. Lista de Materiais &amp; Custos</a>
+        <a href="#cap3" class="block py-1 hover:text-[var(--primary)]">3. Água, Cloro &amp; Ciclagem</a>
+        <a href="#cap4" class="block py-1 hover:text-[var(--primary)]">4. Manejo das Tilápias &amp; Sexagem</a>
+        <a href="#cap5" class="block py-1 hover:text-[var(--primary)]">5. Biometria, Ração &amp; Temperatura</a>
+        <a href="#cap6" class="block py-1 hover:text-[var(--primary)] font-semibold text-[var(--success)]">6. Plantas que Alimentam Tilápias</a>
+        <a href="#cap7" class="block py-1 hover:text-[var(--primary)]">7. Horta Aquapônica &amp; Solo</a>
+        <a href="#cap8" class="block py-1 hover:text-[var(--primary)]">8. Limpeza e Manutenção (20 min)</a>
+        <a href="#cap9" class="block py-1 hover:text-[var(--primary)] font-semibold text-[var(--danger)]">9. Abate &amp; Falta de Energia</a>
+        <div class="pt-3 border-t border-[var(--card-border)]">
+          <button onclick="window.print()" class="w-full py-1.5 rounded bg-[var(--background)] border border-[var(--card-border)] font-semibold hover:border-[var(--primary)] cursor-pointer">🖨 Imprimir / Salvar PDF</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Manual Content -->
+    <main class="lg:col-span-9 space-y-7 text-sm leading-relaxed">
+
+      <!-- Cover Banner -->
+      <header class="bg-[var(--card)] border-2 border-[var(--success)]/40 rounded-xl p-6 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-[var(--success)]/15 text-[var(--success)]">
+            Baseado na Playlist "Criação de Tilápias em Casa" — Prof. Carlos Alan (Com a Natureza)
+          </span>
+          <a href="./plantas/modelo_tilapia_playlist.html" class="no-print text-xs font-semibold px-3 py-1.5 rounded bg-[var(--primary)] text-white hover:opacity-90">
+            Ver Modelo Animado + Calculadora →
+          </a>
+        </div>
+        <h1 class="text-2xl md:text-3xl font-extrabold">Manual Completo de Criação de Tilápias em Casa, Aquaponia, Plantas Forrageiras e Manutenção</h1>
+        <p class="text-[var(--muted-foreground)]">
+          Guia prático do zero até a colheita: construção hidráulica passo a passo, escolha da linhagem certa de tilápia, cálculo exato de ração, cultivo de <strong>Azolla, Lemna e Taioba</strong> para economizar até 15% na ração, horta sem agrotóxicos, rotina de limpeza em 20 minutos/dia e protocolo de emergência para queda de energia.
+        </p>
+      </header>
+
+      <!-- ================================================================ -->
+      <!-- CAPÍTULO 1: CONSTRUÇÃO PASSO A PASSO                             -->
+      <!-- ================================================================ -->
+      <section id="cap1" class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-6 space-y-4">
+        <h2 class="text-xl font-bold border-b border-[var(--card-border)] pb-2">Capítulo 1 — Construção do Sistema Completo (Passo a Passo)</h2>
+        <p class="text-[var(--muted-foreground)]">
+          O sistema integra <strong>5 módulos</strong>: Caixa de Tilápias (500 L ou 1.000 L), Decantador (120–200 L), Sump (100–120 L), Cama de Cultivo com Sifão de Sino e Caixa Auxiliar de Azolla/Lemna (opcional, por desvio sem bomba extra).
+        </p>
+
+        <div class="space-y-3 text-xs leading-relaxed">
+          <div class="p-4 rounded-lg bg-[var(--background)] border border-[var(--card-border)] space-y-1.5">
+            <h3 class="font-bold text-sm text-[var(--primary)]">Etapa 1.1 — Bases Elevadas + Fundo Cônico na Caixa de Peixes</h3>
+            <ol class="list-decimal pl-5 space-y-1 text-[var(--muted-foreground)]">
+              <li>Construa <strong>2 bases niveladas de blocos</strong>: uma de <strong>50 cm de altura</strong> para a caixa dos peixes e outra de <strong>58 cm</strong> para o decantador (a diferença nivela o tubo de ligação de 50 mm entre os dois!).</li>
+              <li>Preencha a base da caixa dos peixes com <strong>areia de construção (ou terra compactada)</strong>, deixando um canal para passar a tubulação de dreno embaixo.</li>
+              <li>Fure o centro do fundo da caixa dos peixes e instale um <strong>flange de 32 mm</strong> + adaptador + cano saindo para fora com <strong>registro de esfera 32 mm</strong> (usado para drenar 1 L de sujeira por dia ou irrigar a horta no solo).</li>
+              <li><strong>Segredo do rebaixo central:</strong> Pressione o centro do fundo da caixa com um pedaço de madeira sobre a areia para criar uma leve concavidade em funil — toda a sujeira pesada escorrega sozinha para o centro!</li>
+            </ol>
+          </div>
+
+          <div class="p-4 rounded-lg bg-[var(--background)] border border-[var(--card-border)] space-y-1.5">
+            <h3 class="font-bold text-sm text-[var(--primary)]">Etapa 1.2 — Overflow Interno (50 mm) &amp; Ligação com o Decantador</h3>
+            <ol class="list-decimal pl-5 space-y-1 text-[var(--muted-foreground)]">
+              <li>Instale um <strong>flange de 50 mm</strong> na lateral superior da caixa dos peixes e outro na mesma altura no Decantador (rosca para dentro, parte lisa para fora). <em>Dica para bombona curva:</em> aqueça suavemente o plástico ao redor do furo, pressione com um pedaço de cano até ficar no nível e esfrie com água fria!</li>
+              <li><strong>Overflow (pescador de fundo):</strong> Na parte interna da caixa dos peixes, ligue o tubo de 50 mm descendo até o centro do fundo. Com uma serra, faça <strong>dentes na ponta inferior</strong> (bem estreitos se for criar alevinos!) e deixe afastado <strong>5 mm do fundo</strong> — assim suga as fezes sem sugar os peixes.</li>
+              <li><strong>Por dentro do Decantador (2 curvas de 50 mm + Espuma):</strong>
+                <ul class="list-disc pl-5 mt-1 space-y-0.5">
+                  <li>Na entrada (vindo dos peixes): coloque uma <strong>curva de 50 mm apontada para BAIXO</strong> (sem encostar no fundo, para não levantar o lodo assentado).</li>
+                  <li>Na saída (indo ao Sump): coloque uma <strong>curva de 50 mm apontada para CIMA</strong> com um pedaço de cano ajustando a altura (<strong>esse cano define o nível de água na caixa dos peixes!</strong>).</li>
+                  <li><strong>Truque da Espuma:</strong> Encaixe um pedaço de <strong>espuma limpa</strong> (pode ser de colchão velho sem cola/resíduo, dura ~6 meses) na boca da saída do decantador para reter partículas finas antes do Sump!</li>
+                  <li>No fundo do decantador: instale <strong>flange + registro de esfera 32 mm</strong> (rosca para baixo) para esvaziar 100% do lodo nas TPAs.</li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+
+          <div class="p-4 rounded-lg bg-[var(--background)] border border-[var(--card-border)] space-y-1.5">
+            <h3 class="font-bold text-sm text-[var(--primary)]">Etapa 1.3 — Sump no Chão, Boia &amp; Regra de Ouro da Bomba</h3>
+            <ul class="list-disc pl-5 space-y-1 text-[var(--muted-foreground)]">
+              <li><strong>Sump (100–120 L no chão):</strong> Recebe a água limpa do decantador. Instale um registro lateral de dreno de <strong>25 mm</strong> (raramente suja) e uma <strong>boia de reposição automática</strong> (entrada 20 mm, deixando <strong>20 cm de água acima da boia</strong>) — impede que a bomba rode a seco e queime!</li>
+              <li><strong>Regra da Bomba (Mínimo 4,5× o volume da caixa/hora):</strong>
+                <ul class="list-disc pl-5 mt-0.5">
+                  <li><strong>Caixa de 500 L:</strong> mínimo <strong>2.700 a 3.000 L/h</strong> (ex.: <em>Sarlo Better SB2700</em> ou <em>Oceantech XT 3000</em>).</li>
+                  <li><strong>Caixa de 1.000 L:</strong> mínimo <strong>4.500 a 6.000 L/h</strong> (ex.: <em>Sunsun CTP 6000</em> — consome apenas 40 W ≈ R$ 26/mês!).</li>
+                </ul>
+              </li>
+              <li>A saída da bomba (mangueira 25 mm) sobe até um <strong>Tê divisor com registro</strong>: parte vai para o <strong>Venturi da caixa dos peixes</strong>, parte para a <strong>Cama de Cultivo</strong> (regulada por registro) e um pequeno desvio lento (se desejar) para a caixa de <strong>Azolla/Lemna</strong>.</li>
+            </ul>
+          </div>
+
+          <!-- SIFÃO DE SINO -->
+          <div id="sifao" class="p-4 rounded-lg bg-[var(--background)] border border-[var(--warning)]/60 space-y-1.5">
+            <h3 class="font-bold text-sm text-[var(--warning)]">Etapa 1.4 — Cama de Cultivo &amp; Construção Exata do Sifão de Sino (Maré Automática)</h3>
+            <p class="text-[var(--muted-foreground)]">Corte um tambor de 200 L ao meio (100 L) ou use uma masseira preta de pedreiro sobre bancada de madeira firme acima do Sump. Instale um <strong>flange de 25 mm</strong> no fundo retornando ao Sump (com joelho embaixo para não espirrar fora) e monte o <strong>Sifão de Sino</strong> sem energia elétrica:</p>
+            <ol class="list-decimal pl-5 space-y-1 text-[var(--muted-foreground)]">
+              <li><strong>Tubo interno (nível máximo):</strong> PVC água <strong>Ø 25 mm × 22 cm</strong> encaixado no flange do fundo.</li>
+              <li><strong>Copo / Sino:</strong> Tubo esgoto <strong>Ø 50 mm × 27 cm</strong> + <strong>Cap 50 mm</strong> colado no topo com silicone (precisa vedar 100% o ar!). Na borda inferior do copo, faça <strong>4 dentes de 2 cm altura × 1 cm largura</strong> para a água entrar.</li>
+              <li><strong>Respiro quebrador de sifão (mangueira de chuveiro):</strong> Fure o copo (broca 10 mm) perto do topo, insira a mangueira até o meio interno, dobre-a por fora prendendo com lacre (sem esmagar!), corte a ponta <strong>3 cm acima da base do copo</strong> e vede o furo com silicone.</li>
+              <li><strong>Guarda externa:</strong> Tubo esgoto <strong>Ø 100 mm × 35 cm</strong> com rasgos verticais feitos apenas até a metade (impede pedras/raízes de travar o sifão).</li>
+              <li><strong>Substrato:</strong> Encha com ~1 carrinho de mão de brita/argila expandida deixando <strong>3 cm livres no topo</strong>. O sifão encherá e esvaziará a cada <strong>~5 minutos</strong> oxigenando raízes e bactérias!</li>
+            </ol>
+          </div>
+
+          <!-- VENTURI -->
+          <div id="venturi" class="p-4 rounded-lg bg-[var(--background)] border border-[var(--success)]/60 space-y-1.5">
+            <h3 class="font-bold text-sm text-[var(--success)]">Etapa 1.5 — Aerador Venturi Caseiro de R$ 6,10 (Torneira Invertida)</h3>
+            <p class="text-[var(--muted-foreground)]">
+              Pegue <strong>1 torneira plástica simples de jardim</strong>, <strong>1 luva LR 20 mm</strong> e <strong>15–20 cm de cano 20 mm</strong>:
+              <strong>1)</strong> Desrosqueie e <strong>retire completamente o miolo/válvula</strong> de dentro da torneira;
+              <strong>2)</strong> Instale a torneira <strong>de cabeça para baixo</strong> no joelho de 45° na entrada da caixa dos peixes (sem colar, só encaixada para facilitar limpeza). O jato d'água passa direto e o bico aberto apontado para cima <strong>suga ar atmosférico por efeito Venturi</strong>, injetando uma nuvem de oxigênio na água!
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- CAPÍTULO 2: LISTA DE MATERIAIS & CUSTOS                          -->
+      <!-- ================================================================ -->
+      <section id="cap2" class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-6 space-y-4 text-xs">
+        <h2 class="text-xl font-bold border-b border-[var(--card-border)] pb-2">Capítulo 2 — Lista de Materiais, Custo de Montagem e Despesa Mensal</h2>
+        <div class="overflow-x-auto">
+          <table>
+            <thead>
+              <tr><th>Bloco</th><th>Materiais (Referência Caixa 500 L — Escalável para 1.000 L)</th><th>Custo Ref. (500 L)</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Recipientes</strong></td>
+                <td>1× Caixa d'água 500 L (ou 1.000 L) • 2× Bombonas 120 L (Decantador + Sump) • 1× Meia bombona 100 L (ou masseira de pedreiro) p/ Cama de Cultivo • <em>Opc.:</em> 1 caixa extra 500 L p/ Azolla/Lemna + 1 caixa descanso cloro</td>
+                <td class="font-mono font-semibold">~R$ 640</td>
+              </tr>
+              <tr>
+                <td><strong>Bomba &amp; Aeração</strong></td>
+                <td>Bomba 2.700–3.000 L/h (<em>Sarlo SB2700 / Oceantech XT3000</em> p/ 500 L) ou <strong>Sunsun CTP 6000 L/h</strong> (p/ 1.000 L) + Compressor de ar auxiliar (6 W p/ 500 L) + 1 torneira plástica p/ Venturi</td>
+                <td class="font-mono font-semibold">~R$ 260 – 380</td>
+              </tr>
+              <tr>
+                <td><strong>Hidráulica PVC</strong></td>
+                <td><strong>50 mm:</strong> 2 m tubo + 3 flanges + 3 curvas + 1 Tê + 3 adaptadores LR • <strong>32 mm:</strong> 3 m tubo + 2 flanges + 2 registros + 2 joelhos • <strong>25 mm:</strong> 2 m tubo + 2 flanges + 1 registro + 1 m mangueira cristal • <strong>20 mm:</strong> 9 m cano + 4 registros + 2 flanges + 6 joelhos + 1 joelho 45° + 1 boia + 2 veda-roscas</td>
+                <td class="font-mono font-semibold">~R$ 360</td>
+              </tr>
+              <tr>
+                <td><strong>Sifão + Base + Substrato</strong></td>
+                <td>Sifão (50 cm tubo 100 mm + 30 cm tubo 50 mm + Cap 50 mm + mangueira chuveiro + silicone) • 35 blocos 6 furos + 1 saco cimento + areia + ripões madeira + 3 latas brita (ou argila expandida) + tela</td>
+                <td class="font-mono font-semibold">~R$ 190</td>
+              </tr>
+              <tr>
+                <td><strong>Monitoramento &amp; Emergência</strong></td>
+                <td>Termômetro digital submerso • Kit Alcon (Amônia Tóxica + pH) • <strong>Oxigênio em pó</strong> (reserva de emergência) • Kit inicial de <strong>Azolla + Lemna minor</strong></td>
+                <td class="font-mono font-semibold">~R$ 130 – 180</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="p-3.5 rounded-lg bg-[var(--background)] border border-[var(--primary)]/40">
+            <div class="font-bold text-[var(--primary)]">Investimento Total Estimado (Mão de Obra Própria)</div>
+            <div class="text-[var(--muted-foreground)] mt-1">
+              • Sistema <strong>500 L completo:</strong> ~<strong>R$ 1.450</strong><br>
+              • Sistema <strong>1.000 L completo:</strong> ~<strong>R$ 1.850 a R$ 2.300</strong> (com bomba Sunsun 6.000 L/h)
+            </div>
+          </div>
+          <div class="p-3.5 rounded-lg bg-[var(--background)] border border-[var(--success)]/40">
+            <div class="font-bold text-[var(--success)]">Despesa Mensal Real (Caixa 1.000 L / 50 Tilápias)</div>
+            <div class="text-[var(--muted-foreground)] mt-1">
+              Energia (~R$ 25) + Ração (~R$ 40, ou ~R$ 34 com Azolla/Lemna) + Água reposição (~R$ 18,70) + Alevinos rateados (~R$ 3) = <strong>~R$ 86,70 / mês</strong>!
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- CAPÍTULO 3: ÁGUA, CLORO E CICLAGEM                               -->
+      <!-- ================================================================ -->
+      <section id="cap3" class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-6 space-y-3 text-xs leading-relaxed">
+        <h2 class="text-xl font-bold border-b border-[var(--card-border)] pb-2">Capítulo 3 — Preparo da Água (Cloro), Ciclagem e Aclimatação</h2>
+        <ol class="list-decimal pl-5 space-y-2 text-[var(--muted-foreground)]">
+          <li><strong class="text-[var(--foreground)]">Posso usar água da torneira (rua)?</strong> Sim, mas o cloro mata os peixes e as bactérias do biofiltro. Deixe a água descansar por <strong>48 horas ao ar livre e no sol, SEM tampa</strong>, em uma caixa reserva — como o cloro é gás, ele evapora totalmente.</li>
+          <li><strong class="text-[var(--foreground)]">Ciclagem Biológica (4 a 6 semanas):</strong> Antes de colocar todo o lote, ligue o sistema e coloque apenas <strong>2 peixes</strong> com pouquíssima ração por 4 a 6 semanas para formar a colônia de bactérias nitrificantes nas pedras e raízes.</li>
+          <li><strong class="text-[var(--foreground)]">Aclimatação ao soltar novos peixes (NUNCA jogue direto!):</strong>
+            <ul class="list-disc pl-5 mt-1">
+              <li>Deixe o saco plástico fechado <strong>flutuando por 20 minutos</strong> na caixa (iguala a temperatura).</li>
+              <li>Abra o saco e vá misturando água da caixa aos poucos dentro do saco por mais <strong>15 minutos</strong> (iguala pH e salinidade). Só então libere os peixes.</li>
+            </ul>
+          </li>
+          <li><strong class="text-[var(--foreground)]">Berçário Flutuante:</strong> Se os alevinos chegarem muito pequenos (&lt; 2 cm), mantenha-os por ~20 dias em uma bacia flutuante perfurada (ou rede fina) dentro do tanque até crescerem.</li>
+          <li><strong class="text-[var(--foreground)]">Sinal de alerta inicial:</strong> Se os peixes subirem à superfície <strong>boquejando</strong>, faça uma TPA imediata (15–25% com água sem cloro) e reforce a oxigenação.</li>
+        </ol>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- CAPÍTULO 4: MANEJO DAS TILÁPIAS & SEXAGEM                        -->
+      <!-- ================================================================ -->
+      <section id="cap4" class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-6 space-y-4 text-xs">
+        <h2 class="text-xl font-bold border-b border-[var(--card-border)] pb-2">Capítulo 4 — Escolha das Tilápias, Densidade e Controle de Reprodução</h2>
+
+        <div class="overflow-x-auto">
+          <table>
+            <thead>
+              <tr><th>Linhagem</th><th>Crescimento &amp; Conversão</th><th>Reprodução</th><th>Indicação</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1. Tilápia GIFT</strong> ⭐ <em>(Melhor p/ caixa d'água)</em></td>
+                <td>Até <strong>85% mais rápida</strong> que a comum e 30% mais que Tailandesa. <strong>Conversão 1,4:1</strong> (1,4 kg ração → 1 kg peixe). Cabeça menor, filé mais grosso (800 g em 4–6 meses).</td>
+                <td><strong>Tardia (~8 meses)</strong> — abatendo com 5–6 meses, não reproduz!</td>
+                <td><strong>Escolha nº 1</strong> para máxima carne com menos ração e sem superpopulação.</td>
+              </tr>
+              <tr>
+                <td><strong>2. Tilápia Tailandesa</strong></td>
+                <td>Muito rústica e adaptada ao Brasil; carne saborosa; machos passam de 5 kg em ciclos longos.</td>
+                <td>Mais precoce (~3–4 meses)</td>
+                <td>Excelente alternativa rústica (comprar revertida 100% machos).</td>
+              </tr>
+              <tr>
+                <td><strong>3. Tilápia Saint Peter (Vermelha/Rosa)</strong></td>
+                <td>Produtividade equivalente à Tailandesa; carne clara/rosada com aspecto de peixe marinho (maior valor de venda).</td>
+                <td>Precoce; mais visível a aves predadoras em tanques abertos</td>
+                <td>Ótima para caixa d'água protegida/coberta e venda com maior valor agregado.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 leading-relaxed">
+          <div class="p-3.5 rounded-lg bg-[var(--background)] border border-[var(--card-border)] space-y-1">
+            <div class="font-bold text-[var(--primary)]">Densidade Ideal (Nunca superlote!)</div>
+            <p class="text-[var(--muted-foreground)]">
+              • <strong>Produtividade (500–600 g em 5–6 meses):</strong> <strong>1 peixe / 20 L</strong> → 25 tilápias em 500 L ou <strong>50 em 1.000 L</strong>.<br>
+              • <strong>Tilápias Gigantes (1 kg+ em 6–8 meses):</strong> reduza para <strong>25 a 30 peixes em 1.000 L</strong> (menos briga, menos estresse, crescimento uniforme).<br>
+              • <em>Superlotar atrasa o crescimento em ~30%</em> (leva 8 meses para chegar em 500 g!).
+            </p>
+          </div>
+          <div class="p-3.5 rounded-lg bg-[var(--background)] border border-[var(--warning)]/50 space-y-1">
+            <div class="font-bold text-[var(--warning)]">Evitar Reprodução &amp; Sexagem Manual</div>
+            <p class="text-[var(--muted-foreground)]">
+              Sempre compre <strong>alevinos revertidos (100% machos)</strong>. Se precisar separar manualmente na hora da revisão:<br>
+              • <strong>Macho:</strong> possui <strong>2 orifícios</strong> (ânus + uretra, ponta mais pontuda; tom rosado no acasalamento).<br>
+              • <strong>Fêmea:</strong> possui <strong>3 orifícios</strong> (ânus + uretra + <strong>oviduto</strong> em fenda no meio; cabeça e boca ligeiramente maiores para incubar ovos na boca).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- CAPÍTULO 5: BIOMETRIA, RAÇÃO & TEMPERATURA                       -->
+      <!-- ================================================================ -->
+      <section id="cap5" class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-6 space-y-4 text-xs">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--card-border)] pb-2">
+          <h2 class="text-xl font-bold">Capítulo 5 — Biometria, Cálculo de Ração e Temperatura</h2>
+          <a href="./plantas/modelo_tilapia_playlist.html" class="no-print font-semibold text-[var(--primary)] hover:underline">Abrir Calculadora Automática →</a>
+        </div>
+
+        <p class="text-[var(--muted-foreground)]">
+          <strong>Como fazer a Biometria (mensal):</strong> Capture apenas <strong>10% dos peixes</strong> (ex.: 4 peixes de um lote de 35), pese uma vasilha vazia (tara), coloque os peixes escorridos, subtraia a tara e divida pelo nº de peixes → você tem o <strong>peso médio unitário</strong>!
+        </p>
+
+        <div class="overflow-x-auto">
+          <table>
+            <thead>
+              <tr><th>Fase / Peso Médio</th><th>% do Peso Vivo / Dia</th><th>Tratos / Dia</th><th>Exemplo (1 peixe)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Alevinos (&lt; 30 g)</td><td><strong>8,0%</strong></td><td>4 a 5× / dia</td><td>20 g → 1,6 g/peixe/dia</td></tr>
+              <tr><td>Juvenis (60 – 90 g)</td><td><strong>4,0%</strong></td><td>4× / dia</td><td>77 g → 3,0 g/peixe/dia (35 peixes = 105 g/dia)</td></tr>
+              <tr><td>Crescimento (180 – 280 g)</td><td><strong>3,0%</strong></td><td>3× / dia</td><td>250 g → 7,5 g/peixe/dia</td></tr>
+              <tr><td>Engorda (300 – 450 g)</td><td><strong>2,4%</strong></td><td>2 a 3× / dia</td><td>300 g → 7,2 g/peixe/dia</td></tr>
+              <tr><td>Terminação (&gt; 500 g)</td><td><strong>2,0%</strong></td><td>2× / dia</td><td>600 g → 12,0 g/peixe/dia</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 leading-relaxed">
+          <div class="p-3.5 rounded-lg bg-[var(--background)] border border-[var(--danger)]/40 space-y-1">
+            <div class="font-bold text-[var(--danger)]">Regra dos 10 Minutos (Excesso de Ração = Veneno!)</div>
+            <p class="text-[var(--muted-foreground)]">Jogue a ração sempre <strong>espalhada</strong> por toda a caixa (para os peixes menores também comerem). Se sobrar ração após <strong>10 minutos</strong>, retire imediatamente com peneira — ração boiando gera amônia e explosão de algas verdes (que roubam O₂ à noite).</p>
+          </div>
+          <div class="p-3.5 rounded-lg bg-[var(--background)] border border-[var(--primary)]/40 space-y-1">
+            <div class="font-bold text-[var(--primary)]">Temperatura da Água (Termômetro Digital)</div>
+            <p class="text-[var(--muted-foreground)]">
+              • <strong>24 °C a 29–30 °C:</strong> Faixa ideal de apetite e crescimento máximo.<br>
+              • <strong>&lt; 16 °C ou &gt; 32 °C:</strong> <strong>SUSPENDA A RAÇÃO!</strong> Abaixo de 15 °C o peixe para de crescer; perto de 9 °C há risco de morte.<br>
+              • Se a água está em 26–28 °C e os peixes <em>não querem comer</em> = <strong>excesso de amônia/sujeira</strong>! Limpe os drenos e faça TPA na hora.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- CAPÍTULO 6: PLANTAS QUE SERVEM DE COMIDA PARA AS TILÁPIAS        -->
+      <!-- ================================================================ -->
+      <section id="cap6" class="bg-[var(--card)] border-2 border-[var(--success)]/50 rounded-xl p-6 space-y-4 text-xs">
+        <h2 class="text-xl font-bold text-[var(--success)] border-b border-[var(--card-border)] pb-2">Capítulo 6 — Plantas que Alimentam as Tilápias (Economize até 15% na Ração!)</h2>
+        <p class="text-[var(--muted-foreground)]">
+          Peixes alimentados com ração + plantas vivas apresentam saúde impecável, zero doenças e filé mais robusto. <strong>Fórmula da economia de 15%:</strong> calcule a ração do dia, <strong>retire 15%</strong> (ex.: em vez de 100 g, dê 85 g de ração) e jogue <strong>1 peneira bem cheia de Azolla ou Lemna</strong> logo em seguida!
+        </p>
+
+        <div class="overflow-x-auto">
+          <table>
+            <thead>
+              <tr><th>Planta</th><th>Proteína / Nutrientes</th><th>Como Cultivar</th><th>Como Fornecer &amp; Cuidados</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1. Lemna minor</strong> <em>(Lentilha-d'água)</em></td>
+                <td><strong>Até 45% de proteína</strong> (mais que a própria ração!)</td>
+                <td>Caixa d'água auxiliar (ex.: 500 L) recebendo um desvio lento da água dos peixes (sem bomba extra) e retornando ao Sump.</td>
+                <td>Alimento vivo favorito das tilápias. Flutua sem sujar a água até ser 100% devorada.</td>
+              </tr>
+              <tr>
+                <td><strong>2. Azolla</strong></td>
+                <td><strong>25% a 30% de proteína</strong> + aminoácidos essenciais + <strong>fixa nitrogênio</strong> (limpa a água!)</td>
+                <td>Mesmo cultivo em caixa auxiliar (ou junto com tanques berçário/peixes ornamentais). <strong>Se regenera totalmente em 2 a 3 dias ("comida infinita")!</strong></td>
+                <td>Fornecer <strong>1 peneira cheia dia sim, dia não</strong> entre os tratos de ração. Também serve para galinhas, porcos e cabras.</td>
+              </tr>
+              <tr>
+                <td><strong>3. Taioba Verdadeira</strong></td>
+                <td>Menor proteína, porém riquíssima em <strong>Vitamina C</strong> e minerais.</td>
+                <td>Planta rústica: cultive na cama de cultivo, em vaso ou no chão encostada no muro irrigada com água das TPAs.</td>
+                <td>Fornecer <strong>1 folha/dia</strong> intercalada com Azolla/Lemna.<br><strong class="text-[var(--danger)]">⚠ ATENÇÃO:</strong> 1) Confirme ser <em>Taioba Verdadeira</em> (não inhame bravo); 2) <strong>Retire as nervuras duras que sobrarem</strong> para não afundarem, entupirem o overflow e gerarem amônia!</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- CAPÍTULO 7: HORTA AQUAPÔNICA & HORTA NO SOLO                     -->
+      <!-- ================================================================ -->
+      <section id="cap7" class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-6 space-y-4 text-xs leading-relaxed">
+        <h2 class="text-xl font-bold border-b border-[var(--card-border)] pb-2">Capítulo 7 — Horta Aquapônica (Cama de Cultivo) &amp; Horta Fertirrigada no Solo</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-4 rounded-lg bg-[var(--background)] border border-[var(--card-border)] space-y-2">
+            <h3 class="font-bold text-sm text-[var(--success)]">A. Cama de Cultivo (Filtro Biológico + Hortaliças)</h3>
+            <ul class="list-disc pl-5 space-y-1 text-[var(--muted-foreground)]">
+              <li><strong>Capacidade biológica do substrato:</strong>
+                <br>• <strong>1 kg de Brita</strong> trata ~<strong>100 L</strong> de água (mais barato)
+                <br>• <strong>1 kg de Caco de Telha</strong> trata ~<strong>150 L</strong>
+                <br>• <strong>1 kg de Argila Expandida</strong> trata até ~<strong>400 L</strong> (mais porosa e leve)</li>
+              <li><strong>O que plantar:</strong> Tomates (ex.: Santa Cruz), hortelã (cresce vigorosamente!), alface, cebolinha, couve, pimentão.</li>
+              <li><strong>Adubação mineral caseira p/ frutos na aquaponia:</strong> Dilua <strong>1 colher bem cheia de calcário agrícola</strong> + <strong>1 colher bem cheia de cinzas de madeira</strong> em <strong>3 L de água</strong> e despeje aos poucos no Sump e na cama de cultivo.</li>
+              <li><strong>⚠ ZERO inseticida químico:</strong> Gotículas carregadas pelo vento contaminam os peixes! Para proteger tomates contra a <em>broca pequena do fruto</em>, ensaque os frutos com <strong>saquinhos de papel</strong>.</li>
+            </ul>
+          </div>
+
+          <div class="p-4 rounded-lg bg-[var(--background)] border border-[var(--card-border)] space-y-2">
+            <h3 class="font-bold text-sm text-[var(--primary)]">B. Horta no Solo &amp; Pomar Fertirrigados (Zero Desperdício!)</h3>
+            <ul class="list-disc pl-5 space-y-1 text-[var(--muted-foreground)]">
+              <li>Em vez de jogar fora a água rica em nutrientes que sai dos registros de dreno da caixa dos peixes e do decantador nas TPAs, <strong>canalize ou regue canteiros no chão</strong> (ex.: canteiros de <strong>3 m × 1 m</strong> cercados com blocos de concreto).</li>
+              <li><strong>Culturas testadas na playlist:</strong> Alface, couve, cebolinha, tomate, pepino, <strong>mamoeiros</strong> (plantados em idades escalonadas para colher o ano inteiro!) e <strong>Taioba verdadeira</strong>.</li>
+              <li>Prepara-se o solo inicial com calcário + composto orgânico, e toda a irrigação e adubação contínua passam a ser feitas 100% com a água descartada dos peixes!</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- CAPÍTULO 8: LIMPEZA E MANUTENÇÃO (ROTINA DE 20 MINUTOS)          -->
+      <!-- ================================================================ -->
+      <section id="cap8" class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-6 space-y-4 text-xs">
+        <h2 class="text-xl font-bold border-b border-[var(--card-border)] pb-2">Capítulo 8 — Rotina Completa de Limpeza e Manutenção (15–20 min/dia)</h2>
+
+        <div class="overflow-x-auto">
+          <table>
+            <thead>
+              <tr><th>Frequência</th><th>Passo a Passo Exato</th><th>Por que é Essencial</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>TODO DIA</strong><br><em>(15–20 min)</em></td>
+                <td>
+                  1. <strong>Alimentar</strong> (2–3×/dia espalhado; tirar sobras após 10 min) + checar <strong>temperatura</strong>.<br>
+                  2. <strong>Inspeção da bomba:</strong> desligar rapidamente e escovar a telinha de proteção da bomba com uma <strong>escova de dentes velha</strong>.<br>
+                  3. <strong>Purga rápida da caixa:</strong> abrir por 2–3 segundos o registro de 32 mm da caixa dos peixes retirando apenas <strong>~1 litro</strong> de água com lodo acumulado no cano.
+                </td>
+                <td>Evita fermentação de matéria orgânica nos canos (que gera amônia e gás sulfídrico invisível) e mantém a bomba sempre na vazão máxima.</td>
+              </tr>
+              <tr>
+                <td><strong>2× a 3× por SEMANA</strong><br><em>(TPA 15%–25%)</em></td>
+                <td>
+                  1. Desligue a bomba.<br>
+                  2. Abra o registro 32 mm do <strong>Decantador</strong> e esvazie <strong>100% dos dejetos</strong> (envie para a horta no solo/pomar!).<br>
+                  3. Retire a <strong>espuma filtrante</strong> do decantador, enxágue bem em água corrente e recoloque.<br>
+                  4. Reponha o volume com <strong>água sem cloro (48h de descanso)</strong> — <em>nunca troque 100% da água da caixa!</em> — e religue a bomba.
+                </td>
+                <td>Mantém a água cristalina, derruba amônia e garante apetite forte e crescimento acelerado.</td>
+              </tr>
+              <tr>
+                <td><strong>SEMANAL / MENSAL</strong></td>
+                <td>
+                  • <strong>Semanal:</strong> Drene brevemente o registro lateral (25 mm) do Sump se houver resíduo; teste <strong>Amônia Tóxica e pH</strong> (Kit Alcon).<br>
+                  • <strong>Mensal:</strong> Faça a <strong>biometria (10% dos peixes)</strong> para atualizar a ração; abra a carcaça da bomba a cada 1–2 meses para limpar o rotor e inspecionar <strong>eixo cerâmico e coxins</strong> (mantenha 1 kit reserva!).<br>
+                  • <strong>A cada 6 meses:</strong> Troque a espuma do decantador.
+                </td>
+                <td>Prolonga a vida útil da bomba por muitos anos (bombas Sunsun/Sarlo bem cuidadas rodam 7+ anos 24h/dia!).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- CAPÍTULO 9: PRÉ-ABATE & PROTOCOLO DE EMERGÊNCIA                  -->
+      <!-- ================================================================ -->
+      <section id="cap9" class="bg-[var(--card)] border-2 border-[var(--danger)]/50 rounded-xl p-6 space-y-4 text-xs leading-relaxed">
+        <h2 class="text-xl font-bold text-[var(--danger)] border-b border-[var(--card-border)] pb-2">Capítulo 9 — Despesca / Pré-Abate &amp; Emergência na Falta de Energia</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-4 rounded-lg bg-[var(--background)] border border-[var(--card-border)] space-y-1.5">
+            <h3 class="font-bold text-sm text-[var(--primary)]">🎣 Protocolo de Colheita / Abate (5–8 meses)</h3>
+            <ol class="list-decimal pl-5 space-y-1 text-[var(--muted-foreground)]">
+              <li><strong>Jejum obrigatório de 16 horas antes da retirada:</strong> esvazia o trato digestivo, evita que os peixes vomitem e liberem amônia na captura, e garante filé mais limpo e saboroso.</li>
+              <li>Abaixe parcialmente o nível da água da caixa para facilitar a captura sem machucar os peixes (tenha atenção para fechar o registro de reposição depois!).</li>
+              <li>Coloque os peixes em bacia com água limpa caso transporte vivos até o local de preparo.</li>
+            </ol>
+          </div>
+
+          <div class="p-4 rounded-lg bg-[var(--danger)]/10 border border-[var(--danger)]/50 space-y-1.5">
+            <h3 class="font-bold text-sm text-[var(--danger)]">⚡ Emergência: Acabou a Energia Elétrica!</h3>
+            <ol class="list-decimal pl-5 space-y-1 text-[var(--foreground)]">
+              <li><strong>SUSPENDA A RAÇÃO IMEDIATAMENTE</strong> no dia (digerir comida consome muito oxigênio!).</li>
+              <li><strong>Limpe o decantador e faça uma TPA</strong> com água nova sem cloro (derruba amônia na hora).</li>
+              <li><strong>Oxigenação manual:</strong> com um balde pequeno, pegue e despeje água do alto agitando <strong>10 vezes a cada 20 minutos</strong> até a luz voltar.</li>
+              <li><strong>Salva-vidas (tenha em casa!):</strong> Espalhe <strong>Oxigênio em Pó</strong> diretamente na água — dose exata: <strong>7 a 15 g para cada 1.000 L de água</strong>!</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-[var(--card-border)] bg-[var(--card)] mt-8">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--muted-foreground)]">
+      <span>Síntese técnica baseada na playlist <em>"Criação de Tilápias em Casa: Desvendando os Segredos"</em> (Prof. Carlos Alan — Canal Com a Natureza)</span>
+      <a href="https://www.youtube.com/playlist?list=PLvQkI_3RAj4haRdQS62FWhcWZ_DbGfO5n" target="_blank" rel="noopener noreferrer" class="text-[var(--primary)] hover:underline font-semibold">
+        Assistir Playlist Original no YouTube →
+      </a>
+    </div>
+  </footer>
+
+</body>
+</html>
