@@ -41,6 +41,7 @@
       <div class="flex flex-wrap items-center gap-1.5">
         <a href="./index.html" class="px-2.5 py-1 rounded bg-[var(--primary)] text-white font-semibold">Início</a>
         <a href="./documentacao.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition font-medium">Documentação</a>
+        <a href="./plantas/planta_filtro_solar_alvenaria.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Filtro Alvenaria</a>
         <a href="./plantas/planta_aquaponia_6000l.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Aquaponia CHOP2</a>
         <a href="./componentes/bomba_diafragma_agua.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Bomba d'Água</a>
         <a href="./componentes/camara_de_ar.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Câmara de Ar</a>
@@ -81,7 +82,7 @@
         <!-- Quick Stats -->
         <div class="grid grid-cols-2 gap-3 shrink-0 text-center">
           <div class="p-3.5 rounded-xl bg-[var(--background)] border border-[var(--card-border)]">
-            <div class="text-2xl font-extrabold text-[var(--primary)]">8</div>
+            <div class="text-2xl font-extrabold text-[var(--primary)]">9</div>
             <div class="text-xs text-[var(--muted-foreground)]">Páginas Interativas</div>
           </div>
           <div class="p-3.5 rounded-xl bg-[var(--background)] border border-[var(--card-border)]">
@@ -100,12 +101,32 @@
       </div>
     </section>
 
-    <!-- Featured Evolution: Aquaponics -->
+    <!-- Featured Evolution: Masonry Tank Solar Filter + Aquaponics -->
     <section class="space-y-4">
       <div class="flex items-center justify-between">
-        <h2 class="text-lg md:text-xl font-bold">1. Projeto Principal — Aquaponia em Circuito Fechado</h2>
-        <span class="text-xs font-mono text-[var(--success)] font-semibold">2 × 3.000 L + Horta</span>
+        <h2 class="text-lg md:text-xl font-bold">1. Projetos Principais — Filtro Solar p/ Alvenaria &amp; Aquaponia CHOP2</h2>
+        <span class="text-xs font-mono text-[var(--success)] font-semibold">Simulações Interativas</span>
       </div>
+
+      <a href="./plantas/planta_filtro_solar_alvenaria.html" class="block group bg-[var(--card)] border-2 border-[var(--success)]/60 hover:border-[var(--success)] rounded-xl p-5 md:p-6 shadow-sm transition">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="space-y-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded bg-[var(--success)]/15 text-[var(--success)]">NOVO • TANQUE DE ALVENARIA NO SOLO</span>
+              <span class="text-xs font-mono text-[var(--muted-foreground)]">Sem horta • Tampas anti-mosquito</span>
+            </div>
+            <h3 class="text-lg md:text-xl font-bold group-hover:text-[var(--success)] transition">
+              Filtro Solar Duplo (2 Bombonas 100 L Lado a Lado) + Bomba DC na Gaiola
+            </h3>
+            <p class="text-sm text-[var(--muted-foreground)]">
+              Para tanque de alvenaria sem ladrão de fundo: bomba submersa <b>DC 24V Brushless</b> dentro de gaiola malha 10 mm → <b>Bombona 1 (+10 cm em tijolo)</b> decanta grosso → tubo leva superfície ao fundo da <b>Bombona 2</b> (2ª decantação + manta) → retorno por gravidade. Inclui simulação de limpeza dos drenos e modo diurno sem bateria vs. 24h!
+            </p>
+          </div>
+          <span class="shrink-0 inline-flex items-center justify-center px-4 py-2 rounded-lg bg-[var(--success)] text-white text-sm font-semibold group-hover:translate-x-0.5 transition">
+            Abrir Planta →
+          </span>
+        </div>
+      </a>
 
       <a href="./plantas/planta_aquaponia_6000l.html" class="block group bg-[var(--card)] border-2 border-[var(--primary)]/50 hover:border-[var(--primary)] rounded-xl p-5 md:p-6 shadow-sm transition">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">

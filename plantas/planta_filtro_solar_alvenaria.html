@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planta Animada — Filtro Solar Duplo (2×100 L) para Tanque de Alvenaria</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --background: #f8fafc;
+      --card: #ffffff;
+      --card-border: #cbd5e1;
+      --foreground: #0f172a;
+      --muted-foreground: #475569;
+      --primary: #0284c7;
+      --success: #059669;
+      --warning: #d97706;
+      --danger: #dc2626;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #0f172a;
+        --card: #1e293b;
+        --card-border: #334155;
+        --foreground: #f1f5f9;
+        --muted-foreground: #94a3b8;
+        --primary: #38bdf8;
+        --success: #34d399;
+        --warning: #fbbf24;
+        --danger: #f87171;
+      }
+    }
+    .mode-btn.active {
+      background-color: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid var(--card-border); padding: 0.5rem 0.7rem; text-align: left; }
+    th { background: var(--background); font-weight: 700; }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased min-h-screen p-3 md:p-6 select-none">
+
+  <!-- Unified Navigation Bar -->
+  <nav class="max-w-6xl mx-auto mb-4 bg-[var(--card)] border border-[var(--card-border)] rounded-xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs shadow-sm">
+    <a href="../index.html" class="font-bold text-[var(--primary)]">🌊 Aquaponia &amp; Aeradores</a>
+    <div class="flex flex-wrap items-center gap-1.5">
+      <a href="../index.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Início</a>
+      <a href="../documentacao.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Documentação</a>
+      <a href="./planta_filtro_solar_alvenaria.html" class="px-2 py-1 rounded bg-[var(--primary)] text-white font-semibold">Filtro Alvenaria (2×100 L)</a>
+      <a href="./planta_aquaponia_6000l.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Aquaponia CHOP2</a>
+      <a href="../componentes/bomba_diafragma_agua.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Bomba d'Água</a>
+      <a href="../componentes/camara_de_ar.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Câmara de Ar</a>
+      <a href="../componentes/rotor_savonius.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Rotor Savonius</a>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto space-y-6">
+    <section class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-4 md:p-6 shadow-sm space-y-4">
+
+      <!-- Header + Mode Switcher -->
+      <div class="flex flex-wrap items-start justify-between gap-3 pb-3 border-b border-[var(--card-border)]">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-[var(--success)]">Tanque de Alvenaria no Solo • Sem Horta</span>
+          <h1 class="font-bold text-base md:text-lg text-[var(--foreground)]">Filtro Solar Duplo (2 Bombonas de 100 L Lado a Lado) + Bomba Submersa Isolada</h1>
+          <p class="text-xs text-[var(--muted-foreground)]">Bombona 1 (+10 cm em tijolo) decanta grosso → tubo leva superfície ao fundo da Bombona 2 → 2ª decantação + manta → água limpa cai no tanque • Tampas fechadas anti-mosquito c/ respiro telado</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-1.5 text-xs">
+          <button data-mode="diurno" class="mode-btn active px-3 py-1.5 rounded border border-[var(--card-border)] font-semibold cursor-pointer">
+            1. Direto no Sol (Sem Bateria)
+          </button>
+          <button data-mode="24h" class="mode-btn px-3 py-1.5 rounded border border-[var(--card-border)] bg-[var(--background)] font-semibold cursor-pointer">
+            2. Contínuo 24h (Com Bateria)
+          </button>
+        </div>
+      </div>
+
+      <!-- Controls + Live Telemetry -->
+      <div class="flex flex-wrap items-center justify-between gap-3 bg-[var(--background)] border border-[var(--card-border)] rounded-lg p-3 text-xs">
+        <div class="flex flex-wrap items-center gap-4">
+          <label class="flex items-center gap-2 text-[var(--muted-foreground)]">
+            <span class="font-semibold">Sol / Potência:</span>
+            <input id="sunSlider" type="range" min="0" max="100" value="80" step="5" class="w-28 accent-[var(--warning)]" />
+            <span id="sunVal" class="font-mono font-bold text-[var(--foreground)] w-10">80%</span>
+          </label>
+          <button id="drainBtn" class="px-2.5 py-1 rounded border border-[var(--danger)]/50 bg-[var(--card)] text-[var(--danger)] font-semibold cursor-pointer hover:opacity-85">
+            Abrir Drenos (Limpeza)
+          </button>
+          <button id="toggleBtn" class="px-2.5 py-1 rounded border border-[var(--card-border)] bg-[var(--card)] font-semibold cursor-pointer hover:opacity-80">
+            Pausar
+          </button>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 font-mono">
+          <span id="flowBadge" class="px-2.5 py-1 rounded bg-[var(--card)] border border-[var(--card-border)] text-[var(--success)] font-bold">
+            Vazão lenta: ~800 L/h (~15 W)
+          </span>
+          <span id="statusBadge" class="px-2.5 py-1 rounded bg-[var(--card)] border border-[var(--card-border)] text-[var(--primary)] font-semibold">
+            ~5.600 L filtrados / dia (7h de sol)
+          </span>
+        </div>
+      </div>
+
+      <!-- MAIN ANIMATED SVG -->
+      <div class="w-full overflow-x-auto">
+        <svg viewBox="0 0 980 515" class="w-full min-w-[780px] h-auto block" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="waterDirty" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.34" />
+              <stop offset="100%" stop-color="#0369a1" stop-opacity="0.64" />
+            </linearGradient>
+            <linearGradient id="waterClean" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#34d399" stop-opacity="0.28" />
+              <stop offset="100%" stop-color="#0284c7" stop-opacity="0.52" />
+            </linearGradient>
+            <linearGradient id="sludgeDark" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#a16207" stop-opacity="0.35" />
+              <stop offset="100%" stop-color="#713f12" stop-opacity="0.88" />
+            </linearGradient>
+            <pattern id="brickPattern" width="22" height="10" patternUnits="userSpaceOnUse">
+              <rect width="22" height="10" fill="#b45309" stroke="#78350f" stroke-width="1" />
+            </pattern>
+            <pattern id="masonryWall" width="28" height="14" patternUnits="userSpaceOnUse">
+              <rect width="28" height="14" fill="#64748b" fill-opacity="0.4" stroke="#475569" stroke-width="1" />
+            </pattern>
+            <pattern id="cageMesh" width="8" height="8" patternUnits="userSpaceOnUse">
+              <path d="M 8 0 L 0 0 0 8" fill="none" stroke="#94a3b8" stroke-width="1.2" />
+            </pattern>
+            <marker id="arrBlue" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#0284c7" />
+            </marker>
+            <marker id="arrGreen" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#059669" />
+            </marker>
+          </defs>
+
+          <!-- =============================================================== -->
+          <!-- GROUND LEVEL LINE & GRAVITY HEIGHT RULER                        -->
+          <!-- =============================================================== -->
+          <rect x="14" y="274" width="952" height="10" fill="#94a3b8" fill-opacity="0.35" />
+          <line x1="14" y1="274" x2="966" y2="274" stroke="var(--foreground)" stroke-width="2" />
+          <text x="20" y="268" font-size="9" font-weight="700" fill="var(--muted-foreground)">Nível do Solo (0 cm) — Bombonas apoiadas na borda</text>
+
+          <!-- Gravity ruler on right -->
+          <g stroke="var(--muted-foreground)" stroke-opacity="0.32" stroke-dasharray="3 3" font-size="8.5" font-weight="700">
+            <line x1="250" y1="90" x2="935" y2="90" />
+            <text x="970" y="93" text-anchor="end" fill="#0284c7" stroke="none">+80 cm</text>
+            <line x1="510" y1="112" x2="935" y2="112" />
+            <text x="970" y="115" text-anchor="end" fill="#059669" stroke="none">+70 cm</text>
+            <line x1="14" y1="274" x2="935" y2="274" />
+            <text x="970" y="277" text-anchor="end" fill="var(--muted-foreground)" stroke="none">0 cm (solo)</text>
+          </g>
+
+          <!-- =============================================================== -->
+          <!-- 1. SOLAR PANEL + CONTROLLER (+ OPTIONAL BATTERY)                -->
+          <!-- =============================================================== -->
+          <!-- Sun icon -->
+          <g id="sunIcon" transform="translate(55,44)">
+            <circle cx="0" cy="0" r="15" fill="#facc15" stroke="#d97706" stroke-width="1.6" />
+            <g stroke="#f59e0b" stroke-width="2" stroke-linecap="round">
+              <line x1="0" y1="-24" x2="0" y2="-19" /><line x1="0" y1="19" x2="0" y2="24" />
+              <line x1="-24" y1="0" x2="-19" y2="0" /><line x1="19" y1="0" x2="24" y2="0" />
+              <line x1="-17" y1="-17" x2="-13" y2="-13" /><line x1="13" y1="13" x2="17" y2="17" />
+              <line x1="17" y1="-17" x2="13" y2="-13" /><line x1="-13" y1="13" x2="-17" y2="17" />
+            </g>
+          </g>
+
+          <!-- Solar Panel -->
+          <polygon points="30,104 126,90 140,144 44,158" fill="#1e3a8a" stroke="#60a5fa" stroke-width="2" />
+          <line x1="62" y1="100" x2="76" y2="154" stroke="#60a5fa" stroke-width="1" stroke-opacity="0.65" />
+          <line x1="94" y1="95" x2="108" y2="149" stroke="#60a5fa" stroke-width="1" stroke-opacity="0.65" />
+          <line x1="37" y1="131" x2="133" y2="117" stroke="#60a5fa" stroke-width="1" stroke-opacity="0.65" />
+          <text id="panelLabel" x="85" y="174" text-anchor="middle" font-size="9.2" font-weight="700" fill="var(--primary)">Painel Solar 100 W</text>
+
+          <!-- Speed Controller / DC-DC Reg -->
+          <rect x="40" y="186" width="90" height="34" rx="4" fill="var(--card)" stroke="var(--foreground)" stroke-width="1.6" />
+          <text id="ctrlLabel1" x="85" y="201" text-anchor="middle" font-size="8.2" font-weight="700" fill="var(--foreground)">Regulador DC +</text>
+          <text id="ctrlLabel2" x="85" y="213" text-anchor="middle" font-size="7.8" fill="var(--muted-foreground)">Controle Velocidade</text>
+
+          <!-- Optional Battery (Visible ONLY in 24h mode) -->
+          <g id="batteryGroup" opacity="0">
+            <rect x="144" y="186" width="52" height="34" rx="4" fill="#334155" stroke="#fbbf24" stroke-width="1.6" />
+            <text x="170" y="201" text-anchor="middle" font-size="8" font-weight="700" fill="#fbbf24">12V Bat</text>
+            <text x="170" y="213" text-anchor="middle" font-size="7" fill="#fde68a">60–100Ah</text>
+            <line x1="130" y1="203" x2="144" y2="203" stroke="#fbbf24" stroke-width="2" />
+          </g>
+
+          <!-- Electrical Cable going down to Submerged Pump inside Tank -->
+          <path d="M 85,220 L 85,296 L 176,296 L 176,412" fill="none" stroke="#f59e0b" stroke-width="2.4" stroke-dasharray="5 3" />
+          <circle id="elecPulse" cx="85" cy="240" r="3.5" fill="#facc15" />
+
+          <!-- =============================================================== -->
+          <!-- 2. BOMBONA 1 (100 L — DECANTADOR DE GROSSO, +10 cm EM TIJOLO)   -->
+          <!-- =============================================================== -->
+          <!-- 10 cm Brick Base under Drum 1 -->
+          <rect x="256" y="252" width="144" height="22" fill="url(#brickPattern)" stroke="#78350f" stroke-width="1.6" />
+          <text x="328" y="266" text-anchor="middle" font-size="8" font-weight="800" fill="#fef3c7">1 fileira de tijolos (+10 cm)</text>
+
+          <!-- Drum 1 Body (100 L) -->
+          <rect x="260" y="64" width="136" height="188" rx="10" fill="var(--card)" stroke="var(--foreground)" stroke-width="2.6" />
+          <!-- Water inside Drum 1 (level y=90 -> +80 cm) -->
+          <rect id="drum1Water" x="263" y="90" width="130" height="160" rx="6" fill="url(#waterDirty)" />
+          <!-- Heavy Sludge Layer at Bottom of Drum 1 -->
+          <path id="drum1Sludge" d="M 263,218 Q 328,208 393,218 L 393,246 Q 393,250 388,250 L 268,250 Q 263,250 263,246 Z" fill="url(#sludgeDark)" />
+
+          <!-- Sealed Mosquito-Proof Lid + Screened Vent (Drum 1) -->
+          <rect x="254" y="54" width="148" height="13" rx="3" fill="#1e293b" stroke="var(--foreground)" stroke-width="1.8" />
+          <!-- Air Vent with Mosquito Mesh -->
+          <rect x="318" y="40" width="20" height="15" rx="2" fill="#fef08a" stroke="var(--foreground)" stroke-width="1.4" />
+          <line x1="318" y1="45" x2="338" y2="45" stroke="#475569" stroke-width="1" />
+          <line x1="323" y1="40" x2="323" y2="55" stroke="#475569" stroke-width="1" />
+          <line x1="333" y1="40" x2="333" y2="55" stroke="#475569" stroke-width="1" />
+          <text x="328" y="25" text-anchor="middle" font-size="8.6" font-weight="700" fill="var(--foreground)">Tampa vedada + Respiro c/ tela</text>
+          <text x="328" y="36" text-anchor="middle" font-size="7.6" fill="var(--success)">(Zero mosquito • Evita vácuo!)</text>
+
+          <text x="328" y="82" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--foreground)">BOMBONA 1 (100 L)</text>
+          <text x="328" y="138" text-anchor="middle" font-size="8.5" font-weight="700" fill="var(--foreground)">1ª Decantação</text>
+          <text x="328" y="150" text-anchor="middle" font-size="8" fill="var(--muted-foreground)">(Retém o GROSSO)</text>
+          <text x="328" y="241" text-anchor="middle" font-size="7.8" font-weight="700" fill="#fef3c7">Lodo Pesado</text>
+
+          <!-- Drain Valve Drum 1 -->
+          <path d="M 260,236 L 222,236 L 222,250" fill="none" stroke="#713f12" stroke-width="5.5" stroke-linejoin="round" />
+          <circle id="valve1" cx="236" cy="236" r="5.5" fill="#dc2626" stroke="var(--foreground)" stroke-width="1.3" />
+          <text x="216" y="232" text-anchor="end" font-size="7.8" font-weight="700" fill="#dc2626">Dreno 1</text>
+          <path id="drainStream1" d="M 222,250 L 222,272" stroke="#78350f" stroke-width="5" stroke-dasharray="4 3" opacity="0" />
+
+          <!-- =============================================================== -->
+          <!-- 3. INTERCONNECTING PIPE: SURFACE OF DRUM 1 -> BOTTOM OF DRUM 2! -->
+          <!-- =============================================================== -->
+          <!-- Leaves surface of Drum 1 (y=94 / +80cm), enters Drum 2 and DROPS ALL THE WAY TO BOTTOM (y=248)! -->
+          <path d="M 396,94 L 516,94 L 516,246" fill="none" stroke="#64748b" stroke-width="10" stroke-linejoin="round" />
+          <path d="M 396,94 L 516,94 L 516,246" fill="none" stroke="#0ea5e9" stroke-width="4.5" stroke-linejoin="round" />
+          <text x="444" y="84" text-anchor="middle" font-size="8.4" font-weight="700" fill="#0284c7">1º Ladrão (+80 cm)</text>
+          <text x="444" y="108" text-anchor="middle" font-size="7.5" fill="var(--muted-foreground)">Superfície 1 → Fundo 2</text>
+
+          <!-- =============================================================== -->
+          <!-- 4. BOMBONA 2 (100 L — 2ª DECANTAÇÃO + MANTA, NO NÍVEL 0 cm)     -->
+          <!-- =============================================================== -->
+          <!-- Drum 2 Body sitting directly on ground (10 cm lower than Drum 1!) -->
+          <rect x="492" y="86" width="136" height="188" rx="10" fill="var(--card)" stroke="var(--foreground)" stroke-width="2.6" />
+          <!-- Water inside Drum 2 (level y=112 -> +70 cm) -->
+          <rect id="drum2Water" x="495" y="112" width="130" height="160" rx="6" fill="url(#waterClean)" />
+          <!-- Fine Sludge Layer at Bottom of Drum 2 -->
+          <path id="drum2Sludge" d="M 495,252 Q 560,246 625,252 L 625,268 Q 625,272 620,272 L 500,272 Q 495,272 495,268 Z" fill="url(#sludgeDark)" opacity="0.65" />
+
+          <!-- Re-draw Internal Drop Pipe inside Drum 2 so it is visible ON TOP of water! -->
+          <path d="M 492,94 L 516,94 L 516,246" fill="none" stroke="#64748b" stroke-width="9" stroke-linejoin="round" />
+          <path d="M 492,94 L 516,94 L 516,246" fill="none" stroke="#0ea5e9" stroke-width="4" stroke-linejoin="round" />
+
+          <!-- Middle Mechanical Polishing Stage (Escovas / Manta Acrílica / Sombrite) -->
+          <rect x="528" y="156" width="94" height="28" rx="4" fill="#f8fafc" fill-opacity="0.82" stroke="#059669" stroke-width="1.8" stroke-dasharray="4 2" />
+          <text x="575" y="168" text-anchor="middle" font-size="7.6" font-weight="800" fill="#065f46">Manta / Escovas</text>
+          <text x="575" y="179" text-anchor="middle" font-size="6.8" fill="#047857">(retém pó fino)</text>
+
+          <!-- Upward slow-flow arrows inside Drum 2 -->
+          <path d="M 575,238 L 575,192" fill="none" stroke="#059669" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#arrGreen)" />
+
+          <!-- Sealed Mosquito-Proof Lid + Screened Vent (Drum 2) -->
+          <rect x="486" y="76" width="148" height="13" rx="3" fill="#1e293b" stroke="var(--foreground)" stroke-width="1.8" />
+          <rect x="550" y="62" width="20" height="15" rx="2" fill="#fef08a" stroke="var(--foreground)" stroke-width="1.4" />
+          <line x1="550" y1="67" x2="570" y2="67" stroke="#475569" stroke-width="1" />
+          <line x1="555" y1="62" x2="555" y2="77" stroke="#475569" stroke-width="1" />
+          <line x1="565" y1="62" x2="565" y2="77" stroke="#475569" stroke-width="1" />
+          <text x="560" y="54" text-anchor="middle" font-size="8.2" font-weight="700" fill="var(--foreground)">Tampa vedada + Respiro telado</text>
+
+          <text x="560" y="104" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--foreground)">BOMBONA 2 (100 L)</text>
+          <text x="575" y="218" text-anchor="middle" font-size="7.8" font-weight="700" fill="var(--foreground)">Sobe devagar ↑</text>
+          <text x="560" y="266" text-anchor="middle" font-size="7.5" font-weight="700" fill="#fef3c7">Lodo Fino</text>
+
+          <!-- Drain Valve Drum 2 -->
+          <path d="M 492,258 L 456,258 L 456,272" fill="none" stroke="#713f12" stroke-width="5.5" stroke-linejoin="round" />
+          <circle id="valve2" cx="470" cy="258" r="5.5" fill="#dc2626" stroke="var(--foreground)" stroke-width="1.3" />
+          <text x="450" y="254" text-anchor="end" font-size="7.8" font-weight="700" fill="#dc2626">Dreno 2</text>
+          <path id="drainStream2" d="M 456,272 L 456,288" stroke="#78350f" stroke-width="5" stroke-dasharray="4 3" opacity="0" />
+
+          <!-- =============================================================== -->
+          <!-- 5. SECOND OVERFLOW (SURFACE OF DRUM 2 -> BACK TO MASONRY TANK)  -->
+          <!-- =============================================================== -->
+          <path d="M 628,116 L 788,116 L 788,298" fill="none" stroke="#059669" stroke-width="6.5" stroke-linejoin="round" marker-end="url(#arrGreen)" />
+          <text x="716" y="106" text-anchor="middle" font-size="8.8" font-weight="700" fill="#059669">2º Ladrão (+70 cm) → Água quase limpa!</text>
+          <text x="802" y="206" font-size="8.4" font-weight="600" fill="#059669">Queda d'água</text>
+          <text x="802" y="218" font-size="8" fill="var(--muted-foreground)">oxigena o tanque</text>
+          <text x="802" y="230" font-size="8" fill="var(--muted-foreground)">e empurra sujeira</text>
+          <text x="802" y="242" font-size="8" fill="var(--muted-foreground)">para a gaiola ←</text>
+
+          <!-- =============================================================== -->
+          <!-- 6. MASONRY TANK AT GROUND LEVEL (TANQUE DE ALVENARIA NO SOLO)   -->
+          <!-- =============================================================== -->
+          <!-- Thick masonry concrete/brick walls -->
+          <rect x="92" y="284" width="22" height="214" fill="url(#masonryWall)" stroke="var(--foreground)" stroke-width="2" />
+          <rect x="854" y="284" width="22" height="214" fill="url(#masonryWall)" stroke="var(--foreground)" stroke-width="2" />
+          <rect x="92" y="476" width="784" height="22" fill="url(#masonryWall)" stroke="var(--foreground)" stroke-width="2" />
+
+          <!-- Tank Water -->
+          <rect x="114" y="308" width="740" height="168" fill="url(#waterDirty)" />
+          <path d="M 114,308 Q 206,303 298,308 T 482,308 T 666,308 T 854,308" fill="none" stroke="#0284c7" stroke-width="2" />
+          <text x="484" y="330" text-anchor="middle" font-size="12" font-weight="800" fill="var(--foreground)">TANQUE DE ALVENARIA (Nível do Solo)</text>
+          <text x="484" y="345" text-anchor="middle" font-size="8.8" fill="var(--muted-foreground)">Corrente suave no fundo (←) empurra as fezes até a gaiola da bomba</text>
+
+          <!-- Subtle bottom sweep arrow from right waterfall toward left pump cage -->
+          <path d="M 745,456 L 315,456" fill="none" stroke="#38bdf8" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#arrBlue)" opacity="0.6" />
+
+          <!-- Fish swimming safely outside the pump cage -->
+          <g id="fish1">
+            <ellipse cx="420" cy="382" rx="14" ry="6.5" fill="#f97316" />
+            <polygon points="406,382 397,376 397,388" fill="#ea580c" />
+            <circle cx="428" cy="380" r="1.6" fill="#0f172a" />
+          </g>
+          <g id="fish2">
+            <ellipse cx="600" cy="405" rx="13" ry="6" fill="#fb923c" />
+            <polygon points="613,405 621,399 621,411" fill="#ea580c" />
+            <circle cx="593" cy="403" r="1.5" fill="#0f172a" />
+          </g>
+          <g id="fish3">
+            <ellipse cx="515" cy="364" rx="10" ry="4.5" fill="#f59e0b" />
+            <polygon points="505,364 498,360 498,368" fill="#d97706" />
+            <circle cx="521" cy="363" r="1.2" fill="#0f172a" />
+          </g>
+
+          <!-- PROTECTIVE CAGE (MALHA 10 mm) ISOLATING PUMP FROM FISH! -->
+          <rect x="132" y="388" width="108" height="86" rx="8" fill="url(#cageMesh)" stroke="#f8fafc" stroke-width="2.2" />
+          <!-- Submerged DC 24V Brushless Solids Pump inside cage -->
+          <rect x="158" y="414" width="56" height="44" rx="6" fill="#0f172a" stroke="#38bdf8" stroke-width="2" />
+          <text x="186" y="434" text-anchor="middle" font-size="8.5" font-weight="800" fill="#38bdf8">DC 24V</text>
+          <text x="186" y="446" text-anchor="middle" font-size="7.2" fill="#e0f2fe">Brushless</text>
+
+          <text x="248" y="406" font-size="8.8" font-weight="700" fill="#fef08a">Gaiola de Proteção (malha 10 mm)</text>
+          <text x="248" y="418" font-size="8" fill="#e0f2fe">• Isola 100% os peixes da bomba</text>
+          <text x="248" y="430" font-size="8" fill="#e0f2fe">• Deixa fezes e restos passarem livres</text>
+
+          <!-- PUMP DISCHARGE HOSE GOING UP TO DRUM 1 (only ~85 cm lift!) -->
+          <path d="M 186,414 L 186,184 L 260,184" fill="none" stroke="#0284c7" stroke-width="5.5" stroke-linejoin="round" marker-end="url(#arrBlue)" />
+          <text x="194" y="176" font-size="8" font-weight="700" fill="#0284c7">Sobe só ~85 cm!</text>
+
+          <!-- Animated Particles Groups -->
+          <g id="poopBottomGroup" fill="#78350f"></g>
+          <g id="flowDotsGroup"></g>
+          <g id="solids1Group" fill="#78350f"></g>
+          <g id="solids2Group" fill="#a16207"></g>
+          <g id="bubblesGroup" fill="#e0f2fe" stroke="#0284c7" stroke-width="0.8"></g>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Engineering Notes + Full Bill of Materials -->
+    <section class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-5 md:p-6 shadow-sm space-y-4 text-xs">
+      <h2 class="text-lg font-bold border-b border-[var(--card-border)] pb-2">Lista Completa de Materiais — Filtro Solar Duplo (2×100 L) para Alvenaria</h2>
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr><th>Item</th><th>Qtd.</th><th>Especificação Recomendada</th><th>Função / Observação</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Bomba Submersa Solar (Sólidos)</strong></td>
+              <td>1 un.</td>
+              <td><strong>Bomba Submersa de Lago DC 24V Brushless</strong> c/ controlador de velocidade (ex.: <em>Jebao / Sunsun / Oceantech DC 20–30 W</em>, passagem de sólidos 6–8 mm)</td>
+              <td>Regule em baixa velocidade (~10–15 W / ~800 L/h): processo lento que economiza sol e tritura menos as fezes. <strong>Evite bomba de porão com escovas!</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Gaiola de Isolamento dos Peixes</strong></td>
+              <td>1 un.</td>
+              <td>Cesto plástico rígido / caixa vazada ou armação de PVC revestida com <strong>tela plástica malha 8 a 12 mm</strong> (com peso/tijolo p/ não boiar)</td>
+              <td>Mantém a bomba dentro da água isolada dos peixes, mas com furos largos para as fezes entrarem sem entupir.</td>
+            </tr>
+            <tr>
+              <td><strong>Bombonas Fechadas</strong></td>
+              <td>2 un.</td>
+              <td><strong>Bombonas PEAD 100 L com tampa removível de rosca ou aro metálico</strong></td>
+              <td>Bombona 1 sobre 1 fileira de tijolos (+10 cm); Bombona 2 direto no solo. Vedação total contra mosquitos.</td>
+            </tr>
+            <tr>
+              <td><strong>Respiros Anti-Mosquito</strong></td>
+              <td>2 conj.</td>
+              <td>2 furos Ø 20 mm nas tampas + pedaços de <strong>tela mosquiteira fina (voil/nylon)</strong> presos com abraçadeira ou cola</td>
+              <td>Impede entrada de mosquitos e evita vácuo ao abrir os drenos ou acúmulo de ar no topo.</td>
+            </tr>
+            <tr>
+              <td><strong>Tubulação e Flanges</strong></td>
+              <td>1 kit</td>
+              <td>3× Flanges PVC 50 mm + 2× Registros de esfera 50 mm (drenos) + ~2 m tubo PVC 50 mm (ladrões + tubo descida até o fundo da Bombona 2) + mangueira 25 mm (bomba → Bombona 1)</td>
+              <td>Tubo de 50 mm garante escoamento livre por gravidade com apenas 10 cm de desnível sem nunca transbordar.</td>
+            </tr>
+            <tr>
+              <td><strong>Mídia Filtrante Fina (Bombona 2)</strong></td>
+              <td>1 conj.</td>
+              <td>Grade plástica apoiada no meio da Bombona 2 + <strong>escovas filtrantes</strong> ou <strong>manta acrílica (perlon) / tela sombrite dobrada</strong></td>
+              <td>Retém a poeira fina que a bomba eventualmente quebrou, entregando água quase cristalina ao tanque.</td>
+            </tr>
+            <tr>
+              <td><strong>Sistema Solar (Diurno vs. 24h)</strong></td>
+              <td>1 kit</td>
+              <td><strong>Diurno (sem bateria):</strong> Painel 100 W + conversor DC-DC Step-Down 24V (~R$ 350–450).<br><strong>Contínuo 24h:</strong> Painel 150 W + Controlador 20A + Bateria 12V 60–100 Ah + Step-Up 12→24V.</td>
+              <td>No modo diurno, filtra ~6.000 L/dia sem gastar com bateria. No modo 24h, também oxigena a madrugada inteira!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const modeBtns = document.querySelectorAll('.mode-btn');
+    const sunSlider = document.getElementById('sunSlider');
+    const sunVal = document.getElementById('sunVal');
+    const drainBtn = document.getElementById('drainBtn');
+    const toggleBtn = document.getElementById('toggleBtn');
+    const flowBadge = document.getElementById('flowBadge');
+    const statusBadge = document.getElementById('statusBadge');
+
+    const panelLabel = document.getElementById('panelLabel');
+    const batteryGroup = document.getElementById('batteryGroup');
+    const sunIcon = document.getElementById('sunIcon');
+    const valve1 = document.getElementById('valve1');
+    const valve2 = document.getElementById('valve2');
+    const drainStream1 = document.getElementById('drainStream1');
+    const drainStream2 = document.getElementById('drainStream2');
+    const drum1Sludge = document.getElementById('drum1Sludge');
+    const drum2Sludge = document.getElementById('drum2Sludge');
+    const elecPulse = document.getElementById('elecPulse');
+
+    const fish1 = document.getElementById('fish1');
+    const fish2 = document.getElementById('fish2');
+    const fish3 = document.getElementById('fish3');
+
+    const poopBottomGroup = document.getElementById('poopBottomGroup');
+    const flowDotsGroup = document.getElementById('flowDotsGroup');
+    const solids1Group = document.getElementById('solids1Group');
+    const solids2Group = document.getElementById('solids2Group');
+    const bubblesGroup = document.getElementById('bubblesGroup');
+
+    function createDot(parent, color, r = 3.4) {
+      const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      c.setAttribute('r', r);
+      c.setAttribute('fill', color);
+      parent.appendChild(c);
+      return c;
+    }
+
+    function pointOnPath(pts, t) {
+      let total = 0;
+      const segs = [];
+      for (let i = 0; i < pts.length - 1; i++) {
+        const dx = pts[i + 1][0] - pts[i][0];
+        const dy = pts[i + 1][1] - pts[i][1];
+        const len = Math.hypot(dx, dy);
+        segs.push({ x1: pts[i][0], y1: pts[i][1], dx, dy, len });
+        total += len;
+      }
+      let dist = (t % 1) * total;
+      for (const s of segs) {
+        if (dist <= s.len) {
+          const f = dist / s.len;
+          return [s.x1 + s.dx * f, s.y1 + s.dy * f];
+        }
+        dist -= s.len;
+      }
+      return pts[pts.length - 1];
+    }
+
+    const pathPumpUp = [[186, 412], [186, 184], [260, 184]];
+    const pathDrum1To2 = [[396, 94], [516, 94], [516, 246]];
+    const pathDrum2Out = [[628, 116], [788, 116], [788, 306]];
+    const pathCable = [[85, 220], [85, 296], [176, 296], [176, 412]];
+
+    const upDots = Array.from({ length: 5 }, (_, i) => ({ el: createDot(flowDotsGroup, '#b45309', 3.6), t: i / 5 }));
+    const linkDots = Array.from({ length: 4 }, (_, i) => ({ el: createDot(flowDotsGroup, '#38bdf8', 3.4), t: i / 4 }));
+    const outDots = Array.from({ length: 5 }, (_, i) => ({ el: createDot(flowDotsGroup, '#34d399', 3.5), t: i / 5 }));
+
+    // Bottom poop particles drifting toward left pump cage
+    const bottomPoop = Array.from({ length: 10 }, () => ({
+      el: createDot(poopBottomGroup, '#78350f', 2.4),
+      x: 245 + Math.random() * 520,
+      y: 460 + Math.random() * 11,
+      speed: 14 + Math.random() * 12
+    }));
+
+    // Settling solids inside Drum 1 & Drum 2
+    const solids1 = Array.from({ length: 8 }, () => ({
+      el: createDot(solids1Group, '#78350f', 2.2),
+      x: 274 + Math.random() * 108,
+      y: 130 + Math.random() * 90,
+      speed: 14 + Math.random() * 12
+    }));
+    const solids2 = Array.from({ length: 6 }, () => ({
+      el: createDot(solids2Group, '#a16207', 1.7),
+      x: 530 + Math.random() * 84,
+      y: 192 + Math.random() * 58,
+      speed: 8 + Math.random() * 8
+    }));
+
+    // Waterfall bubbles at right side of masonry tank
+    const bubbles = Array.from({ length: 8 }, () => ({
+      el: createDot(bubblesGroup, '#e0f2fe', 2.2),
+      t: Math.random(),
+      offset: (Math.random() - 0.5) * 20
+    }));
+
+    let mode = 'diurno'; // 'diurno' | '24h'
+    let draining = false;
+    let running = true;
+    let cableT = 0;
+    let lastTime = performance.now();
+
+    function applyMode() {
+      modeBtns.forEach(b => {
+        const active = b.dataset.mode === mode;
+        b.classList.toggle('active', active);
+        if (!active) b.classList.add('bg-[var(--background)]');
+        else b.classList.remove('bg-[var(--background)]');
+      });
+      if (mode === 'diurno') {
+        panelLabel.textContent = 'Painel Solar 100 W';
+        batteryGroup.setAttribute('opacity', '0');
+      } else {
+        panelLabel.textContent = 'Painel Solar 150 W';
+        batteryGroup.setAttribute('opacity', '1');
+      }
+      updateTelemetry();
+    }
+
+    function getFlowLph() {
+      const sun = +sunSlider.value;
+      if (mode === '24h') {
+        return 850; // steady 24h via battery
+      }
+      if (sun < 15) return 0; // too cloudy / night
+      return Math.round(sun * 10); // 150 to 1,000 L/h slow filtration
+    }
+
+    function updateTelemetry() {
+      const sun = +sunSlider.value;
+      sunVal.textContent = `${sun}%`;
+      sunIcon.setAttribute('opacity', Math.max(0.18, sun / 100).toFixed(2));
+      const flow = getFlowLph();
+
+      if (draining) {
+        flowBadge.textContent = 'LIMPEZA: Drenos abertos (lodo saindo p/ jardim)';
+        flowBadge.style.color = 'var(--danger)';
+        statusBadge.textContent = 'Respiros telados deixam ar entrar sem vácuo!';
+        statusBadge.style.color = 'var(--warning)';
+        return;
+      }
+
+      if (flow === 0) {
+        flowBadge.textContent = 'Noite / Nublado: 0 L/h (Bomba em repouso)';
+        flowBadge.style.color = 'var(--warning)';
+        statusBadge.textContent = 'Liga sozinha ao nascer do sol (zero bateria)';
+        statusBadge.style.color = 'var(--muted-foreground)';
+      } else {
+        const watts = Math.max(6, Math.round(flow * 0.018));
+        const dailyL = mode === '24h' ? flow * 24 : flow * 7;
+        flowBadge.textContent = `Vazão lenta: ~${flow.toLocaleString('pt-BR')} L/h (~${watts} W)`;
+        flowBadge.style.color = 'var(--success)';
+        statusBadge.textContent = mode === '24h'
+          ? `~${dailyL.toLocaleString('pt-BR')} L/dia (24h contínuo)`
+          : `~${dailyL.toLocaleString('pt-BR')} L/dia (~7h de sol)`;
+        statusBadge.style.color = 'var(--primary)';
+      }
+    }
+
+    modeBtns.forEach(b => b.addEventListener('click', () => { mode = b.dataset.mode; applyMode(); }));
+    sunSlider.addEventListener('input', updateTelemetry);
+    toggleBtn.addEventListener('click', () => {
+      running = !running;
+      toggleBtn.textContent = running ? 'Pausar' : 'Continuar';
+    });
+    drainBtn.addEventListener('click', () => {
+      draining = !draining;
+      drainBtn.textContent = draining ? 'Fechar Drenos' : 'Abrir Drenos (Limpeza)';
+      valve1.setAttribute('fill', draining ? '#22c55e' : '#dc2626');
+      valve2.setAttribute('fill', draining ? '#22c55e' : '#dc2626');
+      drainStream1.setAttribute('opacity', draining ? '0.95' : '0');
+      drainStream2.setAttribute('opacity', draining ? '0.95' : '0');
+      drum1Sludge.setAttribute('opacity', draining ? '0.25' : '1');
+      drum2Sludge.setAttribute('opacity', draining ? '0.15' : '0.65');
+      updateTelemetry();
+    });
+
+    function animate(now) {
+      const dt = Math.min((now - lastTime) / 1000, 0.05);
+      lastTime = now;
+
+      if (running) {
+        const flow = draining ? 0 : getFlowLph();
+        const speed = flow > 0 ? (0.14 + (flow / 1200) * 0.36) : 0;
+
+        // Cable electrical pulse
+        if (flow > 0) {
+          cableT = (cableT + 0.7 * dt) % 1;
+          const [ex, ey] = pointOnPath(pathCable, cableT);
+          elecPulse.setAttribute('cx', ex.toFixed(1));
+          elecPulse.setAttribute('cy', ey.toFixed(1));
+          elecPulse.setAttribute('opacity', '1');
+        } else {
+          elecPulse.setAttribute('opacity', '0');
+        }
+
+        const moveDots = (dots, path, mult = 1) => {
+          dots.forEach(d => {
+            if (speed > 0) {
+              d.t = (d.t + speed * mult * dt) % 1;
+              const [x, y] = pointOnPath(path, d.t);
+              d.el.setAttribute('cx', x.toFixed(1));
+              d.el.setAttribute('cy', y.toFixed(1));
+              d.el.setAttribute('opacity', '0.95');
+            } else {
+              d.el.setAttribute('opacity', '0');
+            }
+          });
+        };
+
+        moveDots(upDots, pathPumpUp, 1.0);
+        moveDots(linkDots, pathDrum1To2, 0.9);
+        moveDots(outDots, pathDrum2Out, 1.0);
+
+        // Poop particles drifting left along tank floor into cage
+        bottomPoop.forEach(p => {
+          if (speed > 0) {
+            p.x -= p.speed * (0.4 + speed * 2) * dt;
+            if (p.x < 178) {
+              p.x = 760 + Math.random() * 40;
+              p.y = 458 + Math.random() * 14;
+            }
+          }
+          p.el.setAttribute('cx', p.x.toFixed(1));
+          p.el.setAttribute('cy', p.y.toFixed(1));
+        });
+
+        // Settling solids in drums
+        solids1.forEach(pt => {
+          if (speed > 0) {
+            pt.y += pt.speed * dt;
+            if (pt.y > 224) { pt.y = 128; pt.x = 274 + Math.random() * 108; }
+          }
+          pt.el.setAttribute('cx', pt.x.toFixed(1));
+          pt.el.setAttribute('cy', pt.y.toFixed(1));
+        });
+        solids2.forEach(pt => {
+          if (speed > 0) {
+            pt.y += pt.speed * dt;
+            if (pt.y > 256) { pt.y = 192; pt.x = 530 + Math.random() * 84; }
+          }
+          pt.el.setAttribute('cx', pt.x.toFixed(1));
+          pt.el.setAttribute('cy', pt.y.toFixed(1));
+        });
+
+        // Waterfall splash bubbles
+        bubbles.forEach(b => {
+          if (speed > 0) {
+            b.t = (b.t + (0.5 + speed) * dt) % 1;
+            const bx = 788 + b.offset + Math.sin(now * 0.005 + b.offset) * 2.5;
+            const by = 364 - b.t * 54;
+            b.el.setAttribute('cx', bx.toFixed(1));
+            b.el.setAttribute('cy', by.toFixed(1));
+            b.el.setAttribute('opacity', '0.85');
+          } else {
+            b.el.setAttribute('opacity', '0');
+          }
+        });
+
+        // Fish swimming gently in masonry tank
+        fish1.setAttribute('transform', `translate(${(Math.sin(now * 0.0007) * 42).toFixed(1)}, ${(Math.sin(now * 0.0014) * 5).toFixed(1)})`);
+        fish2.setAttribute('transform', `translate(${(Math.cos(now * 0.0006) * 48).toFixed(1)}, ${(Math.cos(now * 0.0012) * 5).toFixed(1)})`);
+        fish3.setAttribute('transform', `translate(${(Math.sin(now * 0.0008 + 1.5) * 35).toFixed(1)}, ${(Math.cos(now * 0.0015) * 4).toFixed(1)})`);
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    applyMode();
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>

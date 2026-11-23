@@ -10,6 +10,7 @@ Este repositório reúne a auditoria física inicial, o dimensionamento completo
 | :--- | :--- |
 | **[index.html](./index.html)** | **Página Principal (Portal Interativo)** — chama todas as plantas animadas, documentação e arquivo 3D. |
 | **[documentacao.html](./documentacao.html)** | **Documentação Técnica Unificada (HTML)** — todos os cálculos, auditoria, listas de materiais e guias. |
+| **[plantas/planta_filtro_solar_alvenaria.html](./plantas/planta_filtro_solar_alvenaria.html)** | **Projeto 4 — Filtro Solar Duplo (2×100 L) para Tanque de Alvenaria** (sem horta, bomba na gaiola, tampas anti-mosquito). |
 | **[plantas/planta_aquaponia_6000l.html](./plantas/planta_aquaponia_6000l.html)** | **Projeto 3 — Aquaponia CHOP2 (2 × 3.000 L + Horta + Sump)** com bombeamento individualizado 50/50. |
 | **[componentes/bomba_diafragma_agua.html](./componentes/bomba_diafragma_agua.html)** | **Componente 1 — Bomba de Diafragma para Água** (corte animado, lista de materiais DIY vs. pronta). |
 | **[componentes/camara_de_ar.html](./componentes/camara_de_ar.html)** | **Componente 2 — Câmara de Ar / Amortecedor** (auditoria da Lei de Henry, bexiga interna vs. vaso pronto). |
