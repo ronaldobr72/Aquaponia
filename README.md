@@ -85,8 +85,12 @@ Este repositório reúne a auditoria física inicial, o dimensionamento completo
 ```
 
 ### 2 Modos Individualizados para CHOP2 (ΔH ≈ 0,85–1,1 m) — simulados em [planta_aquaponia_6000l.html](./plantas/planta_aquaponia_6000l.html)
-1. **100% Eólico — 2 Câmaras de Diafragma Independentes (Zero Placa Solar):** **Câmara A → Tanque A** e **Câmara B → Tanque B** (afogadas abaixo do Sump, cada linha com sua câmara de ar amortecedora). Por ser deslocamento positivo (~85 mL/volta em cada câmara), garante divisão **50% / 50% exata em qualquer vento** sem precisar estrangular registros.
-2. **Híbrido Solar 12V — 2 Bombas Brushless Independentes + Aerador Eólico:** **2 bombas 12V de 15 W (~900 L/h cada)** dentro do Sump (uma p/ Tanque A, outra p/ Tanque B) garantem **50/50 perfeito + redundância real** 24h mesmo sem vento, enquanto o Savonius injeta O₂ seco nos 2 tanques.
+1. **100% Eólico — 2 Câmaras de Diafragma Independentes (Zero Placa Solar):** **Câmara A → Tanque A** e **Câmara B → Tanque B** (afogadas abaixo do Sump, cada linha com sua câmara de ar com membrana). Garante divisão **50% / 50% exata** (~600–900 L/h totais) — indicado para **baixa densidade (~20–30 peixes totais)** + reserva de **Oxigênio em Pó** para calmarias.
+2. **Híbrido Solar DC 24V — 2 Bombas Brushless 3.000 L/h + Aerador Eólico:** **2 bombas DC 24V de 25 W (~3.000 L/h cada = 6.000 L/h totais)** + **2 Venturis de torneira (R$ 6,10)** garantem circulação forte, **50/50 perfeito + redundância real** 24h para 100–150 tilápias, enquanto o Savonius reforça o O₂ sem gastar bateria.
+
+### Melhorias Práticas Aplicadas a Todos os Projetos (Baseadas no Manejo Real de Tilápias)
+- **Limpeza reforçada:** leve rebaixo central em funil na base dos tanques + **purga diária rápida (32 mm, 1 L/dia)** + dentes de 5 mm na base dos SLOs + **espuma filtrante lavável** na saída do decantador (dura ~6 meses).
+- **Água e alimentação:** água descansada **48h ao sol sem cloro**, **20 cm de folga acima da boia** no Sump, **termômetro digital** (faixa ótima 24–29 °C; parar ração <16 °C ou >32 °C), **Azolla/Lemna** (-15% ração e reduz amônia) e **Oxigênio em Pó (7–15 g/1.000 L)** de reserva para emergências.
 
 ### Pontos Críticos da Aquaponia CHOP2
 - **Limpeza igual dos 2 tanques:** Ambos os tanques circulares têm entrada tangencial (efeito "xícara de chá") + SLO central indo ao Decantador (remove ~60–80% dos sólidos pesados).

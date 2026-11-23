@@ -63,10 +63,10 @@
       </div>
       <div class="flex flex-wrap items-center gap-1.5 text-xs">
         <button data-mode="eolico" class="mode-btn active px-3 py-1.5 rounded border border-[var(--card-border)] font-semibold cursor-pointer transition">
-          1. 100% Eólico (Câmara A→A / B→B)
+          1. 100% Eólico (Baixa Densidade)
         </button>
         <button data-mode="hibrido" class="mode-btn px-3 py-1.5 rounded border border-[var(--card-border)] bg-[var(--background)] font-semibold cursor-pointer transition">
-          2. Híbrido (2 Bombas Solar 12V + Eólico)
+          2. Híbrido (2× Bombas DC 24V 3000 L/h + Savonius)
         </button>
       </div>
     </div>
@@ -231,23 +231,30 @@
           <circle cx="274" cy="166" r="1.3" fill="#0f172a" />
         </g>
 
-        <!-- SLO A (Direct, short, straight downhill) -->
+        <!-- SLO A (Direct, short, straight downhill + bottom teeth 5mm + 32mm daily purge drain!) -->
         <path d="M 310,232 L 310,128 L 486,134" fill="none" stroke="#64748b" stroke-width="7.5" stroke-linejoin="round" />
         <path d="M 310,232 L 310,128 L 486,134" fill="none" stroke="#0ea5e9" stroke-width="3.2" stroke-linejoin="round" />
         <line x1="310" y1="128" x2="310" y2="110" stroke="#64748b" stroke-width="6" />
-        <text x="444" y="122" text-anchor="middle" font-size="8" font-weight="700" fill="var(--foreground)">SLO A direto</text>
+        <!-- Daily 1L purge drain under Tank A -->
+        <path d="M 310,240 L 310,264 L 284,264" fill="none" stroke="#713f12" stroke-width="4" stroke-linejoin="round" />
+        <circle cx="294" cy="264" r="3.8" fill="#dc2626" stroke="var(--foreground)" stroke-width="1" />
+        <text x="278" y="267" text-anchor="end" font-size="7.2" font-weight="700" fill="#78350f">Purga 1L/dia</text>
+        <text x="444" y="122" text-anchor="middle" font-size="8" font-weight="700" fill="var(--foreground)">SLO A (dentes 5mm)</text>
 
-        <!-- DECANTADOR RADIAL (200 L) IN THE CENTER -->
+        <!-- DECANTADOR RADIAL (200–310 L) IN THE CENTER + FOAM SPONGE! -->
         <rect x="484" y="120" width="112" height="134" rx="8" fill="var(--card)" stroke="var(--foreground)" stroke-width="2.5" />
         <rect x="486" y="138" width="108" height="114" rx="5" fill="url(#waterFish)" />
         <path d="M 486,226 Q 540,218 594,226 L 594,250 Q 594,252 590,252 L 490,252 Q 486,252 486,250 Z" fill="url(#sludgeGrad)" />
         <path d="M 486,134 L 520,134 L 520,202" fill="none" stroke="#64748b" stroke-width="5.5" stroke-linejoin="round" />
         <path d="M 594,134 L 560,134 L 560,202" fill="none" stroke="#64748b" stroke-width="5.5" stroke-linejoin="round" />
+        <!-- Washable Foam Sponge on clarified outlet! -->
+        <rect x="528" y="140" width="24" height="14" rx="3" fill="#fef08a" stroke="#ca8a04" stroke-width="1.5" />
         <path d="M 540,254 L 540,270 L 516,270" fill="none" stroke="#713f12" stroke-width="4.5" stroke-linejoin="round" />
         <circle cx="525" cy="270" r="4" fill="#dc2626" stroke="var(--foreground)" stroke-width="1" />
-        <text x="540" y="108" text-anchor="middle" font-size="10.2" font-weight="700" fill="var(--foreground)">Decantador (200 L)</text>
-        <text x="540" y="245" text-anchor="middle" font-size="7.8" font-weight="700" fill="#fef3c7">Lodo (A + B)</text>
-        <text x="508" y="273" text-anchor="end" font-size="7.6" fill="var(--muted-foreground)">Dreno 1×/sem</text>
+        <text x="540" y="108" text-anchor="middle" font-size="10.2" font-weight="700" fill="var(--foreground)">Decantador (200–310 L)</text>
+        <text x="540" y="132" text-anchor="middle" font-size="7" font-weight="700" fill="#ca8a04">Espuma filtrante!</text>
+        <text x="540" y="245" text-anchor="middle" font-size="7.8" font-weight="700" fill="#fef3c7">Lodo (TPA 2–3×/sem)</text>
+        <text x="508" y="273" text-anchor="end" font-size="7.4" fill="var(--muted-foreground)">Fertirrigar solo</text>
         <g id="solidsGroup" fill="#78350f"></g>
 
         <!-- TANQUE B (3.000 L) -->
@@ -265,11 +272,15 @@
           <circle cx="806" cy="168" r="1.3" fill="#0f172a" />
         </g>
 
-        <!-- SLO B (Direct, short, straight downhill) -->
+        <!-- SLO B (Direct, short, straight downhill + daily 1L purge drain!) -->
         <path d="M 770,232 L 770,128 L 594,134" fill="none" stroke="#64748b" stroke-width="7.5" stroke-linejoin="round" />
         <path d="M 770,232 L 770,128 L 594,134" fill="none" stroke="#0ea5e9" stroke-width="3.2" stroke-linejoin="round" />
         <line x1="770" y1="128" x2="770" y2="110" stroke="#64748b" stroke-width="6" />
-        <text x="636" y="122" text-anchor="middle" font-size="8" font-weight="700" fill="var(--foreground)">SLO B direto</text>
+        <!-- Daily 1L purge drain under Tank B -->
+        <path d="M 770,240 L 770,264 L 796,264" fill="none" stroke="#713f12" stroke-width="4" stroke-linejoin="round" />
+        <circle cx="786" cy="264" r="3.8" fill="#dc2626" stroke="var(--foreground)" stroke-width="1" />
+        <text x="802" y="267" font-size="7.2" font-weight="700" fill="#78350f">Purga 1L/dia</text>
+        <text x="636" y="122" text-anchor="middle" font-size="8" font-weight="700" fill="var(--foreground)">SLO B (dentes 5mm)</text>
 
         <!-- Auxiliary Air Diffusers (ONLY visible in Hybrid Mode 2: Câmara A -> Difusor A, Câmara B -> Difusor B) -->
         <g id="hybridAirLines" opacity="0">
@@ -318,15 +329,15 @@
         <text x="752" y="421" font-size="8.2" font-weight="700" fill="var(--warning)">Boia de reposição</text>
         <text x="752" y="432" font-size="7.6" fill="var(--muted-foreground)">Repõe ~60–130 L/dia</text>
 
-        <!-- 2 INDEPENDENT SUBMERGED 12V BRUSHLESS PUMPS INSIDE SUMP (Mode 2 ONLY) -->
+        <!-- 2 INDEPENDENT SUBMERGED 24V DC BRUSHLESS PUMPS (3.000 L/h EACH!) INSIDE SUMP (Mode 2 ONLY) -->
         <g id="solarPumpsIcon" opacity="0">
-          <!-- Pump A (Blue -> Tank A) -->
-          <rect x="492" y="478" width="34" height="28" rx="4" fill="#0284c7" stroke="var(--foreground)" stroke-width="1.5" />
-          <text x="509" y="495" text-anchor="middle" font-size="7.5" font-weight="800" fill="#ffffff">12V A</text>
-          <!-- Pump B (Indigo -> Tank B) -->
-          <rect x="536" y="478" width="34" height="28" rx="4" fill="#6366f1" stroke="var(--foreground)" stroke-width="1.5" />
-          <text x="553" y="495" text-anchor="middle" font-size="7.5" font-weight="800" fill="#ffffff">12V B</text>
-          <text x="531" y="518" text-anchor="middle" font-size="7.5" font-weight="700" fill="var(--foreground)">2 bombas 15W independentes</text>
+          <!-- Pump A (Blue -> Tank A + Venturi) -->
+          <rect x="492" y="478" width="36" height="28" rx="4" fill="#0284c7" stroke="var(--foreground)" stroke-width="1.5" />
+          <text x="510" y="495" text-anchor="middle" font-size="7.2" font-weight="800" fill="#ffffff">24V A</text>
+          <!-- Pump B (Indigo -> Tank B + Venturi) -->
+          <rect x="536" y="478" width="36" height="28" rx="4" fill="#6366f1" stroke="var(--foreground)" stroke-width="1.5" />
+          <text x="554" y="495" text-anchor="middle" font-size="7.2" font-weight="800" fill="#ffffff">24V B</text>
+          <text x="532" y="518" text-anchor="middle" font-size="7.3" font-weight="700" fill="var(--foreground)">2× DC 24V 25W (3000 L/h cada)</text>
         </g>
 
         <!-- =============================================================== -->
@@ -349,15 +360,17 @@
           <text x="455" y="26" text-anchor="middle" font-size="8.4" font-weight="700" fill="#6366f1">Linha B exclusiva (Câmara B → Tanque B) — 50% garantidos mesmo mais longe!</text>
         </g>
 
-        <!-- MODE 2: 2 Independent 12V Submerged Pumps -> Line A (Blue) & Line B (Indigo) -->
+        <!-- MODE 2: 2 Independent 24V DC Submerged Pumps (3.000 L/h each) + DIY Venturi (R$ 6,10) -->
         <g id="hybridWaterPipes" opacity="0">
-          <!-- Pump A -> Tank A -->
-          <path d="M 509,478 L 509,356 L 160,356 L 160,58 L 232,58 L 232,114" fill="none" stroke="#0284c7" stroke-width="4.5" stroke-linejoin="round" marker-end="url(#arrBlue)" />
-          <text x="330" y="348" text-anchor="middle" font-size="8.2" font-weight="700" fill="#0284c7">Linha A: Bomba 12V A (~900 L/h) → Tanque A</text>
+          <!-- Pump A -> Tank A + Venturi -->
+          <path d="M 510,478 L 510,356 L 160,356 L 160,58 L 232,58 L 232,114" fill="none" stroke="#0284c7" stroke-width="4.5" stroke-linejoin="round" marker-end="url(#arrBlue)" />
+          <rect x="226" y="64" width="12" height="12" rx="2" fill="#f59e0b" stroke="var(--foreground)" stroke-width="1" />
+          <text x="330" y="348" text-anchor="middle" font-size="8.2" font-weight="700" fill="#0284c7">Linha A: Bomba DC 24V A (~3.000 L/h) + Venturi → Tanque A</text>
 
-          <!-- Pump B -> Tank B -->
-          <path d="M 553,478 L 553,368 L 176,368 L 176,34 L 694,34 L 694,114" fill="none" stroke="#6366f1" stroke-width="4.5" stroke-linejoin="round" marker-end="url(#arrIndigo)" />
-          <text x="465" y="26" text-anchor="middle" font-size="8.4" font-weight="700" fill="#6366f1">Linha B: Bomba 12V B (~900 L/h) → Tanque B (redundância total!)</text>
+          <!-- Pump B -> Tank B + Venturi -->
+          <path d="M 554,478 L 554,368 L 176,368 L 176,34 L 694,34 L 694,114" fill="none" stroke="#6366f1" stroke-width="4.5" stroke-linejoin="round" marker-end="url(#arrIndigo)" />
+          <rect x="688" y="64" width="12" height="12" rx="2" fill="#f59e0b" stroke="var(--foreground)" stroke-width="1" />
+          <text x="465" y="26" text-anchor="middle" font-size="8.4" font-weight="700" fill="#6366f1">Linha B: Bomba DC 24V B (~3.000 L/h) + Venturi → Tanque B (6.000 L/h totais!)</text>
         </g>
 
         <!-- Animated Flow Dots & Bubbles -->
@@ -366,19 +379,19 @@
       </svg>
     </div>
 
-    <!-- Summary Cards Explaining Individualized Pumping -->
+    <!-- Summary Cards Explaining Individualized Pumping + Practical Upgrades -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2 border-t border-[var(--card-border)] text-xs">
       <div class="p-3 rounded-lg bg-[var(--background)] border border-[var(--card-border)]">
-        <div class="font-bold text-[var(--primary)] mb-1">1. Por que Individualizar Resolve o Problema?</div>
-        <div class="text-[var(--muted-foreground)]">Num cano único com Tê, a água sempre segue o menor atrito e descarrega quase toda no <b>Tanque A</b> (mais perto), deixando o <b>Tanque B</b> sem fluxo no vento fraco. Com <b>2 linhas exclusivas</b>, a divisão fica exatamente <b>50% / 50%</b> sem desperdiçar energia estrangulando registros!</div>
+        <div class="font-bold text-[var(--primary)] mb-1">1. Limpeza Reforçada (SLO c/ Dentes + Purga 1 L/dia + Espuma)</div>
+        <div class="text-[var(--muted-foreground)]">Melhoria aplicada: base de areia c/ leve funil central + <b>registro de purga diária (32 mm, 1 L/dia)</b> em cada tanque, <b>dentes na base do SLO (5 mm do chão)</b> e <b>espuma filtrante lavável</b> na saída do Decantador (retém pó fino antes da horta!).</div>
       </div>
-      <div class="p-3 rounded-lg bg-[var(--background)] border border-[var(--card-border)]">
-        <div class="font-bold text-[var(--secondary)] mb-1">2. No Eólico: Aproveita as 2 Câmaras que Já Existem</div>
-        <div class="text-[var(--muted-foreground)]">Como o diafragma é uma bomba de <b>deslocamento positivo</b>, a cada volta do Savonius a <b>Câmara A</b> empurra ~85 mL exclusivos para o Tanque A e a <b>Câmara B</b> empurra ~85 mL exclusivos para o Tanque B — mesmo com o Tanque B mais longe!</div>
+      <div class="p-3 rounded-lg bg-[var(--background)] border border-[var(--warning)]/50">
+        <div class="font-bold text-[var(--warning)] mb-1">2. Limite Real de Peixes (Eólico vs. Solar DC 24V)</div>
+        <div class="text-[var(--muted-foreground)]">No <b>Modo 100% Eólico (~750 L/h)</b>, a circulação é lenta: use apenas <b>baixa densidade (~20–30 peixes totais)</b> + <b>Oxigênio em Pó (7–15 g/1.000 L)</b> p/ calmarias. No <b>Modo Híbrido Solar (2× DC 24V 3.000 L/h = 6.000 L/h + 2 Venturis R$ 6)</b>, suporta 100–150 tilápias com segurança 24h!</div>
       </div>
-      <div class="p-3 rounded-lg bg-[var(--background)] border border-[var(--card-border)]">
-        <div class="font-bold text-[var(--success)] mb-1">3. No Híbrido Solar: 2 Bombas 12V (Redundância)</div>
-        <div class="text-[var(--muted-foreground)]">Trocar 1 bomba de 30 W por <b>2 bombas 12V Brushless de 15 W (~900 L/h cada)</b> mantém o mesmo consumo elétrico, garante 50/50 perfeito sem regulagem e traz <b>redundância</b>: se uma falhar, a outra mantém a horta e o biofiltro vivos.</div>
+      <div class="p-3 rounded-lg bg-[var(--background)] border border-[var(--success)]/50">
+        <div class="font-bold text-[var(--success)] mb-1">3. Boas Práticas de Manejo (Sem Cloro + Argila + Zero Veneno)</div>
+        <div class="text-[var(--muted-foreground)]">Deixe <b>20 cm de água acima da boia</b> do Sump usando <b>água sem cloro (48h ao sol)</b>; prefira <b>argila expandida (400 L/kg)</b> na cama; <b>ZERO inseticidas</b> perto dos tanques; aproveite o lodo das TPAs (2–3×/sem) p/ fertirrigar horta/pomar no solo!</div>
       </div>
     </div>
   </div>
@@ -518,7 +531,8 @@
     function getPhysics(windKmh) {
       const cutIn = mode === 'eolico' ? 9 : 8;
       const windRpm = windKmh < cutIn ? 0 : Math.round(windKmh * 4.1);
-      const totalLph = mode === 'eolico' ? (windRpm === 0 ? 0 : Math.round(windRpm * 10.2)) : 1800;
+      // Hybrid upgraded to 2x 24V DC Brushless 3,000 L/h (25W each = 6,000 L/h total)
+      const totalLph = mode === 'eolico' ? (windRpm === 0 ? 0 : Math.round(windRpm * 10.2)) : 6000;
       return { windRpm, totalLph, perTankLph: Math.round(totalLph / 2) };
     }
 
@@ -593,7 +607,7 @@
         pRodR.setAttribute('x1', px.toFixed(1));
         pRodR.setAttribute('y1', py.toFixed(1));
 
-        const flowSpeed = totalLph > 0 ? (0.14 + (totalLph / 2400) * 0.42) : 0;
+        const flowSpeed = totalLph > 0 ? Math.min(0.62, 0.16 + (totalLph / 6000) * 0.46) : 0;
         const pathA = mode === 'eolico' ? pathEolicoA : pathHybridA;
         const pathB = mode === 'eolico' ? pathEolicoB : pathHybridB;
 
