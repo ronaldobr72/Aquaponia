@@ -35,18 +35,8 @@
   </style>
 </head>
 <body class="bg-[var(--background)] text-[var(--foreground)] antialiased min-h-screen p-4 md:p-8 select-none">
-  <nav class="max-w-5xl mx-auto mb-4 bg-[var(--card)] border border-[var(--card-border)] rounded-xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs shadow-sm">
-    <a href="../index.html" class="font-bold text-[var(--primary)]">🌊 Aquaponia &amp; Aeradores</a>
-    <div class="flex flex-wrap items-center gap-1.5">
-      <a href="../index.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Início</a>
-      <a href="../documentacao.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Documentação</a>
-      <a href="./planta_aquaponia_6000l.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Aquaponia 6.000 L</a>
-      <a href="./planta_aerador_eolico_5000l.html" class="px-2 py-1 rounded bg-[var(--primary)] text-white font-semibold">Eólico 5.000 L</a>
-      <a href="./detalhe_excentrico_duplo.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Excêntrico 3D</a>
-      <a href="./planta_aerador_eolico_mecanico.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Eólico 3.000 L</a>
-      <a href="./planta_aerador_solar_12v.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Solar 12V</a>
-    </div>
-  </nav>
+  <div id="site-nav" data-base="../" data-style="card" data-width="max-w-5xl"></div>
+  <script src="../assets/nav.js"></script>
   <div class="max-w-5xl mx-auto bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-4 md:p-6 shadow-sm space-y-4">
     <!-- Controls bar -->
     <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[var(--card-border)] text-sm">

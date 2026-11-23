@@ -39,23 +39,8 @@
 <body class="bg-[var(--background)] text-[var(--foreground)] antialiased min-h-screen flex flex-col">
 
   <!-- Top Navigation Bar -->
-  <nav class="sticky top-0 z-30 bg-[var(--card)]/95 backdrop-blur border-b border-[var(--card-border)]">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-2 text-xs md:text-sm">
-      <a href="./index.html" class="font-bold text-[var(--primary)]">🌊 Aquaponia &amp; Aeradores</a>
-      <div class="flex flex-wrap items-center gap-1.5">
-        <a href="./index.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Início</a>
-        <a href="./manual_tilapia_aquaponia.html" class="px-2.5 py-1 rounded border border-[var(--success)]/60 text-[var(--success)] font-semibold hover:opacity-85 transition">📖 Manual Tilápia</a>
-        <a href="./plantas/modelo_tilapia_playlist.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Modelo Playlist</a>
-        <a href="./documentacao.html" class="px-2.5 py-1 rounded bg-[var(--primary)] text-white font-semibold">Documentação</a>
-        <a href="./plantas/planta_filtro_solar_alvenaria.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Filtro Alvenaria</a>
-        <a href="./plantas/planta_aquaponia_6000l.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Aquaponia CHOP2</a>
-        <a href="./componentes/bomba_diafragma_agua.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Bomba d'Água</a>
-        <a href="./componentes/camara_de_ar.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Câmara de Ar</a>
-        <a href="./componentes/rotor_savonius.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Rotor Savonius</a>
-        <a href="./plantas/detalhe_excentrico_duplo.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Excêntrico 3D</a>
-      </div>
-    </div>
-  </nav>
+  <div id="site-nav" data-base="./" data-style="full" data-width="max-w-6xl"></div>
+  <script src="./assets/nav.js"></script>
 
   <!-- Content Layout -->
   <div class="max-w-6xl w-full mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
