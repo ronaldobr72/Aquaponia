@@ -24,6 +24,7 @@
       items: [
         { label: '🐟 Tilápias + Horta — V1 (Rede + Calculadora)', href: 'plantas/modelo_tilapia_playlist.html', file: 'modelo_tilapia_playlist.html' },
         { label: '☀️ Tilápias + Horta — V2 (Solar 24h + Eólico)', href: 'plantas/modelo_tilapia_solar_eolico.html', file: 'modelo_tilapia_solar_eolico.html' },
+        { label: '🧊 Modelo 3D Interativo (360° — Versão Eólica/Solar)', href: 'plantas/modelo_3d_tilapia_eolico.html', file: 'modelo_3d_tilapia_eolico.html' },
         { label: '🧱 Filtro Solar Duplo — Alvenaria (2×100 L)', href: 'plantas/planta_filtro_solar_alvenaria.html', file: 'planta_filtro_solar_alvenaria.html' },
         { label: '🔄 Aquaponia CHOP2 — 2×3.000 L + Sump', href: 'plantas/planta_aquaponia_6000l.html', file: 'planta_aquaponia_6000l.html' }
       ]

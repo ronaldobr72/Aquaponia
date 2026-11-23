@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modelo 3D Interativo — Aquaponia de Tilápias (Versão Solar + Eólico Savonius)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.146.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.146.0/examples/js/controls/OrbitControls.js"></script>
+  <style>
+    :root {
+      --background: #f8fafc;
+      --card: #ffffff;
+      --card-border: #cbd5e1;
+      --foreground: #0f172a;
+      --muted-foreground: #475569;
+      --primary: #0284c7;
+      --success: #059669;
+      --warning: #d97706;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #0f172a;
+        --card: #1e293b;
+        --card-border: #334155;
+        --foreground: #f1f5f9;
+        --muted-foreground: #94a3b8;
+        --primary: #38bdf8;
+        --success: #34d399;
+        --warning: #fbbf24;
+      }
+    }
+    .cam-btn.active {
+      background-color: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+    #viewport3d canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+      cursor: grab;
+    }
+    #viewport3d canvas:active {
+      cursor: grabbing;
+    }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased min-h-screen p-3 md:p-5 select-none">
+
+  <!-- Unified Menu -->
+  <div id="site-nav" data-base="../" data-style="card" data-width="max-w-6xl"></div>
+  <script src="../assets/nav.js"></script>
+
+  <main class="max-w-6xl mx-auto space-y-4">
+    <section class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-4 md:p-5 shadow-sm space-y-3">
+      <!-- Header -->
+      <div class="flex flex-wrap items-start justify-between gap-3 pb-3 border-b border-[var(--card-border)]">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-[var(--warning)]">Visualizador 3D Real (WebGL / Three.js) • Gire 360° e Dê Zoom</span>
+          <h1 class="font-bold text-base md:text-lg">Modelo 3D — Sistema de Tilápias (Versão Híbrida Eólico Savonius + Solar 24h)</h1>
+          <p class="text-xs text-[var(--muted-foreground)]">
+            Arraste com o mouse/dedo para girar em 360°, use a roda do mouse para dar zoom e <b>clique em qualquer peça 3D</b> para inspecionar medidas.
+            <br><span class="text-[var(--warning)] font-semibold">Aviso:</span> Adaptação 3D independente inspirada no <b>Prof. Carlos Alan</b> (<b>não construída por ele</b>). Canal oficial: <a href="https://www.youtube.com/@COM_A_NATUREZA" target="_blank" rel="noopener noreferrer" class="text-[var(--primary)] underline font-semibold">youtube.com/@COM_A_NATUREZA</a>
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-1.5 text-xs">
+          <button id="xrayBtn" class="px-3 py-1.5 rounded bg-[var(--primary)] text-white font-semibold cursor-pointer">Raio-X: Ligado</button>
+          <button id="pauseBtn" class="px-3 py-1.5 rounded border border-[var(--card-border)] bg-[var(--background)] font-semibold cursor-pointer">Pausar</button>
+        </div>
+      </div>
+
+      <!-- Camera Presets + Wind Slider -->
+      <div class="flex flex-wrap items-center justify-between gap-3 bg-[var(--background)] border border-[var(--card-border)] rounded-lg p-2.5 text-xs">
+        <div class="flex flex-wrap items-center gap-1.5">
+          <span class="font-semibold text-[var(--muted-foreground)] mr-1">Câmeras:</span>
+          <button data-cam="overview" class="cam-btn active px-2.5 py-1 rounded border border-[var(--card-border)] font-semibold cursor-pointer">Geral 3D</button>
+          <button data-cam="savonius" class="cam-btn px-2.5 py-1 rounded border border-[var(--card-border)] bg-[var(--card)] font-semibold cursor-pointer">Rotor Savonius</button>
+          <button data-cam="tank" class="cam-btn px-2.5 py-1 rounded border border-[var(--card-border)] bg-[var(--card)] font-semibold cursor-pointer">Caixa + Venturi</button>
+          <button data-cam="decanter" class="cam-btn px-2.5 py-1 rounded border border-[var(--card-border)] bg-[var(--card)] font-semibold cursor-pointer">Decantador</button>
+          <button data-cam="bed" class="cam-btn px-2.5 py-1 rounded border border-[var(--card-border)] bg-[var(--card)] font-semibold cursor-pointer">Cama + Sifão</button>
+          <button data-cam="solar" class="cam-btn px-2.5 py-1 rounded border border-[var(--card-border)] bg-[var(--card)] font-semibold cursor-pointer">Solar + Azolla</button>
+        </div>
+        <label class="flex items-center gap-2 text-[var(--muted-foreground)]">
+          <span class="font-semibold">Vento:</span>
+          <input id="windSlider" type="range" min="0" max="25" value="16" step="1" class="w-24 accent-[var(--primary)]" />
+          <span id="windVal" class="font-mono font-bold text-[var(--foreground)] w-14">16 km/h</span>
+        </label>
+      </div>
+
+      <!-- 3D Viewport Container -->
+      <div class="relative w-full h-[460px] md:h-[560px] rounded-xl overflow-hidden border border-[var(--card-border)] bg-slate-900">
+        <div id="viewport3d" class="w-full h-full"></div>
+
+        <!-- Floating Live HUD (Top Left) -->
+        <div class="pointer-events-none absolute top-3 left-3 bg-slate-900/80 backdrop-blur text-slate-100 border border-slate-700 rounded-lg px-3 py-2 text-[11px] font-mono space-y-0.5">
+          <div id="hudWind" class="text-sky-400 font-bold">Savonius: ~85 RPM • ~7,5 L/min O₂</div>
+          <div id="hudTide" class="text-emerald-400">Sifão de Sino: Enchendo cama...</div>
+          <div class="text-slate-400">Escala real: grade do chão = 1 m × 1 m</div>
+        </div>
+
+        <!-- Floating Controls Hint (Bottom Right) -->
+        <div class="pointer-events-none absolute bottom-3 right-3 bg-slate-900/75 text-slate-300 border border-slate-700 rounded-md px-2.5 py-1 text-[10px]">
+          Arrastar: girar 360° • Scroll/Pinça: zoom • Botão direito: mover • Clique na peça: detalhes
+        </div>
+      </div>
+
+      <!-- Selected Component Inspector Bar -->
+      <div id="inspectorBar" class="p-3 rounded-lg bg-[var(--background)] border border-[var(--card-border)] text-xs flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <span class="font-bold text-[var(--primary)]">💡 Inspetor 3D:</span>
+          <span id="inspectorText" class="text-[var(--muted-foreground)]">Clique em qualquer elemento do modelo 3D (Savonius, Caixa de Tilápias, Decantador, Cama de Cultivo, Sump, Painel Solar ou Azolla) para ver as medidas exatas.</span>
+        </div>
+        <span class="font-mono text-[11px] text-[var(--muted-foreground)]">Área ocupada: ~4,5 m × 2,2 m</span>
+      </div>
+    </section>
+
+    <!-- Credits & Disclaimer -->
+    <footer class="bg-[var(--card)] border border-[var(--warning)]/50 rounded-xl p-4 text-xs space-y-1.5 shadow-sm">
+      <div class="font-bold text-[var(--warning)]">📢 Créditos &amp; Aviso Importante</div>
+      <p class="text-[var(--muted-foreground)] leading-relaxed">
+        O sistema hidráulico base (caixa elevada c/ base de 50 cm, decantador c/ 2 curvas e espuma, Sump c/ bomba única, cama de cultivo c/ Sifão de Sino, Venturi de torneira e caixa de Azolla/Lemna) é baseado nas aulas do <b>Prof. Carlos Alan</b> (Engenheiro Agrônomo, Dr. em Ciências Agrárias), combinado em 3D com o nosso <b>Aerador Eólico Savonius</b> e <b>Kit Solar DC 24V</b>.
+        <b>Esta página não foi construída pelo Prof. Carlos Alan</b> e não possui vínculo oficial com o canal.
+      </p>
+      <div class="flex flex-wrap items-center gap-4 pt-1 font-semibold">
+        <a href="https://www.youtube.com/@COM_A_NATUREZA" target="_blank" rel="noopener noreferrer" class="text-[var(--primary)] hover:underline">
+          ▶ Canal Oficial no YouTube: youtube.com/@COM_A_NATUREZA
+        </a>
+        <a href="https://www.youtube.com/playlist?list=PLvQkI_3RAj4haRdQS62FWhcWZ_DbGfO5n" target="_blank" rel="noopener noreferrer" class="text-[var(--success)] hover:underline">
+          🎬 Assistir à Playlist Original Completa
+        </a>
+        <a href="../manual_tilapia_aquaponia.html" class="text-[var(--warning)] hover:underline">
+          📖 Abrir Manual Completo Passo a Passo
+        </a>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const container = document.getElementById('viewport3d');
+    const windSlider = document.getElementById('windSlider');
+    const windVal = document.getElementById('windVal');
+    const xrayBtn = document.getElementById('xrayBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const camBtns = document.querySelectorAll('.cam-btn');
+    const hudWind = document.getElementById('hudWind');
+    const hudTide = document.getElementById('hudTide');
+    const inspectorText = document.getElementById('inspectorText');
+
+    // =========================================================================
+    // 1. THREE.JS SCENE, CAMERA, RENDERER & LIGHTING
+    // =========================================================================
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0f172a);
+    scene.fog = new THREE.Fog(0x0f172a, 11, 24);
+
+    const camera = new THREE.PerspectiveCamera(42, container.clientWidth / container.clientHeight, 0.05, 50);
+    camera.position.set(0.4, 2.55, 5.1);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    container.appendChild(renderer.domElement);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.07;
+    controls.target.set(0.0, 0.9, -0.2);
+    controls.maxPolarAngle = Math.PI / 2 - 0.02;
+    controls.minDistance = 1.2;
+    controls.maxDistance = 11;
+
+    // Lights
+    scene.add(new THREE.AmbientLight(0xdbeafe, 0.72));
+    const hemi = new THREE.HemisphereLight(0xe0f2fe, 0x334155, 0.55);
+    scene.add(hemi);
+    const sun = new THREE.DirectionalLight(0xfffbeb, 1.15);
+    sun.position.set(4.5, 7.5, 4.2);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(2048, 2048);
+    sun.shadow.camera.left = -4;
+    sun.shadow.camera.right = 4;
+    sun.shadow.camera.top = 4;
+    sun.shadow.camera.bottom = -4;
+    scene.add(sun);
+
+    // Ground Plane + 1m x 1m Metric Grid
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(18, 18),
+      new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.92 })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.receiveShadow = true;
+    scene.add(ground);
+
+    const grid = new THREE.GridHelper(12, 12, 0x38bdf8, 0x334155);
+    grid.position.y = 0.004;
+    scene.add(grid);
+
+    // Helper: track clickable interactive groups & X-ray shell materials
+    const clickableMeshes = [];
+    const xrayMaterials = [];
+
+    function tagInfo(obj, title, desc) {
+      obj.traverse(child => {
+        if (child.isMesh) {
+          child.userData.infoTitle = title;
+          child.userData.infoDesc = desc;
+          clickableMeshes.push(child);
+        }
+      });
+    }
+
+    function makePipe(points, radius, color, dashed = false) {
+      const vecs = points.map(p => new THREE.Vector3(p[0], p[1], p[2]));
+      const curve = new THREE.CurvePath();
+      for (let i = 0; i < vecs.length - 1; i++) {
+        curve.add(new THREE.LineCurve3(vecs[i], vecs[i + 1]));
+      }
+      const geo = new THREE.TubeGeometry(curve, vecs.length * 10, radius, 12, false);
+      const mat = new THREE.MeshStandardMaterial({
+        color,
+        roughness: 0.35,
+        metalness: 0.15,
+        transparent: dashed,
+        opacity: dashed ? 0.85 : 1.0
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.castShadow = true;
+      return mesh;
+    }
+
+    // Shared materials
+    const matBlock = new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.9 });
+    const matWood = new THREE.MeshStandardMaterial({ color: 0x92400e, roughness: 0.8 });
+    const matSteel = new THREE.MeshStandardMaterial({ color: 0x64748b, metalness: 0.75, roughness: 0.3 });
+    const matBearing = new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.4, roughness: 0.35 });
+    const matWater = new THREE.MeshPhysicalMaterial({
+      color: 0x0ea5e9,
+      transparent: true,
+      opacity: 0.42,
+      roughness: 0.12,
+      metalness: 0.05
+    });
+    const matWaterClean = new THREE.MeshPhysicalMaterial({
+      color: 0x10b981,
+      transparent: true,
+      opacity: 0.38,
+      roughness: 0.12
+    });
+
+    function makeTankShellMat(hex) {
+      const m = new THREE.MeshStandardMaterial({
+        color: hex,
+        roughness: 0.4,
+        transparent: true,
+        opacity: 0.42,
+        side: THREE.DoubleSide
+      });
+      xrayMaterials.push(m);
+      return m;
+    }
+
+    // =========================================================================
+    // 2. SAVONIUS WIND AERATOR (2 STAGES 90° + 15% OVERLAP + DIAPHRAGM PUMP)
+    // =========================================================================
+    const savoniusGroup = new THREE.Group();
+    savoniusGroup.position.set(-2.05, 0, 0.05);
+
+    // Outer Steel Frame (Metalon 40x40 mm)
+    const frameH = 2.25, frameW = 0.94;
+    const postGeo = new THREE.BoxGeometry(0.04, frameH, 0.04);
+    [[-frameW / 2, 0], [frameW / 2, 0]].forEach(([px, pz]) => {
+      const p = new THREE.Mesh(postGeo, matSteel);
+      p.position.set(px, frameH / 2, pz);
+      p.castShadow = true;
+      savoniusGroup.add(p);
+    });
+    // Crossbars (top, rotor base, ground)
+    [frameH - 0.02, 0.62, 0.03].forEach(y => {
+      const bar = new THREE.Mesh(new THREE.BoxGeometry(frameW + 0.04, 0.04, 0.04), matSteel);
+      bar.position.set(0, y, 0);
+      savoniusGroup.add(bar);
+    });
+    // Base stabilizing feet
+    [-frameW / 2, frameW / 2].forEach(px => {
+      const foot = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.04, 0.72), matSteel);
+      foot.position.set(px, 0.02, 0);
+      savoniusGroup.add(foot);
+    });
+
+    // 3 Guy wires at 120° anchored to ground
+    const guyMat = new THREE.LineBasicMaterial({ color: 0xfbbf24, transparent: true, opacity: 0.55 });
+    [0, 120, 240].forEach(deg => {
+      const r = (deg * Math.PI) / 180;
+      const gGeo = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(0, frameH - 0.04, 0),
+        new THREE.Vector3(Math.cos(r) * 1.15, 0.01, Math.sin(r) * 1.15)
+      ]);
+      savoniusGroup.add(new THREE.Line(gGeo, guyMat));
+    });
+
+    // Top & Bottom Pillow Block Bearings (6203 / P205)
+    [frameH - 0.06, 0.64].forEach(y => {
+      const brg = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.05, 0.07), matBearing);
+      brg.position.set(0, y, 0);
+      savoniusGroup.add(brg);
+    });
+
+    // Rotating Rotor Assembly (Shaft + 3 Disks + 2 Stages of Half-Cylinders with 15% Overlap!)
+    const rotorSpin = new THREE.Group();
+    const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 2.02, 16), matSteel);
+    shaft.position.y = 1.24;
+    rotorSpin.add(shaft);
+
+    const diskGeo = new THREE.CylinderGeometry(0.37, 0.37, 0.018, 32);
+    const diskMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.6 });
+    [0.72, 1.42, 2.12].forEach(y => {
+      const d = new THREE.Mesh(diskGeo, diskMat);
+      d.position.y = y;
+      d.castShadow = true;
+      rotorSpin.add(d);
+    });
+
+    // Helper: create 1 Savonius stage (2 half-cylinders with 15% overlap gap!)
+    function addSavoniusStage(yCenter, rotY, colorHex) {
+      const stg = new THREE.Group();
+      stg.position.y = yCenter;
+      stg.rotation.y = rotY;
+      const bladeGeo = new THREE.CylinderGeometry(0.19, 0.19, 0.68, 24, 1, true, 0, Math.PI);
+      const bladeMat = new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.35, side: THREE.DoubleSide });
+
+      const b1 = new THREE.Mesh(bladeGeo, bladeMat);
+      b1.position.set(0.145, 0, 0); // offset < radius -> 15% central overlap!
+      b1.castShadow = true;
+      stg.add(b1);
+
+      const b2 = new THREE.Mesh(bladeGeo, bladeMat);
+      b2.position.set(-0.145, 0, 0);
+      b2.rotation.y = Math.PI;
+      b2.castShadow = true;
+      stg.add(b2);
+
+      rotorSpin.add(stg);
+    }
+    addSavoniusStage(1.77, 0, 0x0284c7);         // Stage 1 (0°)
+    addSavoniusStage(1.07, Math.PI / 2, 0x38bdf8); // Stage 2 (90° offset)
+
+    // Eccentric Disk + Pin at Bottom of Shaft (y = 0.36 m)
+    const eccDisk = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.065, 0.02, 24), matSteel);
+    eccDisk.position.y = 0.36;
+    rotorSpin.add(eccDisk);
+    const eccPin = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, 0.055, 12), new THREE.MeshStandardMaterial({ color: 0xef4444 }));
+    eccPin.position.set(0.032, 0.33, 0);
+    rotorSpin.add(eccPin);
+
+    savoniusGroup.add(rotorSpin);
+
+    // Dry Air Diaphragm Pump (PVC Ø 75 mm) + Connecting Rod
+    const airPump = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.055, 0.055, 0.11, 20),
+      new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.4 })
+    );
+    airPump.rotation.z = Math.PI / 2;
+    airPump.position.set(0.30, 0.33, 0);
+    savoniusGroup.add(airPump);
+
+    const diaphRing = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.062, 0.062, 0.014, 20),
+      new THREE.MeshStandardMaterial({ color: 0xf59e0b })
+    );
+    diaphRing.rotation.z = Math.PI / 2;
+    diaphRing.position.set(0.245, 0.33, 0);
+    savoniusGroup.add(diaphRing);
+
+    const bielaMesh = new THREE.Mesh(
+      new THREE.BoxGeometry(0.22, 0.016, 0.024),
+      new THREE.MeshStandardMaterial({ color: 0x38bdf8 })
+    );
+    bielaMesh.position.set(0.14, 0.33, 0);
+    savoniusGroup.add(bielaMesh);
+
+    tagInfo(
+      savoniusGroup,
+      'Rotor Eólico Savonius 2 Estágios + Bomba de Ar Seca',
+      'H = 1,40 m × Ø = 0,72 m (PVC 200 mm, sobreposição central de 15%, estágios a 90°). Aciona bomba de diafragma PVC Ø 75 mm via excêntrico, substituindo o compressor elétrico de ar (5–14 L/min de O₂ grátis!).'
+    );
+    scene.add(savoniusGroup);
+
+    // =========================================================================
+    // 3. SOLAR PANEL 330W + MPPT + BATTERY 24H (BEHIND SAVONIUS)
+    // =========================================================================
+    const solarGroup = new THREE.Group();
+    solarGroup.position.set(-2.0, 0, -1.25);
+
+    const solStand = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.95, 0.06), matSteel);
+    solStand.position.y = 0.475;
+    solarGroup.add(solStand);
+
+    const panelFrame = new THREE.Mesh(
+      new THREE.BoxGeometry(1.15, 0.04, 0.72),
+      new THREE.MeshStandardMaterial({ color: 0xcbd5e1, metalness: 0.6, roughness: 0.3 })
+    );
+    panelFrame.position.set(0, 0.96, 0);
+    panelFrame.rotation.x = 0.34; // ~20° tilt toward North
+    panelFrame.castShadow = true;
+    solarGroup.add(panelFrame);
+
+    const panelCells = new THREE.Mesh(
+      new THREE.BoxGeometry(1.09, 0.045, 0.66),
+      new THREE.MeshStandardMaterial({ color: 0x1e3a8a, metalness: 0.45, roughness: 0.2 })
+    );
+    panelCells.position.copy(panelFrame.position);
+    panelCells.rotation.copy(panelFrame.rotation);
+    solarGroup.add(panelCells);
+
+    // Battery & MPPT Weatherproof Box under the panel
+    const batBox = new THREE.Mesh(
+      new THREE.BoxGeometry(0.42, 0.30, 0.28),
+      new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.6 })
+    );
+    batBox.position.set(0, 0.16, 0.05);
+    batBox.castShadow = true;
+    solarGroup.add(batBox);
+
+    const mpptFace = new THREE.Mesh(
+      new THREE.BoxGeometry(0.14, 0.10, 0.02),
+      new THREE.MeshStandardMaterial({ color: 0x0284c7, emissive: 0x0369a1, emissiveIntensity: 0.35 })
+    );
+    mpptFace.position.set(0, 0.44, 0.04);
+    solarGroup.add(mpptFace);
+
+    tagInfo(
+      solarGroup,
+      'Kit Solar 24h Nativo DC (Painel 330–550 W + MPPT + Bateria)',
+      'Alimenta a única bomba submersa DC 24V Brushless no Sump 24h/dia SEM inversor (economizando ~20% de energia) — elimina o risco nº 1 de falta de energia elétrica!'
+    );
+    scene.add(solarGroup);
+
+    // =========================================================================
+    // 4. FISH TANK (CAIXA DE TILÁPIAS 500/1.000 L ON 50 cm BLOCK BASE)
+    // =========================================================================
+    const tankGroup = new THREE.Group();
+    tankGroup.position.set(-0.62, 0, 0.05);
+
+    // Concrete block base (50 cm)
+    const tankBase = new THREE.Mesh(new THREE.CylinderGeometry(0.60, 0.62, 0.50, 24), matBlock);
+    tankBase.position.y = 0.25;
+    tankBase.castShadow = true;
+    tankBase.receiveShadow = true;
+    tankGroup.add(tankBase);
+
+    // Blue tank outer shell (h = 0.85 m, top at 1.35 m)
+    const tankShell = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.58, 0.54, 0.85, 32, 1, true),
+      makeTankShellMat(0x0369a1)
+    );
+    tankShell.position.y = 0.50 + 0.425;
+    tankGroup.add(tankShell);
+
+    const tankBottom = new THREE.Mesh(new THREE.CylinderGeometry(0.54, 0.54, 0.02, 32), new THREE.MeshStandardMaterial({ color: 0x075985 }));
+    tankBottom.position.y = 0.51;
+    tankGroup.add(tankBottom);
+
+    // Water volume inside tank
+    const tankWater = new THREE.Mesh(new THREE.CylinderGeometry(0.555, 0.525, 0.72, 32), matWater);
+    tankWater.position.y = 0.52 + 0.36;
+    tankGroup.add(tankWater);
+
+    // Internal Overflow PVC 50 mm (down to 5 mm from bottom)
+    const ovPipe = makePipe([[0, 0.54, 0], [0, 1.18, 0], [0.58, 1.18, 0]], 0.026, 0x94a3b8);
+    tankGroup.add(ovPipe);
+
+    // Daily 1L Bottom Drain (32 mm) exiting front of base with red valve
+    const drainTankPipe = makePipe([[0, 0.51, 0], [0, 0.24, 0], [0, 0.24, 0.72]], 0.018, 0x78350f);
+    tankGroup.add(drainTankPipe);
+    const drainValve1 = new THREE.Mesh(new THREE.SphereGeometry(0.032, 12, 12), new THREE.MeshStandardMaterial({ color: 0xdc2626 }));
+    drainValve1.position.set(0, 0.24, 0.66);
+    tankGroup.add(drainValve1);
+
+    // DIY Faucet Venturi Aerator (R$ 6,10) on left rim!
+    const venturiBody = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.08, 0.05), matBearing);
+    venturiBody.position.set(-0.46, 1.38, 0.10);
+    tankGroup.add(venturiBody);
+    const venturiNozzle = makePipe([[-0.46, 1.34, 0.10], [-0.46, 1.14, 0.10], [-0.30, 1.02, 0.18]], 0.015, 0x0284c7);
+    tankGroup.add(venturiNozzle);
+
+    // Savonius Air Stone at tank bottom
+    const stoneMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.10, 12), new THREE.MeshStandardMaterial({ color: 0x64748b }));
+    stoneMesh.rotation.z = Math.PI / 2;
+    stoneMesh.position.set(-0.28, 0.62, -0.18);
+    tankGroup.add(stoneMesh);
+
+    // 6 Animated 3D Tilapias swimming inside!
+    const fishes = [];
+    for (let i = 0; i < 6; i++) {
+      const fGrp = new THREE.Group();
+      const isRed = i === 5;
+      const bodyMat = new THREE.MeshStandardMaterial({ color: isRed ? 0xf97316 : 0x64748b, roughness: 0.4 });
+      const body = new THREE.Mesh(new THREE.SphereGeometry(0.06, 12, 10), bodyMat);
+      body.scale.set(1.65, 0.75, 0.42);
+      fGrp.add(body);
+      const tail = new THREE.Mesh(new THREE.ConeGeometry(0.042, 0.075, 4), bodyMat);
+      tail.rotation.z = -Math.PI / 2;
+      tail.position.x = -0.11;
+      fGrp.add(tail);
+      tankGroup.add(fGrp);
+      fishes.push({
+        grp: fGrp,
+        tail,
+        radius: 0.18 + (i % 3) * 0.11,
+        y: 0.72 + (i % 3) * 0.17,
+        speed: 0.55 + (i % 4) * 0.14,
+        phase: (i * Math.PI * 2) / 6
+      });
+    }
+
+    tagInfo(
+      tankGroup,
+      'Caixa de Tilápias GIFT (500 L ou 1.000 L) + Venturi R$ 6,10',
+      'Apoiada em base de blocos de 50 cm c/ areia e rebaixo central. Inclui Overflow 50 mm c/ dentes a 5 mm do fundo, dreno diário 32 mm (purga 1 L/dia), Aerador Venturi de torneira invertida e pedra porosa do Savonius.'
+    );
+    scene.add(tankGroup);
+
+    // =========================================================================
+    // 5. DECANTER (BOMBONA 120–200 L ON 58 cm BLOCK BASE + 2 CURVES + FOAM!)
+    // =========================================================================
+    const decGroup = new THREE.Group();
+    decGroup.position.set(0.46, 0, 0.05);
+
+    const decBase = new THREE.Mesh(new THREE.CylinderGeometry(0.31, 0.32, 0.58, 20), matBlock);
+    decBase.position.y = 0.29;
+    decBase.castShadow = true;
+    decGroup.add(decBase);
+
+    const decShell = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.29, 0.29, 0.76, 28, 1, true),
+      makeTankShellMat(0x1d4ed8)
+    );
+    decShell.position.y = 0.58 + 0.38;
+    decGroup.add(decShell);
+
+    const decWater = new THREE.Mesh(new THREE.CylinderGeometry(0.275, 0.275, 0.62, 24), matWater);
+    decWater.position.y = 0.59 + 0.31;
+    decGroup.add(decWater);
+
+    // Settled brown sludge at bottom
+    const decSludge = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.27, 0.27, 0.09, 24),
+      new THREE.MeshStandardMaterial({ color: 0x713f12, roughness: 0.9 })
+    );
+    decSludge.position.y = 0.63;
+    decGroup.add(decSludge);
+
+    // Curve 1 (DOWN) & Curve 2 (UP + Yellow Washable Foam Sponge!)
+    decGroup.add(makePipe([[-0.29, 1.18, 0], [-0.14, 1.18, 0], [-0.14, 0.80, 0]], 0.025, 0x94a3b8));
+    decGroup.add(makePipe([[0.13, 1.16, 0], [0.13, 1.00, 0], [0.29, 1.00, 0]], 0.025, 0x94a3b8));
+    const foam = new THREE.Mesh(
+      new THREE.BoxGeometry(0.11, 0.08, 0.11),
+      new THREE.MeshStandardMaterial({ color: 0xfef08a, roughness: 0.95 })
+    );
+    foam.position.set(0.13, 1.20, 0);
+    decGroup.add(foam);
+
+    // Bottom drain 32 mm -> Soil fertigation
+    decGroup.add(makePipe([[0, 0.59, 0], [0, 0.24, 0], [0, 0.24, 0.45]], 0.018, 0x78350f));
+    const drainValve2 = new THREE.Mesh(new THREE.SphereGeometry(0.032, 12, 12), new THREE.MeshStandardMaterial({ color: 0xdc2626 }));
+    drainValve2.position.set(0, 0.24, 0.40);
+    decGroup.add(drainValve2);
+
+    tagInfo(
+      decGroup,
+      'Decantador (Bombona 120–200 L) + 2 Curvas + Espuma Filtrante',
+      'Base de 58 cm para alinhar o tubo 50 mm. Curva 1 joga os sólidos para baixo; Curva 2 capta água limpa da superfície passando por espuma lavável (dura 6 meses). Dreno 32 mm embaixo p/ TPA (2–3×/sem) fertirrigando a horta!'
+    );
+    scene.add(decGroup);
+
+    // =========================================================================
+    // 6. SUMP ON GROUND + SINGLE 24V DC BRUSHLESS PUMP
+    // =========================================================================
+    const sumpGroup = new THREE.Group();
+    sumpGroup.position.set(1.48, 0, 0.05);
+
+    const sumpShell = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.32, 0.30, 0.68, 28, 1, true),
+      makeTankShellMat(0x0f766e)
+    );
+    sumpShell.position.y = 0.34;
+    sumpGroup.add(sumpShell);
+
+    const sumpWater = new THREE.Mesh(new THREE.CylinderGeometry(0.30, 0.285, 0.46, 24), matWaterClean);
+    sumpWater.position.y = 0.24;
+    sumpGroup.add(sumpWater);
+
+    // Float valve
+    const floatBall = new THREE.Mesh(new THREE.SphereGeometry(0.045, 14, 14), new THREE.MeshStandardMaterial({ color: 0xfacc15 }));
+    floatBall.position.set(0.18, 0.48, 0.08);
+    sumpGroup.add(floatBall);
+
+    // Single 24V DC Brushless Pump inside Sump
+    const dcPump = new THREE.Mesh(
+      new THREE.BoxGeometry(0.16, 0.13, 0.12),
+      new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.3 })
+    );
+    dcPump.position.set(-0.08, 0.09, 0);
+    sumpGroup.add(dcPump);
+    const pumpStripe = new THREE.Mesh(new THREE.BoxGeometry(0.165, 0.03, 0.125), matBearing);
+    pumpStripe.position.set(-0.08, 0.11, 0);
+    sumpGroup.add(pumpStripe);
+
+    tagInfo(
+      sumpGroup,
+      'Sump no Chão (100–120 L) + Única Bomba DC 24V Brushless',
+      'Recebe água limpa do decantador e da cama de cultivo. Contém boia de reposição (20 cm de água acima da boia p/ segurança) e a ÚNICA bomba d\'água do sistema (3.000–6.000 L/h DC 24V, sem inversor).'
+    );
+    scene.add(sumpGroup);
+
+    // =========================================================================
+    // 7. GROW BED / BIOFILTER ABOVE SUMP + ANIMATED BELL SIPHON + PLANTS
+    // =========================================================================
+    const bedGroup = new THREE.Group();
+    bedGroup.position.set(1.48, 0, 0.05);
+
+    // 4 Wooden bench legs framing over the Sump
+    const legGeo = new THREE.BoxGeometry(0.055, 0.94, 0.055);
+    [[-0.50, -0.32], [0.50, -0.32], [-0.50, 0.32], [0.50, 0.32]].forEach(([lx, lz]) => {
+      const leg = new THREE.Mesh(legGeo, matWood);
+      leg.position.set(lx, 0.47, lz);
+      leg.castShadow = true;
+      bedGroup.add(leg);
+    });
+    // Support beams
+    [-0.32, 0.32].forEach(lz => {
+      const bm = new THREE.Mesh(new THREE.BoxGeometry(1.08, 0.05, 0.055), matWood);
+      bm.position.set(0, 0.93, lz);
+      bedGroup.add(bm);
+    });
+
+    // Half-drum / Mason tray grow bed shell (1.05m x 0.32m x 0.66m)
+    const bedShell = new THREE.Mesh(
+      new THREE.BoxGeometry(1.06, 0.32, 0.66),
+      makeTankShellMat(0x334155)
+    );
+    bedShell.position.y = 1.11;
+    bedGroup.add(bedShell);
+
+    // Gravel / Expanded clay fill
+    const bedGravel = new THREE.Mesh(
+      new THREE.BoxGeometry(1.01, 0.25, 0.61),
+      new THREE.MeshStandardMaterial({ color: 0x78716c, roughness: 0.95, transparent: true, opacity: 0.72 })
+    );
+    bedGravel.position.y = 1.09;
+    bedGroup.add(bedGravel);
+
+    // Animated rising/flushing Tide Water inside Grow Bed!
+    const bedWater = new THREE.Mesh(new THREE.BoxGeometry(1.00, 0.22, 0.60), matWater);
+    bedWater.position.y = 1.07;
+    bedGroup.add(bedWater);
+
+    // 3D Bell Siphon (Right end of Grow Bed)
+    const siphonGuard = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.055, 0.055, 0.30, 16, 1, true),
+      new THREE.MeshStandardMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.45, side: THREE.DoubleSide })
+    );
+    siphonGuard.position.set(0.36, 1.12, 0);
+    bedGroup.add(siphonGuard);
+
+    const siphonBell = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.032, 0.032, 0.24, 16),
+      new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.4 })
+    );
+    siphonBell.position.set(0.36, 1.11, 0);
+    bedGroup.add(siphonBell);
+
+    // Siphon drain pipe dropping straight into Sump below!
+    bedGroup.add(makePipe([[0.36, 0.95, 0], [0.36, 0.74, 0], [0.16, 0.74, 0], [0.16, 0.52, 0]], 0.016, 0x059669));
+
+    // 3D Plants (Tomatoes + Lettuce/Mint)
+    function addTomatoPlant(x, z) {
+      const p = new THREE.Group();
+      p.position.set(x, 1.22, z);
+      const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.016, 0.42, 8), new THREE.MeshStandardMaterial({ color: 0x15803d }));
+      stem.position.y = 0.21;
+      p.add(stem);
+      [[0.07, 0.26, 0.04], [-0.07, 0.34, -0.03], [0.02, 0.40, -0.06]].forEach(([fx, fy, fz]) => {
+        const leaf = new THREE.Mesh(new THREE.SphereGeometry(0.075, 8, 8), new THREE.MeshStandardMaterial({ color: 0x22c55e }));
+        leaf.scale.set(1.2, 0.5, 1.0);
+        leaf.position.set(fx, fy, fz);
+        p.add(leaf);
+      });
+      [[0.05, 0.20, 0.05], [-0.06, 0.28, 0.04]].forEach(([tx, ty, tz]) => {
+        const tom = new THREE.Mesh(new THREE.SphereGeometry(0.032, 10, 10), new THREE.MeshStandardMaterial({ color: 0xef4444 }));
+        tom.position.set(tx, ty, tz);
+        p.add(tom);
+      });
+      bedGroup.add(p);
+    }
+    addTomatoPlant(-0.30, -0.10);
+    addTomatoPlant(-0.02, 0.10);
+
+    // Mint / Lettuce bush
+    const bush = new THREE.Mesh(new THREE.DodecahedronGeometry(0.13, 1), new THREE.MeshStandardMaterial({ color: 0x4ade80, roughness: 0.7 }));
+    bush.position.set(0.14, 1.30, -0.12);
+    bush.scale.set(1.1, 0.7, 1.1);
+    bedGroup.add(bush);
+
+    tagInfo(
+      bedGroup,
+      'Cama de Cultivo / Biofiltro (Meia Bombona 100 L + Sifão de Sino)',
+      'Cheia de brita (100 L/kg) ou argila expandida (400 L/kg). O Sifão de Sino automático (sem energia) cria maré a cada ~5 min, oxigenando raízes e bactérias nitrificantes. Cultive tomates, hortelã e alface sem veneno!'
+    );
+    scene.add(bedGroup);
+
+    // =========================================================================
+    // 8. AZOLLA & LEMNA LIVE PROTEIN MODULE (BEHIND SUMP — ZERO EXTRA PUMP!)
+    // =========================================================================
+    const azollaGroup = new THREE.Group();
+    azollaGroup.position.set(1.48, 0, -1.20);
+
+    const azBase = new THREE.Mesh(new THREE.BoxGeometry(0.92, 0.42, 0.62), matBlock);
+    azBase.position.y = 0.21;
+    azollaGroup.add(azBase);
+
+    const azBox = new THREE.Mesh(new THREE.BoxGeometry(0.96, 0.34, 0.66), makeTankShellMat(0x166534));
+    azBox.position.y = 0.59;
+    azollaGroup.add(azBox);
+
+    const azWater = new THREE.Mesh(new THREE.BoxGeometry(0.92, 0.24, 0.62), matWaterClean);
+    azWater.position.y = 0.55;
+    azollaGroup.add(azWater);
+
+    // Lush floating green Azolla & Lemna carpet!
+    const azCarpet = new THREE.Mesh(
+      new THREE.BoxGeometry(0.91, 0.03, 0.61),
+      new THREE.MeshStandardMaterial({ color: 0x22c55e, roughness: 0.85 })
+    );
+    azCarpet.position.y = 0.68;
+    azollaGroup.add(azCarpet);
+
+    tagInfo(
+      azollaGroup,
+      'Módulo Forrageiro Vivo: Azolla (25–30% prot.) + Lemna minor (até 45%)',
+      'Recebe um desvio fino da bomba única (sem bomba extra!) e retorna ao Sump por gravidade. Dobra a cada 2–3 dias e economiza até 15% na ração das tilápias!'
+    );
+    scene.add(azollaGroup);
+
+    // =========================================================================
+    // 9. ALL INTERCONNECTING 3D PIPES & CABLES
+    // =========================================================================
+    // Tank Overflow -> Decanter (50 mm level pipe)
+    scene.add(makePipe([[-0.04, 1.18, 0.05], [0.17, 1.18, 0.05]], 0.026, 0x94a3b8));
+    // Decanter -> Sump (50 mm gravity pipe)
+    scene.add(makePipe([[0.75, 1.00, 0.05], [1.05, 1.00, 0.05], [1.05, 0.62, 0.05], [1.24, 0.62, 0.05]], 0.024, 0x0284c7));
+    // Main Single DC Pump Header (Sump -> rises -> splits to Grow Bed, Fish Tank Venturi & Azolla!)
+    scene.add(makePipe([[1.40, 0.16, 0.05], [1.40, 1.56, -0.22], [-1.08, 1.56, -0.22], [-1.08, 1.40, 0.15]], 0.017, 0x0284c7));
+    // Branch down to Grow Bed
+    scene.add(makePipe([[1.16, 1.56, -0.22], [1.16, 1.28, 0.05]], 0.014, 0x0284c7));
+    // Branch to Azolla/Lemna tank
+    scene.add(makePipe([[1.40, 1.56, -0.22], [1.40, 1.56, -1.05], [1.40, 0.76, -1.05]], 0.011, 0x16a34a));
+    // Azolla gravity return back to Sump
+    scene.add(makePipe([[1.48, 0.65, -0.87], [1.48, 0.65, -0.35], [1.48, 0.56, -0.20]], 0.016, 0x10b981));
+    // Savonius Air Hose -> Fish Tank Air Stone (dry air!)
+    scene.add(makePipe([[-1.70, 0.33, 0.05], [-1.36, 0.33, 0.05], [-1.36, 1.42, -0.13], [-0.90, 1.42, -0.13], [-0.90, 0.62, -0.13]], 0.008, 0x38bdf8, true));
+    // Solar DC 24V Cable (Battery box -> ground -> Sump DC Pump)
+    scene.add(makePipe([[-2.0, 0.14, -1.10], [-2.0, 0.02, -0.58], [1.40, 0.02, -0.58], [1.40, 0.09, -0.02]], 0.009, 0xfacc15));
+
+    // =========================================================================
+    // 10. 3D RISING OXYGEN BUBBLES (VENTURI + SAVONIUS AIR STONE)
+    // =========================================================================
+    const bubbles3D = [];
+    const bubGeo = new THREE.SphereGeometry(0.014, 8, 8);
+    const bubMat = new THREE.MeshBasicMaterial({ color: 0xe0f2fe, transparent: true, opacity: 0.85 });
+    for (let i = 0; i < 20; i++) {
+      const m = new THREE.Mesh(bubGeo, bubMat);
+      const isSav = i >= 10;
+      scene.add(m);
+      bubbles3D.push({
+        mesh: m,
+        isSav,
+        t: Math.random(),
+        ox: (Math.random() - 0.5) * 0.12,
+        oz: (Math.random() - 0.5) * 0.12
+      });
+    }
+
+    // =========================================================================
+    // 11. INTERACTIVE CAMERA PRESETS, X-RAY TOGGLE & RAYCASTER CLICK
+    // =========================================================================
+    const camPresets = {
+      overview: { pos: [0.4, 2.55, 5.1], target: [0.0, 0.9, -0.2] },
+      savonius: { pos: [-1.7, 1.65, 2.55], target: [-2.05, 1.1, 0.05] },
+      tank:     { pos: [-0.55, 1.75, 2.1], target: [-0.62, 0.95, 0.05] },
+      decanter: { pos: [0.48, 1.65, 1.85], target: [0.46, 0.95, 0.05] },
+      bed:      { pos: [2.25, 1.85, 2.0], target: [1.48, 0.85, 0.05] },
+      solar:    { pos: [-0.25, 2.1, -3.5], target: [-0.25, 0.65, -1.2] }
+    };
+
+    let camAnim = null;
+    camBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        camBtns.forEach(b => {
+          b.classList.remove('active');
+          b.classList.add('bg-[var(--card)]');
+        });
+        btn.classList.add('active');
+        btn.classList.remove('bg-[var(--card)]');
+        const p = camPresets[btn.dataset.cam];
+        if (p) {
+          camAnim = {
+            toPos: new THREE.Vector3(...p.pos),
+            toTarget: new THREE.Vector3(...p.target)
+          };
+        }
+      });
+    });
+
+    let xrayOn = true;
+    xrayBtn.addEventListener('click', () => {
+      xrayOn = !xrayOn;
+      xrayBtn.textContent = xrayOn ? 'Raio-X: Ligado' : 'Raio-X: Desligado';
+      xrayMaterials.forEach(m => { m.opacity = xrayOn ? 0.42 : 0.96; });
+    });
+
+    let running = true;
+    pauseBtn.addEventListener('click', () => {
+      running = !running;
+      pauseBtn.textContent = running ? 'Pausar' : 'Continuar';
+    });
+
+    // Click Raycaster to inspect 3D parts
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+    let downX = 0, downY = 0;
+    renderer.domElement.addEventListener('pointerdown', e => { downX = e.clientX; downY = e.clientY; });
+    renderer.domElement.addEventListener('pointerup', e => {
+      if (Math.hypot(e.clientX - downX, e.clientY - downY) > 6) return; // ignore drags
+      const rect = renderer.domElement.getBoundingClientRect();
+      pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(pointer, camera);
+      const hits = raycaster.intersectObjects(clickableMeshes, false);
+      if (hits.length > 0) {
+        const d = hits[0].object.userData;
+        inspectorText.innerHTML = `<strong class="text-[var(--foreground)]">${d.infoTitle}:</strong> ${d.infoDesc}`;
+      }
+    });
+
+    // Resize handling
+    window.addEventListener('resize', () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    });
+
+    // =========================================================================
+    // 12. ANIMATION LOOP (SAVONIUS + ECCENTRIC + FISH + SIPHON TIDE + BUBBLES)
+    // =========================================================================
+    let tide = 0.25;
+    let flushing = false;
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const dt = Math.min(clock.getDelta(), 0.05);
+      const elapsed = clock.getElapsedTime();
+
+      // Smooth camera transition
+      if (camAnim) {
+        camera.position.lerp(camAnim.toPos, 0.08);
+        controls.target.lerp(camAnim.toTarget, 0.08);
+        if (camera.position.distanceTo(camAnim.toPos) < 0.03) camAnim = null;
+      }
+      controls.update();
+
+      const wind = +windSlider.value;
+      windVal.textContent = `${wind} km/h`;
+      const savRunning = wind >= 11;
+      const rpm = savRunning ? Math.round(wind * 5.6) : 0;
+      const airLpm = savRunning ? (rpm * 0.085).toFixed(1).replace('.', ',') : '0,0';
+      hudWind.textContent = savRunning
+        ? `Savonius: ~${rpm} RPM • ~${airLpm} L/min O₂ grátis`
+        : 'Savonius parado (<11 km/h) • Venturi Solar 24h ativo';
+
+      if (running) {
+        // 1. Savonius rotor + eccentric connecting rod reciprocation
+        if (savRunning) {
+          rotorSpin.rotation.y += (1.2 + (wind - 10) * 0.22) * dt;
+          const a = rotorSpin.rotation.y;
+          const pinX = Math.cos(a) * 0.032;
+          const pinZ = -Math.sin(a) * 0.032;
+          bielaMesh.position.set(0.13 + pinX * 0.5, 0.33, pinZ * 0.5);
+          bielaMesh.rotation.y = Math.atan2(pinZ, 0.23 - pinX);
+        }
+
+        // 2. Bell Siphon Tide in Grow Bed + Counter-level in Sump
+        if (!flushing) {
+          tide += 0.14 * dt;
+          if (tide >= 0.94) flushing = true;
+          hudTide.textContent = 'Sifão de Sino: Enchendo cama de cultivo...';
+        } else {
+          tide -= 0.42 * dt;
+          if (tide <= 0.18) flushing = false;
+          hudTide.textContent = 'Sifão de Sino: DESCARGA p/ Sump (oxigenando raízes!)';
+        }
+        bedWater.scale.y = tide;
+        bedWater.position.y = 0.96 + (0.22 * tide) / 2;
+        const sumpScale = 1.08 - tide * 0.24;
+        sumpWater.scale.y = sumpScale;
+        sumpWater.position.y = 0.02 + (0.46 * sumpScale) / 2;
+
+        // 3. Tilapias swimming smoothly in circle inside tank
+        fishes.forEach(f => {
+          const ang = elapsed * f.speed + f.phase;
+          f.grp.position.set(Math.cos(ang) * f.radius, f.y + Math.sin(elapsed * 2 + f.phase) * 0.02, Math.sin(ang) * f.radius);
+          f.grp.rotation.y = -ang + Math.PI / 2;
+          f.tail.rotation.y = Math.sin(elapsed * 12 + f.phase) * 0.35;
+        });
+
+        // 4. 3D Bubbles (Venturi continuous + Savonius stone when wind >= 11)
+        bubbles3D.forEach(b => {
+          const active = b.isSav ? savRunning : true;
+          b.mesh.visible = active;
+          if (active) {
+            b.t = (b.t + 0.65 * dt) % 1;
+            const bx = (b.isSav ? -0.90 : -0.92) + b.ox;
+            const bz = (b.isSav ? -0.13 : 0.22) + b.oz;
+            const startY = b.isSav ? 0.64 : 0.95;
+            b.mesh.position.set(bx, startY + b.t * (1.22 - startY), bz);
+          }
+        });
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
