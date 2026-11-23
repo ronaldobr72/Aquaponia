@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Planta Animada — Aquaponia CHOP2 (2 × 3.000 L + Decantador + Horta + Sump)</title>
+  <title>Planta Animada — Aquaponia CHOP2 Simétrica (SLOs Individuais + Verificação Física)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
@@ -56,15 +56,15 @@
     <!-- Header + Mode Switcher -->
     <div class="flex flex-wrap items-start justify-between gap-3 pb-3 border-b border-[var(--card-border)]">
       <div>
-        <h1 class="font-bold text-base md:text-lg text-[var(--foreground)]">Aquaponia CHOP2 — 2 Tanques de 3.000 L no Mesmo Nível + Decantador + Horta + Sump</h1>
-        <p class="text-xs text-[var(--muted-foreground)]">Limpeza igual nos 2 tanques (vórtex tangencial + SLO central) • Bomba puxa <b>só água limpa</b> do Sump inferior</p>
+        <h1 class="font-bold text-base md:text-lg text-[var(--foreground)]">Aquaponia CHOP2 Simétrica — SLOs Individuais Diretos no Decantador (Sem "Barriga" / Sifão)</h1>
+        <p class="text-xs text-[var(--muted-foreground)]">Queda contínua por gravidade: Tanques A &amp; B (+1,10 m) → Decantador no meio (+1,05 m) → Horta (+0,85 m) → Sump 500 L (+0,40 m)</p>
       </div>
       <div class="flex flex-wrap items-center gap-1.5 text-xs">
         <button data-mode="eolico" class="mode-btn active px-3 py-1.5 rounded border border-[var(--card-border)] font-semibold cursor-pointer transition">
           1. 100% Eólico (Zero Placa Solar)
         </button>
         <button data-mode="hibrido" class="mode-btn px-3 py-1.5 rounded border border-[var(--card-border)] bg-[var(--background)] font-semibold cursor-pointer transition">
-          2. Híbrido (Bomba Solar 12V + Aerador Eólico)
+          2. Híbrido (Bomba Solar 12V + Eólico)
         </button>
       </div>
     </div>
@@ -83,17 +83,17 @@
       </div>
       <div class="flex flex-wrap items-center gap-2 font-mono">
         <span id="flowBadge" class="px-2.5 py-1 rounded bg-[var(--card)] border border-[var(--card-border)] text-[var(--success)] font-bold">
-          Recalque: ~750 L/h (375 L/h por tanque)
+          Entra na horta: ~750 L/h → Volta ao Sump: ~746 L/h
         </span>
         <span id="statusBadge" class="px-2.5 py-1 rounded bg-[var(--card)] border border-[var(--card-border)] text-[var(--primary)] font-semibold">
-          100% mecânico • Sem placa solar
+          Evapotranspiração: ~4 L/h (~95 L/dia)
         </span>
       </div>
     </div>
 
-    <!-- Main Full-System CHOP2 SVG -->
+    <!-- Main Physically Verified Symmetric CHOP2 SVG -->
     <div class="w-full overflow-x-auto">
-      <svg id="chopSvg" viewBox="0 0 1000 540" class="w-full min-w-[820px] h-auto block" xmlns="http://www.w3.org/2000/svg">
+      <svg id="chopSvg" viewBox="0 0 1000 555" class="w-full min-w-[820px] h-auto block" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="waterFish" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.34" />
@@ -119,18 +119,20 @@
           </marker>
         </defs>
 
-        <!-- TERRAIN / STEPPED LEVELS -->
-        <path d="M 192,238 L 574,238 L 594,254 L 716,254 L 732,262 L 985,262" fill="none" stroke="var(--muted-foreground)" stroke-width="1.8" stroke-opacity="0.45" />
-        <line x1="16" y1="498" x2="985" y2="498" stroke="var(--muted-foreground)" stroke-width="2" stroke-opacity="0.4" />
-        <text x="200" y="254" font-size="9.2" font-weight="600" fill="var(--muted-foreground)">Patamar Alto — Tanques A e B na mesma altura (sempre cheios)</text>
-        <text x="580" y="514" font-size="9.2" font-weight="600" fill="var(--muted-foreground)">Patamar Baixo — Sump (água limpa) + Bomba afogada</text>
+        <!-- ELEVATION RULER ON RIGHT EDGE (STRICT GRAVITY PROOF) -->
+        <g stroke="var(--muted-foreground)" stroke-opacity="0.3" stroke-dasharray="3 3" font-size="8.5" font-weight="700">
+          <line x1="205" y1="108" x2="960" y2="108" />
+          <text x="992" y="111" text-anchor="end" fill="#0284c7" stroke="none">+1,10 m</text>
+          <line x1="420" y1="122" x2="960" y2="122" />
+          <text x="992" y="125" text-anchor="end" fill="#0284c7" stroke="none">+1,05 m</text>
+          <line x1="420" y1="274" x2="960" y2="274" />
+          <text x="992" y="277" text-anchor="end" fill="#16a34a" stroke="none">+0,85 m</text>
+          <line x1="420" y1="414" x2="960" y2="414" />
+          <text x="992" y="417" text-anchor="end" fill="#059669" stroke="none">+0,40 m</text>
+        </g>
 
-        <!-- Elevation ΔH Marker -->
-        <line x1="578" y1="114" x2="578" y2="394" stroke="var(--warning)" stroke-width="1.3" stroke-dasharray="4 3" />
-        <line x1="572" y1="114" x2="584" y2="114" stroke="var(--warning)" stroke-width="1.4" />
-        <line x1="572" y1="394" x2="584" y2="394" stroke="var(--warning)" stroke-width="1.4" />
-        <rect x="536" y="302" width="84" height="20" rx="4" fill="var(--card)" stroke="var(--warning)" stroke-width="1" />
-        <text x="578" y="315" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--warning)">ΔH ≈ 1,1 m</text>
+        <!-- Ground Line -->
+        <line x1="16" y1="518" x2="985" y2="518" stroke="var(--muted-foreground)" stroke-width="2" stroke-opacity="0.45" />
 
         <!-- =============================================================== -->
         <!-- 1. SAVONIUS WIND TURBINE (LEFT)                                 -->
@@ -142,213 +144,214 @@
         </g>
         <text x="8" y="48" font-size="10" font-weight="700" fill="#0ea5e9">Vento 360°</text>
 
-        <!-- Tower & Vertical Steel Shaft -->
-        <path d="M 56,498 L 72,220 L 136,220 L 152,498" fill="none" stroke="var(--muted-foreground)" stroke-width="2.5" />
-        <line x1="65" y1="340" x2="143" y2="340" stroke="var(--muted-foreground)" stroke-width="1.5" />
-        <line x1="104" y1="24" x2="104" y2="448" stroke="var(--foreground)" stroke-width="4.5" stroke-linecap="round" />
+        <!-- Tower & Vertical Shaft -->
+        <path d="M 52,518 L 68,220 L 132,220 L 148,518" fill="none" stroke="var(--muted-foreground)" stroke-width="2.4" />
+        <line x1="61" y1="348" x2="139" y2="348" stroke="var(--muted-foreground)" stroke-width="1.5" />
+        <line x1="100" y1="24" x2="100" y2="465" stroke="var(--foreground)" stroke-width="4.5" stroke-linecap="round" />
 
         <!-- Bearings -->
-        <rect x="92" y="22" width="24" height="10" rx="2" fill="#f59e0b" stroke="var(--foreground)" stroke-width="1.1" />
-        <rect x="92" y="215" width="24" height="10" rx="2" fill="#f59e0b" stroke="var(--foreground)" stroke-width="1.1" />
+        <rect x="88" y="22" width="24" height="10" rx="2" fill="#f59e0b" stroke="var(--foreground)" stroke-width="1.1" />
+        <rect x="88" y="215" width="24" height="10" rx="2" fill="#f59e0b" stroke="var(--foreground)" stroke-width="1.1" />
 
         <!-- Rotor Savonius (1,80 m x 0,95 m) -->
-        <rect x="58" y="40" width="92" height="4" rx="1.5" fill="var(--muted-foreground)" />
-        <rect id="s1L" x="62" y="44" width="42" height="76" rx="3" fill="#0284c7" fill-opacity="0.82" stroke="var(--foreground)" stroke-width="1.2" />
-        <rect id="s1R" x="104" y="44" width="42" height="76" rx="3" fill="#38bdf8" fill-opacity="0.45" stroke="var(--foreground)" stroke-width="1.2" />
-        <rect x="58" y="120" width="92" height="4" rx="1.5" fill="var(--muted-foreground)" />
-        <rect id="s2L" x="72" y="124" width="32" height="76" rx="3" fill="#0369a1" fill-opacity="0.72" stroke="var(--foreground)" stroke-width="1.2" />
-        <rect id="s2R" x="104" y="124" width="32" height="76" rx="3" fill="#7dd3fc" fill-opacity="0.52" stroke="var(--foreground)" stroke-width="1.2" />
-        <rect x="58" y="200" width="92" height="4" rx="1.5" fill="var(--muted-foreground)" />
-        <text x="104" y="16" text-anchor="middle" font-size="10" font-weight="700" fill="var(--foreground)">Savonius (1,80×0,95 m)</text>
+        <rect x="54" y="40" width="92" height="4" rx="1.5" fill="var(--muted-foreground)" />
+        <rect id="s1L" x="58" y="44" width="42" height="76" rx="3" fill="#0284c7" fill-opacity="0.82" stroke="var(--foreground)" stroke-width="1.2" />
+        <rect id="s1R" x="100" y="44" width="42" height="76" rx="3" fill="#38bdf8" fill-opacity="0.45" stroke="var(--foreground)" stroke-width="1.2" />
+        <rect x="54" y="120" width="92" height="4" rx="1.5" fill="var(--muted-foreground)" />
+        <rect id="s2L" x="68" y="124" width="32" height="76" rx="3" fill="#0369a1" fill-opacity="0.72" stroke="var(--foreground)" stroke-width="1.2" />
+        <rect id="s2R" x="100" y="124" width="32" height="76" rx="3" fill="#7dd3fc" fill-opacity="0.52" stroke="var(--foreground)" stroke-width="1.2" />
+        <rect x="54" y="200" width="92" height="4" rx="1.5" fill="var(--muted-foreground)" />
+        <text x="100" y="16" text-anchor="middle" font-size="10" font-weight="700" fill="var(--foreground)">Savonius (1,80×0,95 m)</text>
 
-        <!-- Eccentric + Dual Diaphragm Pump Unit (positioned LOW so it stays FLOODED below Sump water level in Mode 1!) -->
+        <!-- Dual Diaphragm Pump Unit (LOW / FLOODED below Sump water level y=414!) -->
         <g id="pumpUnit">
-          <ellipse cx="104" cy="442" rx="18" ry="7" fill="var(--card)" stroke="var(--foreground)" stroke-width="1.6" />
-          <rect x="34" y="424" width="28" height="36" rx="3" fill="var(--background)" stroke="var(--foreground)" stroke-width="1.6" />
-          <rect x="146" y="424" width="28" height="36" rx="3" fill="var(--background)" stroke="var(--foreground)" stroke-width="1.6" />
-          <line id="pRodL" x1="104" y1="442" x2="62" y2="442" stroke="var(--foreground)" stroke-width="2.5" />
-          <line id="pRodR" x1="104" y1="442" x2="146" y2="442" stroke="var(--foreground)" stroke-width="2.5" />
-          <circle id="pPin" cx="116" cy="442" r="4" fill="#ef4444" stroke="var(--foreground)" stroke-width="1.1" />
-          <text id="pumpCaption" x="104" y="476" text-anchor="middle" font-size="9" font-weight="700" fill="var(--primary)">Bomba d'Água Dupla (Afogada)</text>
-          <text id="pumpSubCaption" x="104" y="489" text-anchor="middle" font-size="8" fill="var(--muted-foreground)">2× PVC Ø 75 + válvulas p/ água Ø 25</text>
+          <ellipse cx="100" cy="458" rx="18" ry="7" fill="var(--card)" stroke="var(--foreground)" stroke-width="1.6" />
+          <rect x="30" y="440" width="28" height="36" rx="3" fill="var(--background)" stroke="var(--foreground)" stroke-width="1.6" />
+          <rect x="142" y="440" width="28" height="36" rx="3" fill="var(--background)" stroke="var(--foreground)" stroke-width="1.6" />
+          <line id="pRodL" x1="100" y1="458" x2="58" y2="458" stroke="var(--foreground)" stroke-width="2.5" />
+          <line id="pRodR" x1="100" y1="458" x2="142" y2="458" stroke="var(--foreground)" stroke-width="2.5" />
+          <circle id="pPin" cx="112" cy="458" r="4" fill="#ef4444" stroke="var(--foreground)" stroke-width="1.1" />
+          <text id="pumpCaption" x="100" y="494" text-anchor="middle" font-size="8.8" font-weight="700" fill="var(--primary)">Bomba d'Água Dupla (Afogada)</text>
+          <text id="pumpSubCaption" x="100" y="506" text-anchor="middle" font-size="7.8" fill="var(--muted-foreground)">Abaixo do nível do Sump (+0,40 m)</text>
+        </g>
+
+        <!-- Pulsation Dampener / Air Chamber (PVC 50mm x 30cm) for Mode 1 (Incompressible Water Physics!) -->
+        <g id="pulsationChamber">
+          <rect x="148" y="376" width="16" height="36" rx="5" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.8" />
+          <rect x="150" y="396" width="12" height="14" rx="2" fill="#0284c7" fill-opacity="0.5" />
+          <line x1="156" y1="412" x2="156" y2="440" stroke="#0284c7" stroke-width="4" />
+          <text x="172" y="388" font-size="7.6" font-weight="700" fill="#0284c7">Câmara de ar</text>
+          <text x="172" y="398" font-size="7.2" fill="var(--muted-foreground)">(amortece golpe</text>
+          <text x="172" y="407" font-size="7.2" fill="var(--muted-foreground)">de aríete)</text>
         </g>
 
         <!-- SOLAR PANEL + BATTERY (ONLY VISIBLE IN HYBRID MODE 2) -->
         <g id="solarGroup" opacity="0">
-          <polygon points="220,415 294,405 304,445 230,455" fill="#1e3a8a" stroke="#60a5fa" stroke-width="1.8" />
-          <line x1="244" y1="412" x2="254" y2="452" stroke="#60a5fa" stroke-width="0.9" stroke-opacity="0.6" />
-          <line x1="268" y1="409" x2="278" y2="449" stroke="#60a5fa" stroke-width="0.9" stroke-opacity="0.6" />
-          <line x1="225" y1="435" x2="299" y2="425" stroke="#60a5fa" stroke-width="0.9" stroke-opacity="0.6" />
-          <rect x="318" y="422" width="54" height="32" rx="3" fill="#334155" stroke="#fbbf24" stroke-width="1.6" />
-          <text x="345" y="436" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fbbf24">12V Bat</text>
-          <text x="345" y="447" text-anchor="middle" font-size="7" fill="#fde68a">60–100Ah</text>
-          <line x1="300" y1="436" x2="318" y2="436" stroke="#fbbf24" stroke-width="2" />
-          <!-- Wire to submerged 12V pump in Sump -->
-          <path d="M 372,438 L 620,438" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4 3" />
-          <text x="295" y="472" text-anchor="middle" font-size="8.8" font-weight="700" fill="#f59e0b">Painel 200W + Bateria (24h)</text>
+          <polygon points="220,425 294,415 304,455 230,465" fill="#1e3a8a" stroke="#60a5fa" stroke-width="1.8" />
+          <line x1="244" y1="422" x2="254" y2="462" stroke="#60a5fa" stroke-width="0.9" stroke-opacity="0.6" />
+          <line x1="268" y1="419" x2="278" y2="459" stroke="#60a5fa" stroke-width="0.9" stroke-opacity="0.6" />
+          <rect x="318" y="432" width="54" height="32" rx="3" fill="#334155" stroke="#fbbf24" stroke-width="1.6" />
+          <text x="345" y="446" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fbbf24">12V Bat</text>
+          <text x="345" y="457" text-anchor="middle" font-size="7" fill="#fde68a">60–100Ah</text>
+          <line x1="300" y1="446" x2="318" y2="446" stroke="#fbbf24" stroke-width="2" />
+          <path d="M 372,448 L 496,448" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4 3" />
+          <text x="295" y="482" text-anchor="middle" font-size="8.5" font-weight="700" fill="#f59e0b">Painel 200W + Bateria (24h)</text>
         </g>
 
         <!-- =============================================================== -->
-        <!-- 2. TANQUE A & TANQUE B — 3.000 L EACH (SAME HIGH LEVEL!)        -->
+        <!-- 2. SYMMETRIC TOP ROW: TANQUE A  -->  DECANTADOR  <--  TANQUE B  -->
+        <!--    BOTH SLOS ARE SHORT, STRAIGHT, INDIVIDUAL & DOWNHILL!        -->
         <!-- =============================================================== -->
 
-        <!-- TANQUE A (3.000 L, Circular) -->
-        <path d="M 205,94 L 205,236 L 369,236 L 369,94" fill="none" stroke="var(--foreground)" stroke-width="3.2" stroke-linejoin="round" />
-        <rect x="207" y="114" width="160" height="120" fill="url(#waterFish)" />
-        <path d="M 207,114 Q 247,110 287,114 T 367,114" fill="none" stroke="#0284c7" stroke-width="1.8" />
-        <text x="287" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="var(--foreground)">TANQUE A — 3.000 L</text>
-        <text x="287" y="53" text-anchor="middle" font-size="8.5" fill="var(--muted-foreground)">Entrada tangencial → vórtex</text>
+        <!-- TANQUE A (3.000 L, Left of Decanter, Water at y=108 / +1,10 m) -->
+        <path d="M 218,88 L 218,224 L 402,224 L 402,88" fill="none" stroke="var(--foreground)" stroke-width="3.2" stroke-linejoin="round" />
+        <rect x="220" y="108" width="180" height="114" fill="url(#waterFish)" />
+        <path d="M 220,108 Q 265,104 310,108 T 400,108" fill="none" stroke="#0284c7" stroke-width="1.8" />
+        <text x="310" y="38" text-anchor="middle" font-size="11" font-weight="700" fill="var(--foreground)">TANQUE A — 3.000 L</text>
+        <text x="310" y="51" text-anchor="middle" font-size="8.5" fill="var(--muted-foreground)">Nível +1,10 m • Jato tangencial (vórtex)</text>
+        <ellipse cx="310" cy="202" rx="62" ry="11" fill="none" stroke="#38bdf8" stroke-width="1.3" stroke-dasharray="5 4" opacity="0.7" />
 
-        <!-- Vortex circular flow indicator in Tank A -->
-        <ellipse cx="287" cy="212" rx="56" ry="12" fill="none" stroke="#38bdf8" stroke-width="1.3" stroke-dasharray="5 4" opacity="0.7" />
-        <text x="242" y="230" font-size="7.5" font-weight="600" fill="#e0f2fe">Vórtex → centro</text>
-
-        <!-- Fish in Tank A -->
+        <!-- Fish A -->
         <g id="fishA">
-          <ellipse cx="255" cy="158" rx="11" ry="5" fill="#f97316" />
-          <polygon points="244,158 237,153 237,163" fill="#ea580c" />
-          <circle cx="261" cy="156" r="1.3" fill="#0f172a" />
+          <ellipse cx="268" cy="152" rx="11" ry="5" fill="#f97316" />
+          <polygon points="257,152 250,147 250,157" fill="#ea580c" />
+          <circle cx="274" cy="150" r="1.3" fill="#0f172a" />
         </g>
 
-        <!-- SLO Central Tank A -->
-        <path d="M 287,228 L 287,118 L 369,118" fill="none" stroke="#64748b" stroke-width="7.5" stroke-linejoin="round" />
-        <path d="M 287,228 L 287,118 L 369,118" fill="none" stroke="#0ea5e9" stroke-width="3.2" stroke-linejoin="round" />
-        <line x1="287" y1="118" x2="287" y2="100" stroke="#64748b" stroke-width="6" />
-        <text x="294" y="136" font-size="8" font-weight="700" fill="var(--foreground)">SLO A</text>
+        <!-- SLO A — INDIVIDUAL, SHORT, STRAIGHT DOWNHILL DIRECTLY INTO DECANTER! -->
+        <path d="M 310,216 L 310,112 L 486,118" fill="none" stroke="#64748b" stroke-width="7.5" stroke-linejoin="round" />
+        <path d="M 310,216 L 310,112 L 486,118" fill="none" stroke="#0ea5e9" stroke-width="3.2" stroke-linejoin="round" />
+        <line x1="310" y1="112" x2="310" y2="94" stroke="#64748b" stroke-width="6" />
+        <text x="444" y="106" text-anchor="middle" font-size="8.2" font-weight="700" fill="var(--foreground)">SLO A direto</text>
+        <text x="444" y="128" text-anchor="middle" font-size="7.4" fill="var(--muted-foreground)">(caimento 2%)</text>
 
-        <!-- TANQUE B (3.000 L, Circular — SAME HIGH LEVEL!) -->
-        <path d="M 397,94 L 397,236 L 561,236 L 561,94" fill="none" stroke="var(--foreground)" stroke-width="3.2" stroke-linejoin="round" />
-        <rect x="399" y="114" width="160" height="120" fill="url(#waterFish)" />
-        <path d="M 399,114 Q 439,110 479,114 T 559,114" fill="none" stroke="#0284c7" stroke-width="1.8" />
-        <text x="479" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="var(--foreground)">TANQUE B — 3.000 L</text>
-        <text x="479" y="53" text-anchor="middle" font-size="8.5" fill="var(--muted-foreground)">Mesmo nível + SLO próprio!</text>
-
-        <!-- Vortex circular flow indicator in Tank B -->
-        <ellipse cx="479" cy="212" rx="56" ry="12" fill="none" stroke="#38bdf8" stroke-width="1.3" stroke-dasharray="5 4" opacity="0.7" />
-        <text x="434" y="230" font-size="7.5" font-weight="600" fill="#e0f2fe">Vórtex → centro</text>
-
-        <!-- Fish in Tank B -->
-        <g id="fishB">
-          <ellipse cx="515" cy="162" rx="11" ry="5" fill="#fb923c" />
-          <polygon points="526,162 533,157 533,167" fill="#ea580c" />
-          <circle cx="509" cy="160" r="1.3" fill="#0f172a" />
-        </g>
-
-        <!-- SLO Central Tank B -->
-        <path d="M 479,228 L 479,122 L 608,122" fill="none" stroke="#64748b" stroke-width="7.5" stroke-linejoin="round" />
-        <path d="M 479,228 L 479,122 L 608,122" fill="none" stroke="#0ea5e9" stroke-width="3.2" stroke-linejoin="round" />
-        <line x1="479" y1="122" x2="479" y2="104" stroke="#64748b" stroke-width="6" />
-        <text x="486" y="140" font-size="8" font-weight="700" fill="var(--foreground)">SLO B</text>
-
-        <!-- Merged Collector Pipe: SLO A joins SLO B on the way to Decanter -->
-        <path d="M 369,118 L 383,118 L 383,268 L 584,268 L 584,122 L 608,122" fill="none" stroke="#64748b" stroke-width="7.5" stroke-linejoin="round" />
-        <path d="M 369,118 L 383,118 L 383,268 L 584,268 L 584,122 L 608,122" fill="none" stroke="#0ea5e9" stroke-width="3.2" stroke-linejoin="round" />
-        <text x="484" y="281" text-anchor="middle" font-size="8.2" font-weight="600" fill="var(--muted-foreground)">Coletor unido (SLO A + SLO B → PVC 50/75 mm) leva sólidos dos 2 tanques</text>
-
-        <!-- Auxiliary Air Diffusers in Tank A & B (visible ONLY in Hybrid Mode 2) -->
-        <g id="hybridAirLines" opacity="0">
-          <path d="M 174,442 L 188,442 L 188,82 L 420,82" fill="none" stroke="#38bdf8" stroke-width="2.4" stroke-dasharray="5 3" />
-          <path d="M 226,82 L 226,204" fill="none" stroke="#38bdf8" stroke-width="2" />
-          <path d="M 420,82 L 420,204" fill="none" stroke="#38bdf8" stroke-width="2" />
-          <rect x="216" y="204" width="20" height="7" rx="2" fill="#64748b" />
-          <rect x="410" y="204" width="20" height="7" rx="2" fill="#64748b" />
-        </g>
-
-        <!-- =============================================================== -->
-        <!-- 3. DECANTADOR RADIAL (BOMBONA 200 L)                            -->
-        <!-- =============================================================== -->
-        <rect x="606" y="108" width="94" height="144" rx="8" fill="var(--card)" stroke="var(--foreground)" stroke-width="2.4" />
-        <rect x="608" y="126" width="90" height="124" rx="5" fill="url(#waterFish)" />
+        <!-- DECANTADOR RADIAL (200 L) IN THE CENTER BETWEEN TANK A & TANK B! -->
+        <rect x="484" y="104" width="112" height="134" rx="8" fill="var(--card)" stroke="var(--foreground)" stroke-width="2.5" />
+        <rect x="486" y="122" width="108" height="114" rx="5" fill="url(#waterFish)" />
         <!-- Settled sludge -->
-        <path d="M 608,224 Q 653,216 698,224 L 698,248 Q 698,250 694,250 L 612,250 Q 608,250 608,248 Z" fill="url(#sludgeGrad)" />
-        <!-- Internal baffle pipe -->
-        <path d="M 608,122 L 632,122 L 632,194" fill="none" stroke="#64748b" stroke-width="6" stroke-linejoin="round" />
+        <path d="M 486,210 Q 540,202 594,210 L 594,234 Q 594,236 590,236 L 490,236 Q 486,236 486,234 Z" fill="url(#sludgeGrad)" />
+        <!-- Central calming baffle (receives SLO A from left & SLO B from right) -->
+        <path d="M 486,118 L 520,118 L 520,186" fill="none" stroke="#64748b" stroke-width="5.5" stroke-linejoin="round" />
+        <path d="M 594,118 L 560,118 L 560,186" fill="none" stroke="#64748b" stroke-width="5.5" stroke-linejoin="round" />
         <!-- Weekly sludge drain valve -->
-        <path d="M 653,252 L 653,274 L 674,274" fill="none" stroke="#713f12" stroke-width="4.5" stroke-linejoin="round" />
-        <circle cx="666" cy="274" r="4.5" fill="#dc2626" stroke="var(--foreground)" stroke-width="1" />
-        <text x="653" y="96" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--foreground)">Decantador (200 L)</text>
-        <text x="653" y="242" text-anchor="middle" font-size="7.8" font-weight="700" fill="#fef3c7">Lodo (A + B)</text>
-        <text x="680" y="277" font-size="7.8" fill="var(--muted-foreground)">Dreno 1×/sem</text>
+        <path d="M 540,238 L 540,254 L 516,254" fill="none" stroke="#713f12" stroke-width="4.5" stroke-linejoin="round" />
+        <circle cx="525" cy="254" r="4" fill="#dc2626" stroke="var(--foreground)" stroke-width="1" />
+        <text x="540" y="92" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--foreground)">Decantador (200 L)</text>
+        <text x="540" y="229" text-anchor="middle" font-size="7.8" font-weight="700" fill="#fef3c7">Lodo (A + B)</text>
+        <text x="508" y="257" text-anchor="end" font-size="7.6" fill="var(--muted-foreground)">Dreno 1×/sem</text>
 
         <!-- Settling solids -->
         <g id="solidsGroup" fill="#78350f"></g>
 
-        <!-- Clarified water to Grow Bed -->
-        <path d="M 700,138 L 758,138 L 758,176" fill="none" stroke="#0284c7" stroke-width="5" stroke-linejoin="round" marker-end="url(#arrBlue)" />
-        <text x="732" y="130" text-anchor="middle" font-size="8.2" font-weight="600" fill="#0284c7">Sem sólidos</text>
+        <!-- TANQUE B (3.000 L, Right of Decanter, SAME Water Level y=108 / +1,10 m) -->
+        <path d="M 678,88 L 678,224 L 862,224 L 862,88" fill="none" stroke="var(--foreground)" stroke-width="3.2" stroke-linejoin="round" />
+        <rect x="680" y="108" width="180" height="114" fill="url(#waterFish)" />
+        <path d="M 680,108 Q 725,104 770,108 T 860,108" fill="none" stroke="#0284c7" stroke-width="1.8" />
+        <text x="770" y="38" text-anchor="middle" font-size="11" font-weight="700" fill="var(--foreground)">TANQUE B — 3.000 L</text>
+        <text x="770" y="51" text-anchor="middle" font-size="8.5" fill="var(--muted-foreground)">Nível +1,10 m • Jato tangencial (vórtex)</text>
+        <ellipse cx="770" cy="202" rx="62" ry="11" fill="none" stroke="#38bdf8" stroke-width="1.3" stroke-dasharray="5 4" opacity="0.7" />
 
-        <!-- =============================================================== -->
-        <!-- 4. HORTA HIDROPÔNICA / CAMA DE CULTIVO (BIOFILTRO)              -->
-        <!-- =============================================================== -->
-        <rect x="742" y="178" width="240" height="74" rx="5" fill="var(--card)" stroke="var(--foreground)" stroke-width="2.4" />
-        <rect x="745" y="186" width="234" height="63" rx="3" fill="url(#mediaGrad)" />
-        <rect x="745" y="208" width="234" height="41" rx="2" fill="#0ea5e9" fill-opacity="0.32" />
-
-        <!-- Plants (4 clusters) -->
-        <g>
-          <g transform="translate(780,186)"><path d="M 0,0 C -12,-15 -18,-32 -5,-38 C 0,-24 4,-24 0,0 Z" fill="#16a34a" /><path d="M 0,0 C 12,-15 18,-32 5,-38 C 0,-24 -4,-24 0,0 Z" fill="#22c55e" /><path d="M 0,0 C -7,-20 7,-20 0,-42 C 3,-24 -3,-24 0,0 Z" fill="#4ade80" /></g>
-          <g transform="translate(835,186)"><path d="M 0,0 C -12,-15 -18,-32 -5,-38 C 0,-24 4,-24 0,0 Z" fill="#16a34a" /><path d="M 0,0 C 12,-15 18,-32 5,-38 C 0,-24 -4,-24 0,0 Z" fill="#22c55e" /><path d="M 0,0 C -7,-20 7,-20 0,-42 C 3,-24 -3,-24 0,0 Z" fill="#4ade80" /></g>
-          <g transform="translate(890,186)"><path d="M 0,0 C -12,-15 -18,-32 -5,-38 C 0,-24 4,-24 0,0 Z" fill="#16a34a" /><path d="M 0,0 C 12,-15 18,-32 5,-38 C 0,-24 -4,-24 0,0 Z" fill="#22c55e" /><path d="M 0,0 C -7,-20 7,-20 0,-42 C 3,-24 -3,-24 0,0 Z" fill="#4ade80" /></g>
-          <g transform="translate(944,186)"><path d="M 0,0 C -12,-15 -18,-32 -5,-38 C 0,-24 4,-24 0,0 Z" fill="#16a34a" /><path d="M 0,0 C 12,-15 18,-32 5,-38 C 0,-24 -4,-24 0,0 Z" fill="#22c55e" /><path d="M 0,0 C -7,-20 7,-20 0,-42 C 3,-24 -3,-24 0,0 Z" fill="#4ade80" /></g>
+        <!-- Fish B -->
+        <g id="fishB">
+          <ellipse cx="812" cy="154" rx="11" ry="5" fill="#fb923c" />
+          <polygon points="823,154 830,149 830,159" fill="#ea580c" />
+          <circle cx="806" cy="152" r="1.3" fill="#0f172a" />
         </g>
 
-        <text x="862" y="116" text-anchor="middle" font-size="11" font-weight="700" fill="#16a34a">HORTA / BIOFILTRO (Cama de Cultivo)</text>
-        <text x="862" y="130" text-anchor="middle" font-size="8.6" fill="var(--muted-foreground)">NH₃ → NO₂⁻ → NO₃⁻ (adubo) • Segura calmaria!</text>
-        <text x="862" y="238" text-anchor="middle" font-size="8.2" font-weight="700" fill="#fef3c7">Argila expandida / Brita</text>
+        <!-- SLO B — INDIVIDUAL, SHORT, STRAIGHT DOWNHILL DIRECTLY INTO DECANTER! -->
+        <path d="M 770,216 L 770,112 L 594,118" fill="none" stroke="#64748b" stroke-width="7.5" stroke-linejoin="round" />
+        <path d="M 770,216 L 770,112 L 594,118" fill="none" stroke="#0ea5e9" stroke-width="3.2" stroke-linejoin="round" />
+        <line x1="770" y1="112" x2="770" y2="94" stroke="#64748b" stroke-width="6" />
+        <text x="636" y="106" text-anchor="middle" font-size="8.2" font-weight="700" fill="var(--foreground)">SLO B direto</text>
+        <text x="636" y="128" text-anchor="middle" font-size="7.4" fill="var(--muted-foreground)">(caimento 2%)</text>
 
-        <!-- Gravity return from Horta to Sump -->
-        <path d="M 862,252 L 862,332 L 790,332 L 790,378" fill="none" stroke="#059669" stroke-width="5.5" stroke-linejoin="round" marker-end="url(#arrGreen)" />
-        <text x="870" y="294" font-size="8.5" font-weight="600" fill="#059669">Água 100% filtrada</text>
-        <text x="870" y="306" font-size="8" fill="var(--muted-foreground)">(gravidade → Sump)</text>
+        <!-- Auxiliary Air Diffusers (ONLY visible in Hybrid Mode 2) -->
+        <g id="hybridAirLines" opacity="0">
+          <path d="M 170,458 L 194,458 L 194,80 L 710,80" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-dasharray="5 3" />
+          <path d="M 240,80 L 240,196" fill="none" stroke="#38bdf8" stroke-width="2" />
+          <path d="M 710,80 L 710,196" fill="none" stroke="#38bdf8" stroke-width="2" />
+          <rect x="230" y="196" width="20" height="7" rx="2" fill="#64748b" />
+          <rect x="700" y="196" width="20" height="7" rx="2" fill="#64748b" />
+        </g>
 
         <!-- =============================================================== -->
-        <!-- 5. SUMP — 300 a 500 L (SEM PEIXES, SÓ ÁGUA LIMPA!)              -->
+        <!-- 3. HORTA HIDROPÔNICA / BIOFILTRO (STRICTLY BELOW DECANTER)      -->
         <!-- =============================================================== -->
-        <path d="M 605,368 L 605,496 L 845,496 L 845,368" fill="none" stroke="var(--foreground)" stroke-width="3.4" stroke-linejoin="round" />
-        <rect x="607" y="394" width="236" height="100" fill="url(#waterSump)" />
-        <path d="M 607,394 Q 666,390 725,394 T 843,394" fill="none" stroke="#059669" stroke-width="2" />
-        <text x="725" y="352" text-anchor="middle" font-size="11" font-weight="700" fill="var(--success)">SUMP (300–500 L) — SÓ ÁGUA LIMPA</text>
-        <text x="725" y="420" text-anchor="middle" font-size="8.6" font-weight="600" fill="var(--foreground)">SEM peixes • Zero entupimento na bomba</text>
+        <!-- Clarified water outlet from Decanter (y=138) going strictly downhill to Horta (y=268) -->
+        <path d="M 540,136 L 540,148 L 622,148 L 622,262" fill="none" stroke="#0284c7" stroke-width="5" stroke-linejoin="round" marker-end="url(#arrBlue)" />
+        <text x="628" y="250" font-size="8.2" font-weight="700" fill="#0284c7">Água clarificada (gravidade)</text>
+
+        <!-- Grow Bed Container (+0,85 m to +0,60 m) -->
+        <rect x="570" y="266" width="335" height="72" rx="5" fill="var(--card)" stroke="var(--foreground)" stroke-width="2.4" />
+        <rect x="573" y="274" width="329" height="61" rx="3" fill="url(#mediaGrad)" />
+        <!-- Constant water level inside grow bed (fluxo contínuo!) -->
+        <rect x="573" y="294" width="329" height="41" rx="2" fill="#0ea5e9" fill-opacity="0.34" />
+
+        <!-- Plants (5 clusters) -->
+        <g>
+          <g transform="translate(612,274)"><path d="M 0,0 C -11,-14 -16,-28 -4,-34 C 0,-22 3,-22 0,0 Z" fill="#16a34a" /><path d="M 0,0 C 11,-14 16,-28 4,-34 C 0,-22 -3,-22 0,0 Z" fill="#22c55e" /><path d="M 0,0 C -6,-18 6,-18 0,-38 C 3,-22 -3,-22 0,0 Z" fill="#4ade80" /></g>
+          <g transform="translate(675,274)"><path d="M 0,0 C -11,-14 -16,-28 -4,-34 C 0,-22 3,-22 0,0 Z" fill="#16a34a" /><path d="M 0,0 C 11,-14 16,-28 4,-34 C 0,-22 -3,-22 0,0 Z" fill="#22c55e" /><path d="M 0,0 C -6,-18 6,-18 0,-38 C 3,-22 -3,-22 0,0 Z" fill="#4ade80" /></g>
+          <g transform="translate(738,274)"><path d="M 0,0 C -11,-14 -16,-28 -4,-34 C 0,-22 3,-22 0,0 Z" fill="#16a34a" /><path d="M 0,0 C 11,-14 16,-28 4,-34 C 0,-22 -3,-22 0,0 Z" fill="#22c55e" /><path d="M 0,0 C -6,-18 6,-18 0,-38 C 3,-22 -3,-22 0,0 Z" fill="#4ade80" /></g>
+          <g transform="translate(801,274)"><path d="M 0,0 C -11,-14 -16,-28 -4,-34 C 0,-22 3,-22 0,0 Z" fill="#16a34a" /><path d="M 0,0 C 11,-14 16,-28 4,-34 C 0,-22 -3,-22 0,0 Z" fill="#22c55e" /><path d="M 0,0 C -6,-18 6,-18 0,-38 C 3,-22 -3,-22 0,0 Z" fill="#4ade80" /></g>
+          <g transform="translate(864,274)"><path d="M 0,0 C -11,-14 -16,-28 -4,-34 C 0,-22 3,-22 0,0 Z" fill="#16a34a" /><path d="M 0,0 C 11,-14 16,-28 4,-34 C 0,-22 -3,-22 0,0 Z" fill="#22c55e" /><path d="M 0,0 C -6,-18 6,-18 0,-38 C 3,-22 -3,-22 0,0 Z" fill="#4ade80" /></g>
+        </g>
+
+        <!-- Constant-level overflow standpipe inside grow bed (prevents flooding Sump on shutdown!) -->
+        <line x1="888" y1="294" x2="888" y2="338" stroke="#059669" stroke-width="5" />
+        <text x="738" y="324" text-anchor="middle" font-size="8.4" font-weight="700" fill="#fef3c7">Cama de Cultivo (Fluxo Contínuo / Nível Constante) — Argila Expandida (NH₃ → NO₃⁻)</text>
+        <text x="912" y="298" font-size="7.6" font-weight="600" fill="#16a34a">Evapotransp.</text>
+        <text x="912" y="308" font-size="7.4" fill="var(--muted-foreground)">~0,5% (3–5 L/h)</text>
+
+        <!-- Gravity return from Horta to Sump (~99,5% of water returns!) -->
+        <path d="M 888,338 L 888,366 L 690,366 L 690,402" fill="none" stroke="#059669" stroke-width="5.5" stroke-linejoin="round" marker-end="url(#arrGreen)" />
+        <text x="792" y="359" text-anchor="middle" font-size="8.4" font-weight="700" fill="#059669">Retorna ~99,5% da vazão (água limpa + oxigenada)</text>
+
+        <!-- =============================================================== -->
+        <!-- 4. SUMP (500 L — SEM PEIXES, SÓ ÁGUA LIMPA, +0,40 m)            -->
+        <!-- =============================================================== -->
+        <path d="M 476,386 L 476,516 L 744,516 L 744,386" fill="none" stroke="var(--foreground)" stroke-width="3.4" stroke-linejoin="round" />
+        <rect x="478" y="414" width="264" height="100" fill="url(#waterSump)" />
+        <path d="M 478,414 Q 544,410 610,414 T 742,414" fill="none" stroke="#059669" stroke-width="2" />
+        <text x="610" y="376" text-anchor="middle" font-size="11" font-weight="700" fill="var(--success)">SUMP (500 L) — ÁGUA 100% LIMPA</text>
+        <text x="610" y="446" text-anchor="middle" font-size="8.6" font-weight="600" fill="var(--foreground)">SEM peixes • Zero entupimento na bomba</text>
 
         <!-- Auto Top-off Float Valve in Sump -->
-        <line x1="845" y1="382" x2="820" y2="394" stroke="var(--foreground)" stroke-width="2" />
-        <circle cx="818" cy="396" r="6" fill="#facc15" stroke="var(--foreground)" stroke-width="1.3" />
-        <text x="853" y="387" font-size="8.2" font-weight="700" fill="var(--warning)">Boia de reposição</text>
-        <text x="853" y="398" font-size="7.6" fill="var(--muted-foreground)">Nível varia só aqui</text>
-        <text x="853" y="408" font-size="7.6" fill="var(--muted-foreground)">(evaporação 1–3%/dia)</text>
+        <line x1="744" y1="402" x2="720" y2="414" stroke="var(--foreground)" stroke-width="2" />
+        <circle cx="718" cy="416" r="6" fill="#facc15" stroke="var(--foreground)" stroke-width="1.3" />
+        <text x="752" y="407" font-size="8.2" font-weight="700" fill="var(--warning)">Boia de reposição</text>
+        <text x="752" y="418" font-size="7.6" fill="var(--muted-foreground)">Repõe ~60–130 L/dia</text>
+        <text x="752" y="428" font-size="7.6" fill="var(--muted-foreground)">(evaporação + plantas)</text>
 
         <!-- Submerged 12V Brushless Pump inside Sump (Mode 2 ONLY) -->
         <g id="solarPumpIcon" opacity="0">
-          <rect x="620" y="446" width="38" height="28" rx="4" fill="#f59e0b" stroke="var(--foreground)" stroke-width="1.6" />
-          <text x="639" y="463" text-anchor="middle" font-size="8" font-weight="800" fill="#0f172a">12V</text>
+          <rect x="496" y="466" width="38" height="28" rx="4" fill="#f59e0b" stroke="var(--foreground)" stroke-width="1.6" />
+          <text x="515" y="483" text-anchor="middle" font-size="8" font-weight="800" fill="#0f172a">12V</text>
         </g>
 
         <!-- =============================================================== -->
-        <!-- 6. CLEAN WATER PUMPING PIPES (SUMP -> TANQUE A & TANQUE B)      -->
+        <!-- 5. PRESSURIZED PUMPING PIPES (SUMP -> TANQUE A & TANQUE B)      -->
         <!-- =============================================================== -->
 
-        <!-- MODE 1: Flooded Suction from Sump to Eolic Diaphragm Pump -> Pressurized Riser UP to A & B -->
+        <!-- MODE 1: Flooded Suction from Sump (y=476) to Eolic Diaphragm Pump (y=458) -> Pressurized Riser UP -->
         <g id="eolicoWaterPipes">
-          <!-- Flooded suction pipe (horizontal below Sump water level y=394 -> pump at y=442!) -->
-          <path d="M 605,462 L 174,462 L 174,454" fill="none" stroke="#059669" stroke-width="5.5" stroke-linejoin="round" />
-          <text x="390" y="454" text-anchor="middle" font-size="8.8" font-weight="700" fill="#059669">Sucção afogada Ø 32 mm (água limpa entra por gravidade na bomba)</text>
-          <!-- Pressurized discharge pipe going UP from pump to Tank A & Tank B -->
-          <path d="M 160,424 L 160,72 L 408,72" fill="none" stroke="#0284c7" stroke-width="5.5" stroke-linejoin="round" />
+          <path d="M 476,476 L 170,476 L 170,468" fill="none" stroke="#059669" stroke-width="5.5" stroke-linejoin="round" />
+          <text x="325" y="468" text-anchor="middle" font-size="8.6" font-weight="700" fill="#059669">Sucção afogada Ø 32 mm (água limpa por gravidade)</text>
+          <path d="M 156,440 L 156,68 L 694,68" fill="none" stroke="#0284c7" stroke-width="5.5" stroke-linejoin="round" />
         </g>
 
         <!-- MODE 2: Pressurized Riser from Submerged 12V Pump inside Sump UP to A & B -->
         <g id="hybridWaterPipes" opacity="0">
-          <path d="M 639,446 L 639,332 L 180,332 L 180,72 L 408,72" fill="none" stroke="#0284c7" stroke-width="5.5" stroke-linejoin="round" />
-          <text x="410" y="324" text-anchor="middle" font-size="8.8" font-weight="700" fill="#0284c7">Recalque Bomba Solar 12V Brushless (~1.800 L/h constantes 24h)</text>
+          <path d="M 515,466 L 515,346 L 180,346 L 180,68 L 694,68" fill="none" stroke="#0284c7" stroke-width="5.5" stroke-linejoin="round" />
+          <text x="355" y="338" text-anchor="middle" font-size="8.6" font-weight="700" fill="#0284c7">Recalque Bomba Solar 12V Brushless (~1.800 L/h constantes 24h)</text>
         </g>
 
         <!-- Shared Top Manifold feeding Tank A (50%) & Tank B (50%) tangentially -->
-        <path d="M 216,72 L 216,104" fill="none" stroke="#0284c7" stroke-width="4.5" marker-end="url(#arrBlue)" />
-        <path d="M 408,72 L 408,104" fill="none" stroke="#0284c7" stroke-width="4.5" marker-end="url(#arrBlue)" />
+        <path d="M 232,68 L 232,100" fill="none" stroke="#0284c7" stroke-width="4.5" marker-end="url(#arrBlue)" />
+        <path d="M 694,68 L 694,100" fill="none" stroke="#0284c7" stroke-width="4.5" marker-end="url(#arrBlue)" />
         <!-- Balance valves (registros) -->
-        <circle cx="216" cy="83" r="4.5" fill="#ef4444" stroke="var(--foreground)" stroke-width="1" />
-        <circle cx="408" cy="83" r="4.5" fill="#ef4444" stroke="var(--foreground)" stroke-width="1" />
-        <text x="312" y="66" text-anchor="middle" font-size="8.5" font-weight="700" fill="#0284c7">Divisão 50% / 50% (registros) → jato tangencial</text>
+        <circle cx="232" cy="79" r="4.5" fill="#ef4444" stroke="var(--foreground)" stroke-width="1" />
+        <circle cx="694" cy="79" r="4.5" fill="#ef4444" stroke="var(--foreground)" stroke-width="1" />
+        <text x="462" y="61" text-anchor="middle" font-size="8.5" font-weight="700" fill="#0284c7">Divisão 50% / 50% (registros) → entrada tangencial em A e B</text>
 
         <!-- Animated Flow Dots & Bubbles -->
         <g id="flowDotsGroup"></g>
@@ -356,19 +359,19 @@
       </svg>
     </div>
 
-    <!-- Technical Explanation Cards -->
+    <!-- Verified Physics Summary Cards -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2 border-t border-[var(--card-border)] text-xs">
       <div class="p-3 rounded-lg bg-[var(--background)] border border-[var(--card-border)]">
-        <div class="font-bold text-[var(--foreground)] mb-1">1. Limpeza dos 2 Tanques (Vórtex + SLO)</div>
-        <div class="text-[var(--muted-foreground)]">Com A e B no mesmo nível e caixas circulares, o jato tangencial cria efeito "xícara de chá" concentrando sólidos no centro do fundo, onde <b>cada tanque tem seu SLO</b> indo ao Decantador (remove ~60–80% dos sólidos).</div>
+        <div class="font-bold text-[var(--foreground)] mb-1">1. SLOs Individuais Diretos (Zero "Barriga")</div>
+        <div class="text-[var(--muted-foreground)]">Colocando o <b>Decantador entre A e B</b>, cada SLO vai em linha reta e caimento contínuo de 2% (PVC 40–50 mm). Elimina sifão invertido, bolhas de ar presas (<em>air-lock</em>) e pontos de entupimento.</div>
       </div>
       <div class="p-3 rounded-lg bg-[var(--background)] border border-[var(--card-border)]">
-        <div id="modeCardTitle" class="font-bold text-[var(--primary)] mb-1">2. Modo 1: 100% Eólico (Zero Placa Solar)</div>
-        <div id="modeCardDesc" class="text-[var(--muted-foreground)]">A bomba dupla de diafragma fica <b>afogada abaixo do nível do Sump</b>. Como só puxa água já limpa da horta, as 4 válvulas para água não entopem. Vence ΔH ≈ 1,1 m sem nenhuma eletricidade!</div>
+        <div class="font-bold text-[var(--success)] mb-1">2. Quanto Volta da Horta para o Sump?</div>
+        <div class="text-[var(--muted-foreground)]">Pela conservação de massa, retorna <b>~99,5% da vazão instantânea</b> (ex.: entram 750 L/h → voltam ~746 L/h). A perda real (evapotranspiração) é de apenas <b>~60 a 130 L/dia</b>, reposta pela boia no Sump.</div>
       </div>
       <div class="p-3 rounded-lg bg-[var(--background)] border border-[var(--card-border)]">
-        <div class="font-bold text-[var(--warning)] mb-1">3. Por que não usamos Airlift aqui?</div>
-        <div class="text-[var(--muted-foreground)]">Um Airlift só eleva água ~30–40% da sua profundidade submersa. Para subir <b>ΔH = 1,1 m</b> do Sump até os tanques altos, um Airlift exigiria um poço enterrado de ~2,5 m — por isso no CHOP2 usamos <b>bomba pressurizada</b> (diafragma ou 12V).</div>
+        <div class="font-bold text-[var(--warning)] mb-1">3. Física Real: Água Incompressível &amp; Drenagem</div>
+        <div class="text-[var(--muted-foreground)]">No modo eólico, a <b>câmara de ar (PVC 50 mm × 30 cm)</b> amortece os pulsos da água incompressível. Na horta, use <b>nível constante</b> (sem sifão de sino esvaziando 400 L de golpe) para o Sump de 500 L nunca transbordar.</div>
       </div>
     </div>
   </div>
@@ -384,12 +387,11 @@
     const eolicoWaterPipes = document.getElementById('eolicoWaterPipes');
     const hybridWaterPipes = document.getElementById('hybridWaterPipes');
     const hybridAirLines = document.getElementById('hybridAirLines');
+    const pulsationChamber = document.getElementById('pulsationChamber');
     const solarGroup = document.getElementById('solarGroup');
     const solarPumpIcon = document.getElementById('solarPumpIcon');
     const pumpCaption = document.getElementById('pumpCaption');
     const pumpSubCaption = document.getElementById('pumpSubCaption');
-    const modeCardTitle = document.getElementById('modeCardTitle');
-    const modeCardDesc = document.getElementById('modeCardDesc');
 
     const s1L = document.getElementById('s1L');
     const s1R = document.getElementById('s1R');
@@ -406,15 +408,15 @@
     const flowDotsGroup = document.getElementById('flowDotsGroup');
     const bubblesGroup = document.getElementById('bubblesGroup');
 
-    // Settling solid particles inside decanter
+    // Settling solids in decanter
     const solids = Array.from({ length: 8 }, () => {
       const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
       c.setAttribute('r', (1.8 + Math.random() * 1.4).toFixed(1));
       solidsGroup.appendChild(c);
-      return { el: c, x: 622 + Math.random() * 52, y: 150 + Math.random() * 75, speed: 12 + Math.random() * 12 };
+      return { el: c, x: 504 + Math.random() * 72, y: 145 + Math.random() * 70, speed: 12 + Math.random() * 12 };
     });
 
-    // Bubbles (Sump splash + hybrid air diffusers in Tank A & B)
+    // Bubbles (Sump return splash + hybrid air diffusers)
     const bubbles = Array.from({ length: 16 }, (_, i) => {
       const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
       c.setAttribute('r', (1.7 + Math.random() * 1.6).toFixed(1));
@@ -452,20 +454,21 @@
       return pts[pts.length - 1];
     }
 
-    const pathSloA = [[287, 226], [287, 118], [383, 118], [383, 268], [584, 268], [584, 122], [632, 122], [632, 190]];
-    const pathSloB = [[479, 226], [479, 122], [632, 122], [632, 190]];
-    const pathToBed = [[700, 138], [758, 138], [758, 176]];
-    const pathToSump = [[862, 252], [862, 332], [790, 332], [790, 392]];
-    const pathPumpEolico = [[605, 462], [174, 462], [160, 424], [160, 72], [408, 72], [408, 108]];
-    const pathPumpHybrid = [[639, 446], [639, 332], [180, 332], [180, 72], [408, 72], [408, 108]];
+    // Direct, straight downhill SLO paths!
+    const pathSloA = [[310, 214], [310, 112], [520, 118], [520, 184]];
+    const pathSloB = [[770, 214], [770, 112], [560, 118], [560, 184]];
+    const pathToBed = [[540, 136], [540, 148], [622, 148], [622, 264]];
+    const pathToSump = [[888, 338], [888, 366], [690, 366], [690, 412]];
+    const pathPumpEolico = [[476, 476], [170, 476], [156, 440], [156, 68], [694, 68], [694, 102]];
+    const pathPumpHybrid = [[515, 466], [515, 346], [180, 346], [180, 68], [694, 68], [694, 102]];
 
-    const sloADots = Array.from({ length: 4 }, (_, i) => ({ el: createDot('#d97706', 3.1), t: i / 4 }));
+    const sloADots = Array.from({ length: 3 }, (_, i) => ({ el: createDot('#d97706', 3.1), t: i / 3 }));
     const sloBDots = Array.from({ length: 3 }, (_, i) => ({ el: createDot('#d97706', 3.1), t: i / 3 }));
     const bedDots = Array.from({ length: 3 }, (_, i) => ({ el: createDot('#38bdf8', 3.2), t: i / 3 }));
-    const sumpDots = Array.from({ length: 3 }, (_, i) => ({ el: createDot('#34d399', 3.3), t: i / 3 }));
+    const sumpDots = Array.from({ length: 4 }, (_, i) => ({ el: createDot('#34d399', 3.3), t: i / 4 }));
     const pumpDots = Array.from({ length: 7 }, (_, i) => ({ el: createDot('#38bdf8', 3.6), t: i / 7 }));
 
-    let mode = 'eolico'; // 'eolico' | 'hibrido'
+    let mode = 'eolico';
     let running = true;
     let angle = 0;
     let windOffset = 0;
@@ -481,24 +484,22 @@
 
       if (mode === 'eolico') {
         eolicoWaterPipes.setAttribute('opacity', '1');
+        pulsationChamber.setAttribute('opacity', '1');
         hybridWaterPipes.setAttribute('opacity', '0');
         hybridAirLines.setAttribute('opacity', '0');
         solarGroup.setAttribute('opacity', '0');
         solarPumpIcon.setAttribute('opacity', '0');
         pumpCaption.textContent = "Bomba d'Água Dupla (Afogada)";
-        pumpSubCaption.textContent = '2× PVC Ø 75 + válvulas p/ água Ø 25';
-        modeCardTitle.textContent = '2. Modo 1: 100% Eólico (Zero Placa Solar)';
-        modeCardDesc.innerHTML = 'A bomba dupla de diafragma fica <b>afogada abaixo do nível do Sump</b>. Como só puxa água limpa da horta, as 4 válvulas para água não entopem. Vence ΔH ≈ 1,1 m sem nenhuma placa solar!';
+        pumpSubCaption.textContent = 'Abaixo do nível do Sump (+0,40 m)';
       } else {
         eolicoWaterPipes.setAttribute('opacity', '0');
+        pulsationChamber.setAttribute('opacity', '0');
         hybridWaterPipes.setAttribute('opacity', '1');
         hybridAirLines.setAttribute('opacity', '1');
         solarGroup.setAttribute('opacity', '1');
         solarPumpIcon.setAttribute('opacity', '1');
         pumpCaption.textContent = 'Aerador Eólico Auxiliar (Ar Seco)';
         pumpSubCaption.textContent = 'Injeta O₂ nos Tanques A e B';
-        modeCardTitle.textContent = '2. Modo 2: Híbrido (Bomba Solar 12V + Eólico)';
-        modeCardDesc.innerHTML = 'A bomba submersa <b>12V Brushless (25–35 W)</b> no Sump mantém <b>~1.800 L/h constantes 24h</b> (900 L/h em cada tanque), mesmo sem vento. O Savonius fica livre para injetar ar extra nos 2 tanques.';
       }
       updateTelemetry();
     }
@@ -506,8 +507,6 @@
     function getPhysics(windKmh) {
       const cutIn = mode === 'eolico' ? 9 : 8;
       const windRpm = windKmh < cutIn ? 0 : Math.round(windKmh * 4.1);
-      // Mode 1 (diaphragm water pump): 0.17 L/rev * 60 = 10.2 L/h per RPM
-      // Mode 2 (12V solar brushless pump): constant 1,800 L/h
       const waterLph = mode === 'eolico' ? (windRpm === 0 ? 0 : Math.round(windRpm * 10.2)) : 1800;
       return { windRpm, waterLph };
     }
@@ -518,21 +517,17 @@
       const { windRpm, waterLph } = getPhysics(windKmh);
 
       if (waterLph === 0) {
-        flowBadge.textContent = 'Recalque: 0 L/h (Calmaria • 0 RPM)';
+        flowBadge.textContent = 'Entra na horta: 0 L/h → Volta: 0 L/h (Calmaria)';
         flowBadge.style.color = 'var(--warning)';
-        statusBadge.textContent = 'Horta segura apenas em Cama de Cultivo / DWC';
+        statusBadge.textContent = 'Cama nível constante segura 24h+ sem secar';
         statusBadge.style.color = 'var(--warning)';
       } else {
-        const half = Math.round(waterLph / 2);
-        flowBadge.textContent = `Recalque: ~${waterLph.toLocaleString('pt-BR')} L/h (${half} L/h p/ tanque) • ${windRpm} RPM`;
+        const evapLph = 4; // ~95 L/day average evapotranspiration across 6,000L + 4-6 m² bed
+        const retLph = Math.max(0, waterLph - evapLph);
+        flowBadge.textContent = `Entra: ~${waterLph.toLocaleString('pt-BR')} L/h → Volta ao Sump: ~${retLph.toLocaleString('pt-BR')} L/h`;
         flowBadge.style.color = 'var(--success)';
-        if (mode === 'eolico') {
-          statusBadge.textContent = '100% mecânico • Sem placa solar';
-          statusBadge.style.color = 'var(--primary)';
-        } else {
-          statusBadge.textContent = windRpm === 0 ? 'Bomba Solar 12V segurando 24h' : 'Solar 24h + Reforço de O₂ Eólico';
-          statusBadge.style.color = 'var(--success)';
-        }
+        statusBadge.textContent = `Perda evapotransp.: ~${evapLph} L/h (~95 L/dia) • Rotor: ${windRpm} RPM`;
+        statusBadge.style.color = 'var(--primary)';
       }
     }
 
@@ -554,7 +549,6 @@
       const { windRpm, waterLph } = getPhysics(windKmh);
 
       if (running) {
-        // Wind arrows
         if (windKmh > 0) {
           windOffset = (windOffset + windKmh * 2.1 * dt) % 24;
           windLines.forEach((g, i) => {
@@ -566,23 +560,22 @@
           windLines.forEach(g => g.setAttribute('opacity', '0.15'));
         }
 
-        // Savonius rotor & eccentric
         const omega = windRpm > 0 ? (windRpm / 60) * Math.PI * 2 * 0.35 : 0;
         angle = (angle + omega * dt) % (Math.PI * 2);
 
         const c = Math.cos(angle);
         const s = Math.sin(angle);
         const w1 = 14 + 28 * Math.abs(c);
-        s1L.setAttribute('x', (104 - w1).toFixed(1));
+        s1L.setAttribute('x', (100 - w1).toFixed(1));
         s1L.setAttribute('width', w1.toFixed(1));
         s1R.setAttribute('width', w1.toFixed(1));
         const w2 = 14 + 28 * Math.abs(s);
-        s2L.setAttribute('x', (104 - w2).toFixed(1));
+        s2L.setAttribute('x', (100 - w2).toFixed(1));
         s2L.setAttribute('width', w2.toFixed(1));
         s2R.setAttribute('width', w2.toFixed(1));
 
-        const px = 104 + 13 * c;
-        const py = 442 + 5 * s;
+        const px = 100 + 13 * c;
+        const py = 458 + 5 * s;
         pPin.setAttribute('cx', px.toFixed(1));
         pPin.setAttribute('cy', py.toFixed(1));
         pRodL.setAttribute('x1', px.toFixed(1));
@@ -590,14 +583,13 @@
         pRodR.setAttribute('x1', px.toFixed(1));
         pRodR.setAttribute('y1', py.toFixed(1));
 
-        // Water flow dots
         const flowSpeed = waterLph > 0 ? (0.14 + (waterLph / 2400) * 0.42) : 0;
         const activePumpPath = mode === 'eolico' ? pathPumpEolico : pathPumpHybrid;
 
-        const moveDots = (dots, path, speedMult = 1) => {
+        const moveDots = (dots, path, mult = 1) => {
           dots.forEach(d => {
             if (flowSpeed > 0) {
-              d.t = (d.t + flowSpeed * speedMult * dt) % 1;
+              d.t = (d.t + flowSpeed * mult * dt) % 1;
               const [x, y] = pointOnPath(path, d.t);
               d.el.setAttribute('cx', x.toFixed(1));
               d.el.setAttribute('cy', y.toFixed(1));
@@ -608,40 +600,38 @@
           });
         };
 
-        moveDots(sloADots, pathSloA, 0.75);
-        moveDots(sloBDots, pathSloB, 1.0);
-        moveDots(bedDots, pathToBed, 1.2);
+        moveDots(sloADots, pathSloA, 0.9);
+        moveDots(sloBDots, pathSloB, 0.9);
+        moveDots(bedDots, pathToBed, 1.0);
         moveDots(sumpDots, pathToSump, 1.0);
-        moveDots(pumpDots, activePumpPath, 0.7);
+        moveDots(pumpDots, activePumpPath, 0.65);
 
-        // Decanter settling solids
         solids.forEach(pt => {
           if (flowSpeed > 0) {
             pt.y += pt.speed * dt;
-            if (pt.y > 228) {
-              pt.y = 148;
-              pt.x = 622 + Math.random() * 52;
+            if (pt.y > 214) {
+              pt.y = 142;
+              pt.x = 504 + Math.random() * 72;
             }
           }
           pt.el.setAttribute('cx', pt.x.toFixed(1));
           pt.el.setAttribute('cy', pt.y.toFixed(1));
         });
 
-        // Bubbles
         bubbles.forEach(b => {
           const active = b.zone === 'sump' ? (flowSpeed > 0) : (mode === 'hibrido' && windRpm > 0);
           if (active) {
             b.t = (b.t + (0.45 + flowSpeed * 0.8) * dt) % 1;
-            let bx = 790, by = 430;
+            let bx = 690, by = 450;
             if (b.zone === 'sump') {
-              bx = 790 + b.offset + Math.sin(now * 0.005 + b.offset) * 2.5;
-              by = 450 - b.t * 54;
+              bx = 690 + b.offset + Math.sin(now * 0.005 + b.offset) * 2.5;
+              by = 468 - b.t * 52;
             } else if (b.zone === 'airA') {
-              bx = 226 + b.offset * 0.6 + Math.sin(now * 0.006 + b.offset) * 2;
-              by = 202 - b.t * 86;
+              bx = 240 + b.offset * 0.6 + Math.sin(now * 0.006 + b.offset) * 2;
+              by = 194 - b.t * 82;
             } else {
-              bx = 420 + b.offset * 0.6 + Math.sin(now * 0.006 + b.offset) * 2;
-              by = 202 - b.t * 86;
+              bx = 710 + b.offset * 0.6 + Math.sin(now * 0.006 + b.offset) * 2;
+              by = 194 - b.t * 82;
             }
             b.el.setAttribute('cx', bx.toFixed(1));
             b.el.setAttribute('cy', by.toFixed(1));
@@ -651,7 +641,6 @@
           }
         });
 
-        // Gentle fish movement
         fishA.setAttribute('transform', `translate(${(Math.sin(now * 0.0007) * 24).toFixed(1)}, ${(Math.sin(now * 0.0014) * 3.5).toFixed(1)})`);
         fishB.setAttribute('transform', `translate(${(Math.cos(now * 0.00065) * 24).toFixed(1)}, ${(Math.cos(now * 0.0013) * 3.5).toFixed(1)})`);
       }
