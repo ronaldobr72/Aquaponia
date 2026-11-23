@@ -342,13 +342,16 @@
       </div>
     </section>
 
-    <!-- Engineering Notes + Full Bill of Materials -->
+    <!-- Engineering Notes + Full Bill of Materials with Estimated Costs -->
     <section class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-5 md:p-6 shadow-sm space-y-4 text-xs">
-      <h2 class="text-lg font-bold border-b border-[var(--card-border)] pb-2">Lista Completa de Materiais — Filtro Solar Duplo (2×100 L) para Alvenaria</h2>
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--card-border)] pb-2">
+        <h2 class="text-lg font-bold">Lista Completa de Materiais &amp; Custos Estimados — Filtro Solar Duplo (2×100 L)</h2>
+        <span class="font-mono text-[var(--muted-foreground)]">Referência: mercado BR (valores estimados)</span>
+      </div>
       <div class="overflow-x-auto">
         <table>
           <thead>
-            <tr><th>Item</th><th>Qtd.</th><th>Especificação Recomendada</th><th>Função / Observação</th></tr>
+            <tr><th>Item</th><th>Qtd.</th><th>Especificação Recomendada</th><th>Função / Observação</th><th class="whitespace-nowrap">Custo Est. (R$)</th></tr>
           </thead>
           <tbody>
             <tr>
@@ -356,45 +359,81 @@
               <td>1 un.</td>
               <td><strong>Bomba Submersa de Lago DC 24V Brushless</strong> c/ controlador de velocidade (ex.: <em>Jebao / Sunsun / Oceantech DC 20–30 W</em>, passagem de sólidos 6–8 mm)</td>
               <td>Regule em baixa velocidade (~10–15 W / ~800 L/h): processo lento que economiza sol e tritura menos as fezes. <strong>Evite bomba de porão com escovas!</strong></td>
+              <td class="font-mono font-semibold whitespace-nowrap">R$ 260 – 420</td>
             </tr>
             <tr>
               <td><strong>Gaiola de Isolamento dos Peixes</strong></td>
               <td>1 un.</td>
               <td>Cesto plástico rígido / caixa vazada ou armação de PVC revestida com <strong>tela plástica malha 8 a 12 mm</strong> (com peso/tijolo p/ não boiar)</td>
               <td>Mantém a bomba dentro da água isolada dos peixes, mas com furos largos para as fezes entrarem sem entupir.</td>
+              <td class="font-mono font-semibold whitespace-nowrap">R$ 25 – 55</td>
             </tr>
             <tr>
-              <td><strong>Bombonas Fechadas</strong></td>
+              <td><strong>Bombonas Fechadas (100 L)</strong></td>
               <td>2 un.</td>
-              <td><strong>Bombonas PEAD 100 L com tampa removível de rosca ou aro metálico</strong></td>
+              <td><strong>Bombonas PEAD 100 L com tampa removível de rosca ou aro metálico</strong> (usadas higienizadas ~R$ 60–90; novas ~R$ 110–130)</td>
               <td>Bombona 1 sobre 1 fileira de tijolos (+10 cm); Bombona 2 direto no solo. Vedação total contra mosquitos.</td>
+              <td class="font-mono font-semibold whitespace-nowrap">R$ 120 – 260</td>
             </tr>
             <tr>
-              <td><strong>Respiros Anti-Mosquito</strong></td>
-              <td>2 conj.</td>
-              <td>2 furos Ø 20 mm nas tampas + pedaços de <strong>tela mosquiteira fina (voil/nylon)</strong> presos com abraçadeira ou cola</td>
-              <td>Impede entrada de mosquitos e evita vácuo ao abrir os drenos ou acúmulo de ar no topo.</td>
-            </tr>
-            <tr>
-              <td><strong>Tubulação e Flanges</strong></td>
+              <td><strong>Respiros Anti-Mosquito + Base Tijolos</strong></td>
               <td>1 kit</td>
-              <td>3× Flanges PVC 50 mm + 2× Registros de esfera 50 mm (drenos) + ~2 m tubo PVC 50 mm (ladrões + tubo descida até o fundo da Bombona 2) + mangueira 25 mm (bomba → Bombona 1)</td>
-              <td>Tubo de 50 mm garante escoamento livre por gravidade com apenas 10 cm de desnível sem nunca transbordar.</td>
+              <td>Tela mosquiteira fina (voil/nylon) + 2 abraçadeiras (furos Ø 20 mm nas tampas) + 1 fileira de tijolos/blocos (+10 cm)</td>
+              <td>Impede entrada de mosquitos, evita vácuo ao abrir os drenos e cria o degrau de 10 cm da Bombona 1.</td>
+              <td class="font-mono font-semibold whitespace-nowrap">R$ 20 – 45</td>
+            </tr>
+            <tr>
+              <td><strong>Tubulação, Flanges e Registros</strong></td>
+              <td>1 kit</td>
+              <td>3× Flanges PVC 50 mm + 2× Registros esfera 50 mm (drenos) + ~2,5 m tubo PVC 50 mm + joelhos + 3 m mangueira 25 mm</td>
+              <td>Tubo de 50 mm garante escoamento livre por gravidade com apenas 10 cm de desnível sem transbordar.</td>
+              <td class="font-mono font-semibold whitespace-nowrap">R$ 150 – 220</td>
             </tr>
             <tr>
               <td><strong>Mídia Filtrante Fina (Bombona 2)</strong></td>
               <td>1 conj.</td>
-              <td>Grade plástica apoiada no meio da Bombona 2 + <strong>escovas filtrantes</strong> ou <strong>manta acrílica (perlon) / tela sombrite dobrada</strong></td>
+              <td>Grade plástica apoiada no meio da Bombona 2 + <strong>manta acrílica/sombrite dobrado</strong> (~R$ 45) ou <strong>escovas filtrantes</strong> (~R$ 110)</td>
               <td>Retém a poeira fina que a bomba eventualmente quebrou, entregando água quase cristalina ao tanque.</td>
+              <td class="font-mono font-semibold whitespace-nowrap">R$ 45 – 110</td>
             </tr>
             <tr>
-              <td><strong>Sistema Solar (Diurno vs. 24h)</strong></td>
+              <td><strong>Kit Solar — Opção 1 (Diurno, sem bateria)</strong></td>
               <td>1 kit</td>
-              <td><strong>Diurno (sem bateria):</strong> Painel 100 W + conversor DC-DC Step-Down 24V (~R$ 350–450).<br><strong>Contínuo 24h:</strong> Painel 150 W + Controlador 20A + Bateria 12V 60–100 Ah + Step-Up 12→24V.</td>
-              <td>No modo diurno, filtra ~6.000 L/dia sem gastar com bateria. No modo 24h, também oxigena a madrugada inteira!</td>
+              <td><strong>Painel Solar 100 W</strong> (~R$ 240–340) + <strong>Regulador DC-DC Step-Down 24V</strong> (~R$ 45–90) + cabos/conectores (~R$ 35–50)</td>
+              <td>Liga sozinho no sol e filtra ~5.600–7.000 L/dia sem gastar com bateria.</td>
+              <td class="font-mono font-semibold text-[var(--primary)] whitespace-nowrap">R$ 320 – 480</td>
+            </tr>
+            <tr>
+              <td><strong>Kit Solar — Opção 2 (Contínuo 24h c/ bateria)</strong></td>
+              <td>1 kit</td>
+              <td><strong>Painel 150 W</strong> (~R$ 330–450) + <strong>Controlador 20A</strong> (~R$ 70–160) + <strong>Bateria Estacionária 12V 60–100 Ah</strong> (~R$ 520–780) + Step-Up 12→24V + cabos/fusível</td>
+              <td>Roda 24h ininterruptas, garante oxigenação noturna e permite adicionar mídia biológica na Bombona 2.</td>
+              <td class="font-mono font-semibold text-[var(--warning)] whitespace-nowrap">R$ 1.020 – 1.550</td>
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <!-- Total Cost Summary Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+        <div class="p-4 rounded-lg bg-[var(--background)] border border-[var(--primary)]/50 space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-sm text-[var(--primary)]">Total Opção 1 — Direto no Sol (Sem Bateria)</span>
+            <span class="font-mono font-extrabold text-base text-[var(--success)]">R$ 940 – R$ 1.590</span>
+          </div>
+          <p class="text-[var(--muted-foreground)]">
+            Base hidráulica + bomba (~R$ 620–1.110) + Kit Solar 100 W (~R$ 320–480). Com bombonas usadas, tijolos de obra e manta/sombrite, fica facilmente na faixa de <b>~R$ 1.050 a R$ 1.250</b>.
+          </p>
+        </div>
+        <div class="p-4 rounded-lg bg-[var(--background)] border border-[var(--warning)]/50 space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-sm text-[var(--warning)]">Total Opção 2 — Contínuo 24h (Com Bateria)</span>
+            <span class="font-mono font-extrabold text-base text-[var(--warning)]">R$ 1.640 – R$ 2.660</span>
+          </div>
+          <p class="text-[var(--muted-foreground)]">
+            Base hidráulica + bomba (~R$ 620–1.110) + Kit Solar 150 W c/ Bateria Estacionária (~R$ 1.020–1.550). Média prática em torno de <b>~R$ 1.950 a R$ 2.250</b>, resolvendo filtragem e oxigenação 24h.
+          </p>
+        </div>
       </div>
     </section>
   </main>
