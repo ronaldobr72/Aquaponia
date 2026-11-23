@@ -24,6 +24,8 @@ Este repositório reúne a auditoria física inicial, o dimensionamento completo
 | **[plantas/planta_aerador_solar_12v.html](./plantas/planta_aerador_solar_12v.html)** | **Projeto 1 — Aerador Solar Fotovoltaico 12V** (autônomo 24h com bateria estacionária). |
 | **[3d/excentrico_duplo_5000l.scad](./3d/excentrico_duplo_5000l.scad)** | **Modelo 3D OpenSCAD** (pronto p/ exportar `.stl` sem suportes: disco excêntrico, bielas p/ 608 e espaçador). |
 
+> **Créditos & Aviso Importante:** Os modelos `modelo_tilapia_playlist.html`, `modelo_tilapia_solar_eolico.html` e o `manual_tilapia_aquaponia.html` são resumos/adaptações independentes baseados nas aulas gratuitas do **Prof. Carlos Alan** (Engenheiro Agrônomo, Dr. em Ciências Agrárias). **Estas páginas não foram construídas pelo Prof. Carlos Alan** nem possuem vínculo oficial. Acesse o canal oficial do professor no YouTube: **https://www.youtube.com/@COM_A_NATUREZA** (Playlist original: https://www.youtube.com/playlist?list=PLvQkI_3RAj4haRdQS62FWhcWZ_DbGfO5n).
+
 > **Dica (GitHub Pages):** Ativando o GitHub Pages na branch `main` (pasta raiz `/`), todas as animações interativas e a documentação ficam navegáveis diretamente no navegador via `https://ronaldobr72.github.io/Aquaponia/`.
 
 ---
