@@ -316,7 +316,7 @@
     rotorSpin.add(shaft);
 
     const diskGeo = new THREE.CylinderGeometry(0.37, 0.37, 0.018, 32);
-    const diskMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.6 });
+    const diskMat = makeTankShellMat(0xe2e8f0);
     [0.72, 1.42, 2.12].forEach(y => {
       const d = new THREE.Mesh(diskGeo, diskMat);
       d.position.y = y;
@@ -324,23 +324,46 @@
       rotorSpin.add(d);
     });
 
-    // Helper: create 1 Savonius stage (2 half-cylinders with 15% overlap gap!)
+    // Helper: create 1 TRUE S-shaped Savonius stage (thick extruded half-cylinders with 15% central overlap!)
     function addSavoniusStage(yCenter, rotY, colorHex) {
       const stg = new THREE.Group();
       stg.position.y = yCenter;
       stg.rotation.y = rotY;
-      const bladeGeo = new THREE.CylinderGeometry(0.19, 0.19, 0.68, 24, 1, true, 0, Math.PI);
-      const bladeMat = new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.35, side: THREE.DoubleSide });
 
+      // Extrude a thick 3D C-shaped semicircular scoop (R = 0.19 m, wall = 9 mm, height = 0.68 m)
+      const rOut = 0.192;
+      const rIn = 0.183;
+      const arcShape = new THREE.Shape();
+      arcShape.absarc(0, 0, rOut, 0, Math.PI, false);
+      arcShape.absarc(0, 0, rIn, Math.PI, 0, true);
+      arcShape.closePath();
+
+      const bladeGeo = new THREE.ExtrudeGeometry(arcShape, {
+        depth: 0.68,
+        bevelEnabled: false,
+        curveSegments: 28
+      });
+      bladeGeo.translate(0, 0, -0.34);
+      bladeGeo.rotateX(-Math.PI / 2); // vertical along Y; semicircle curves into -Z, concave opening faces +Z
+
+      const bladeMat = new THREE.MeshStandardMaterial({
+        color: colorHex,
+        roughness: 0.35,
+        metalness: 0.15
+      });
+
+      // Center offset = R - (overlap / 2) = 0.19 - 0.03 = 0.16 m -> true S-shape with 15% overlap gap past shaft!
       const b1 = new THREE.Mesh(bladeGeo, bladeMat);
-      b1.position.set(0.145, 0, 0); // offset < radius -> 15% central overlap!
+      b1.position.set(0.16, 0, 0);
       b1.castShadow = true;
+      b1.receiveShadow = true;
       stg.add(b1);
 
       const b2 = new THREE.Mesh(bladeGeo, bladeMat);
-      b2.position.set(-0.145, 0, 0);
-      b2.rotation.y = Math.PI;
+      b2.position.set(-0.16, 0, 0);
+      b2.rotation.y = Math.PI; // curves into +Z, concave opening faces -Z
       b2.castShadow = true;
+      b2.receiveShadow = true;
       stg.add(b2);
 
       rotorSpin.add(stg);
@@ -790,7 +813,7 @@
     // =========================================================================
     const camPresets = {
       overview: { pos: [0.4, 2.55, 5.1], target: [0.0, 0.9, -0.2] },
-      savonius: { pos: [-1.7, 1.65, 2.55], target: [-2.05, 1.1, 0.05] },
+      savonius: { pos: [-1.5, 2.25, 2.1], target: [-2.05, 1.25, 0.05] },
       tank:     { pos: [-0.55, 1.75, 2.1], target: [-0.62, 0.95, 0.05] },
       decanter: { pos: [0.48, 1.65, 1.85], target: [0.46, 0.95, 0.05] },
       bed:      { pos: [2.25, 1.85, 2.0], target: [1.48, 0.85, 0.05] },
