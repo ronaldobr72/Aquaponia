@@ -45,11 +45,11 @@
       <div class="flex flex-wrap items-center gap-1.5">
         <a href="./index.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Início</a>
         <a href="./documentacao.html" class="px-2.5 py-1 rounded bg-[var(--primary)] text-white font-semibold">Documentação</a>
-        <a href="./plantas/planta_aquaponia_6000l.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Aquaponia 6.000 L</a>
-        <a href="./plantas/planta_aerador_eolico_5000l.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Eólico 5.000 L</a>
+        <a href="./plantas/planta_aquaponia_6000l.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Aquaponia CHOP2</a>
+        <a href="./componentes/bomba_diafragma_agua.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Bomba d'Água</a>
+        <a href="./componentes/camara_de_ar.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Câmara de Ar</a>
+        <a href="./componentes/rotor_savonius.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Rotor Savonius</a>
         <a href="./plantas/detalhe_excentrico_duplo.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Excêntrico 3D</a>
-        <a href="./plantas/planta_aerador_eolico_mecanico.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Eólico 3.000 L</a>
-        <a href="./plantas/planta_aerador_solar_12v.html" class="px-2.5 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Solar 12V</a>
       </div>
     </div>
   </nav>
@@ -300,7 +300,7 @@
           <div><strong>• SLOs Individuais Diretos (Sem "Barriga" / Sifão Invertido):</strong> Colocando o <strong>Decantador (200 L) entre o Tanque A e o Tanque B</strong>, cada SLO sai reto com caimento contínuo de 1–2% direto para o decantador. Nunca passe tubo por baixo de outro tanque subindo depois (cria U-trap onde fezes acumulam e travam o fluxo por <em>air-lock</em>).</div>
           <div><strong>• Cotas de Gravidade Verificadas:</strong> A água só desce (nunca sobe sem bomba): Tanques A e B (<strong>+1,10 m</strong>) → Decantador (<strong>+1,05 m</strong>) → Horta em bancada (<strong>+0,85 m a +0,60 m</strong>) → Sump 500 L (<strong>+0,40 m</strong>).</div>
           <div><strong>• Velocidade de arrasto do SLO:</strong> Fezes de peixes sedimentam a ~2–5 cm/s. Em tubo PVC 50 mm com 900 L/h (modo solar), a velocidade sobe a ~16 cm/s (arrasta bem). No modo eólico com vento fraco (300 L/h por tanque), PVC 50 mm cai para ~5,5 cm/s (no limite); usar <strong>PVC 40 mm</strong> melhora o arrasto (~9–10 cm/s).</div>
-          <div><strong>• Água Incompressível (Golpe de Aríete no Modo Eólico):</strong> Diferente do ar, água não comprime. Instale uma <strong>câmara de ar (amortecedor de pulsação)</strong> na saída da bomba de diafragma (um Tê com tubo vertical PVC 50 mm × 30 cm tampado no topo) para absorver os pulsos e proteger as bielas.</div>
+          <div><strong>• Água Incompressível (Golpe de Aríete no Modo Eólico):</strong> Diferente do ar, água não comprime. Instale uma <a href="./componentes/camara_de_ar.html" class="text-[var(--primary)] underline font-semibold">câmara de ar com membrana/bexiga interna</a> (ou Mini Vaso de Expansão 0,75 L) num Tê lateral na saída de cada bomba — <em>tubo PVC simples sem membrana acaba encharcando após semanas pela Lei de Henry!</em></div>
           <div><strong>• Quanto de água a horta retorna para o Sump?</strong> Pela <em>Conservação de Massa</em>, em fluxo contínuo retorna <strong>~99,5% da vazão instantânea</strong> (ex.: entram 750 L/h → voltam ~746 L/h; entram 1.800 L/h → voltam ~1.795 L/h). A perda real (evaporação + transpiração de 4–6 m² de plantas) é de apenas <strong>~60 a 130 L/dia (~3 a 5 L/h)</strong>, reposta pela boia no Sump.</div>
           <div><strong>• Cuidado com o volume de drenagem (Sump 500 L):</strong> Uma cama de 4 m² com 25 cm de água e argila expandida (40% vazios) retém ~400 L. Use <strong>nível constante (ladrão simples na cama)</strong> em vez de sifão de sino drenando tudo de uma vez, para o Sump de 500 L nunca transbordar quando a bomba parar.</div>
           <div><strong>• Por que não usar Airlift no CHOP2?</strong> Airlift só eleva ~30–40% da sua profundidade submersa. Para subir ΔH ≈ 0,85–1,1 m do Sump aos tanques altos, exigiria um poço enterrado de ~2,5 m — por isso usamos bomba pressurizada.</div>
@@ -308,11 +308,16 @@
 
         <h3 class="font-bold text-base">Pontos Obrigatórios de Montagem do CHOP2</h3>
         <ol class="list-decimal pl-5 space-y-1.5 text-[var(--muted-foreground)]">
-          <li><strong class="text-[var(--foreground)]">Entradas tangenciais + registros 50%/50%:</strong> Garantem fluxo circular suave nos dois tanques circulares e permitem balancear a vazão igual entre A e B.</li>
-          <li><strong class="text-[var(--foreground)]">SLO central nos dois tanques + Decantador 200 L:</strong> Cada tanque tem seu ladrão de fundo (PVC 50 mm com Tê anti-sifão), convergindo para o decantador antes da horta.</li>
-          <li><strong class="text-[var(--foreground)]">Horta em Cama de Cultivo (argila expandida/brita) ou DWC:</strong> Faz a biofiltragem (amônia → nitrito → nitrato) e resiste à calmaria se usar o Modo 100% Eólico (nunca use tubos NFT secos sem bomba elétrica/bateria).</li>
-          <li><strong class="text-[var(--foreground)]">Sump sem peixes + Boia de reposição automática:</strong> Absorve 100% da variação de nível (evaporação de 1% a 3%/dia = 60–180 L/dia) e protege a bomba contra sujeira e secagem dos tanques de peixes.</li>
+          <li><strong class="text-[var(--foreground)]">Bombeamento individualizado + entradas tangenciais:</strong> Uma câmara/bomba exclusiva por tanque garante 50%/50% exato sem estrangular registros, e o jato tangencial gera o vórtex que centraliza os sólidos.</li>
+          <li><strong class="text-[var(--foreground)]">SLOs individuais diretos + Decantador 200 L no meio:</strong> Cada tanque tem seu ladrão de fundo (PVC 40–50 mm com Tê anti-sifão) indo reto com caimento de 2% para o decantador.</li>
+          <li><strong class="text-[var(--foreground)]">Horta em Cama de Cultivo (nível constante) ou DWC:</strong> Faz a biofiltragem (amônia → nitrito → nitrato) e resiste à calmaria se usar o Modo 100% Eólico (nunca use tubos NFT secos sem bomba elétrica/bateria).</li>
+          <li><strong class="text-[var(--foreground)]">Sump sem peixes (500 L) + Boia de reposição automática:</strong> Absorve 100% da variação de nível (evaporação de 1% a 3%/dia = 60–180 L/dia) e protege a bomba contra sujeira e secagem dos tanques de peixes.</li>
         </ol>
+        <div class="flex flex-wrap gap-2 pt-2 text-xs">
+          <a href="./componentes/bomba_diafragma_agua.html" class="px-3 py-1.5 rounded border border-[var(--primary)]/50 bg-[var(--background)] font-semibold text-[var(--primary)] hover:opacity-85">⚙ Guia: Bomba de Diafragma p/ Água →</a>
+          <a href="./componentes/camara_de_ar.html" class="px-3 py-1.5 rounded border border-[var(--warning)]/50 bg-[var(--background)] font-semibold text-[var(--warning)] hover:opacity-85">💨 Guia: Câmara de Ar (Lei de Henry) →</a>
+          <a href="./componentes/rotor_savonius.html" class="px-3 py-1.5 rounded border border-[var(--success)]/50 bg-[var(--background)] font-semibold text-[var(--success)] hover:opacity-85">🌀 Guia: Rotor Savonius (Lista Completa) →</a>
+        </div>
       </section>
 
       <!-- SECTION 6: COMPARATIVO GERAL -->

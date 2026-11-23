@@ -10,7 +10,10 @@ Este repositório reúne a auditoria física inicial, o dimensionamento completo
 | :--- | :--- |
 | **[index.html](./index.html)** | **Página Principal (Portal Interativo)** — chama todas as plantas animadas, documentação e arquivo 3D. |
 | **[documentacao.html](./documentacao.html)** | **Documentação Técnica Unificada (HTML)** — todos os cálculos, auditoria, listas de materiais e guias. |
-| **[plantas/planta_aquaponia_6000l.html](./plantas/planta_aquaponia_6000l.html)** | **Projeto 3 — Aquaponia 6.000 L (2 × 3.000 L + Horta)** com seletor de 3 modos (Airlift, Diafragma Água e Híbrido Solar+Eólico). |
+| **[plantas/planta_aquaponia_6000l.html](./plantas/planta_aquaponia_6000l.html)** | **Projeto 3 — Aquaponia CHOP2 (2 × 3.000 L + Horta + Sump)** com bombeamento individualizado 50/50. |
+| **[componentes/bomba_diafragma_agua.html](./componentes/bomba_diafragma_agua.html)** | **Componente 1 — Bomba de Diafragma para Água** (corte animado, lista de materiais DIY vs. pronta). |
+| **[componentes/camara_de_ar.html](./componentes/camara_de_ar.html)** | **Componente 2 — Câmara de Ar / Amortecedor** (auditoria da Lei de Henry, bexiga interna vs. vaso pronto). |
+| **[componentes/rotor_savonius.html](./componentes/rotor_savonius.html)** | **Componente 3 — Rotor Savonius 1,80 × 0,95 m** (sobreposição 15%, estrutura e lista completa de materiais). |
 | **[plantas/planta_aerador_eolico_5000l.html](./plantas/planta_aerador_eolico_5000l.html)** | **Projeto 2B — Aerador Eólico Savonius 5.000 L** (2 tambores 200 L + duplo diafragma 180°). |
 | **[plantas/detalhe_excentrico_duplo.html](./plantas/detalhe_excentrico_duplo.html)** | **Detalhe Mecânico — Excêntrico e Dupla Biela** em 3 ângulos sincronizados (0° a 360°). |
 | **[plantas/planta_aerador_eolico_mecanico.html](./plantas/planta_aerador_eolico_mecanico.html)** | **Projeto 2A — Aerador Eólico Savonius Compacto** (1.000–3.000 L, PVC 200 mm). |

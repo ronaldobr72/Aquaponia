@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Componente — Câmara de Ar / Amortecedor de Pulsação (Auditoria Física)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --background: #f8fafc;
+      --card: #ffffff;
+      --card-border: #cbd5e1;
+      --foreground: #0f172a;
+      --muted-foreground: #475569;
+      --primary: #0284c7;
+      --success: #059669;
+      --warning: #d97706;
+      --danger: #dc2626;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #0f172a;
+        --card: #1e293b;
+        --card-border: #334155;
+        --foreground: #f1f5f9;
+        --muted-foreground: #94a3b8;
+        --primary: #38bdf8;
+        --success: #34d399;
+        --warning: #fbbf24;
+        --danger: #f87171;
+      }
+    }
+    .sim-btn.active {
+      background-color: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid var(--card-border); padding: 0.5rem 0.7rem; text-align: left; }
+    th { background: var(--background); font-weight: 700; }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased min-h-screen p-3 md:p-6">
+
+  <!-- Unified Navigation Bar -->
+  <nav class="max-w-5xl mx-auto mb-4 bg-[var(--card)] border border-[var(--card-border)] rounded-xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs shadow-sm">
+    <a href="../index.html" class="font-bold text-[var(--primary)]">🌊 Aquaponia &amp; Aeradores</a>
+    <div class="flex flex-wrap items-center gap-1.5">
+      <a href="../index.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Início</a>
+      <a href="../documentacao.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Documentação</a>
+      <a href="../plantas/planta_aquaponia_6000l.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Aquaponia CHOP2</a>
+      <a href="./bomba_diafragma_agua.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Bomba d'Água</a>
+      <a href="./camara_de_ar.html" class="px-2 py-1 rounded bg-[var(--primary)] text-white font-semibold">Câmara de Ar</a>
+      <a href="./rotor_savonius.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Rotor Savonius</a>
+      <a href="../plantas/detalhe_excentrico_duplo.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Excêntrico 3D</a>
+    </div>
+  </nav>
+
+  <main class="max-w-5xl mx-auto space-y-6">
+
+    <!-- Header + Interactive Simulator -->
+    <section class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-5 md:p-6 shadow-sm space-y-4">
+      <div class="border-b border-[var(--card-border)] pb-3 space-y-1">
+        <span class="text-xs font-bold uppercase tracking-wider text-[var(--warning)]">Componente 2 • Auditoria Física Honesta</span>
+        <h1 class="text-xl md:text-2xl font-extrabold">Câmara de Ar (Amortecedor de Pulsação) — Ela enche de água e para de funcionar?</h1>
+        <p class="text-xs md:text-sm text-[var(--muted-foreground)]">
+          <b>Resposta curta: a sua desconfiança está CERTA!</b> Um tubo PVC simples fechado sem membrana funciona no primeiro dia, mas <b>ao longo de semanas o ar se dissolve lentamente na água (Lei de Henry) e o tubo encharca!</b> Veja abaixo por que ela fica num <b>Tê lateral</b> (não bloqueando o caminho) e como construir ou comprar a versão que <b>nunca encharca</b>.
+        </p>
+      </div>
+
+      <!-- Mode Buttons -->
+      <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div class="flex flex-wrap gap-1.5">
+          <button data-sim="membrana" class="sim-btn active px-3 py-1.5 rounded border border-[var(--card-border)] font-semibold cursor-pointer">
+            1. Com Bexiga / Vaso de Expansão (Ideal)
+          </button>
+          <button data-sim="encharcada" class="sim-btn px-3 py-1.5 rounded border border-[var(--card-border)] bg-[var(--background)] font-semibold cursor-pointer">
+            2. Tubo PVC Simples após semanas (Encharcado!)
+          </button>
+          <button data-sim="sem" class="sim-btn px-3 py-1.5 rounded border border-[var(--card-border)] bg-[var(--background)] font-semibold cursor-pointer">
+            3. Sem Câmara de Ar (Golpe de Aríete)
+          </button>
+        </div>
+        <span id="simStatus" class="font-mono font-bold px-2.5 py-1 rounded bg-[var(--background)] border border-[var(--card-border)] text-[var(--success)]">
+          Fluxo suave • Nunca encharca
+        </span>
+      </div>
+
+      <!-- Animated Cutaway + Live Pressure Waveform SVG -->
+      <div class="w-full overflow-x-auto bg-[var(--background)] border border-[var(--card-border)] rounded-lg p-3">
+        <svg viewBox="0 0 820 310" class="w-full min-w-[650px] h-auto block" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="waterBlue" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.45" />
+              <stop offset="100%" stop-color="#0284c7" stop-opacity="0.82" />
+            </linearGradient>
+          </defs>
+
+          <!-- MAIN HORIZONTAL PIPE (Water flows straight through the bottom of the Tee!) -->
+          <rect x="20" y="218" width="460" height="36" fill="url(#waterBlue)" stroke="var(--foreground)" stroke-width="2.2" />
+          <text x="115" y="274" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--foreground)">Vem da Válvula de Saída</text>
+          <text x="115" y="287" text-anchor="middle" font-size="8.5" fill="var(--muted-foreground)">(pulsos da bomba de diafragma)</text>
+
+          <text x="395" y="274" text-anchor="middle" font-size="9.5" font-weight="700" fill="#0284c7">Segue reto para o Tanque →</text>
+          <text x="395" y="287" text-anchor="middle" font-size="8.5" fill="var(--muted-foreground)">(A câmara fica num Tê lateral p/ cima!)</text>
+
+          <!-- VERTICAL TEE BRANCH (Air Chamber Housing) -->
+          <g id="chamberBody">
+            <!-- Tee vertical neck -->
+            <rect x="228" y="172" width="36" height="48" fill="url(#waterBlue)" stroke="var(--foreground)" stroke-width="2.2" />
+            <!-- Main Cylinder (PVC 50 mm x 30 cm OR Seaflo Expansion Tank) -->
+            <rect x="204" y="34" width="84" height="142" rx="14" fill="var(--card)" stroke="var(--foreground)" stroke-width="2.6" />
+            <!-- Water Level inside chamber -->
+            <rect id="chamberWaterRect" x="207" y="128" width="78" height="46" rx="4" fill="url(#waterBlue)" />
+
+            <!-- Internal Rubber Bladder / Bexiga (Mode 1 ONLY) -->
+            <g id="bladderGroup">
+              <ellipse id="bladderShape" cx="246" cy="84" rx="30" ry="38" fill="#fef08a" fill-opacity="0.85" stroke="#d97706" stroke-width="2.5" />
+              <text x="246" y="80" text-anchor="middle" font-size="8.5" font-weight="800" fill="#92400e">AR ISOLADO</text>
+              <text x="246" y="92" text-anchor="middle" font-size="7.5" font-weight="600" fill="#92400e">(Bexiga/EPDM)</text>
+              <!-- Schrader valve on top -->
+              <rect x="240" y="18" width="12" height="16" rx="2" fill="#f59e0b" stroke="var(--foreground)" stroke-width="1.3" />
+              <text x="298" y="28" font-size="8.5" font-weight="700" fill="#d97706">← Bico Schrader (pneu)</text>
+            </g>
+
+            <!-- Waterlogged indicator (Mode 2 ONLY) -->
+            <g id="waterloggedGroup" opacity="0">
+              <text x="246" y="95" text-anchor="middle" font-size="9" font-weight="800" fill="#dc2626">ENCHARCADO!</text>
+              <text x="246" y="109" text-anchor="middle" font-size="7.8" fill="#fef2f2">Ar dissolveu na água</text>
+              <text x="246" y="121" text-anchor="middle" font-size="7.8" fill="#fef2f2">(Lei de Henry)</text>
+            </g>
+          </g>
+
+          <!-- Flow particles in main pipe -->
+          <circle id="inDot" cx="80" cy="236" r="5" fill="#fbbf24" />
+          <circle id="outDot" cx="350" cy="236" r="5" fill="#34d399" />
+
+          <!-- LIVE PRESSURE & FLOW GRAPH ON RIGHT -->
+          <rect x="510" y="34" width="290" height="220" rx="8" fill="var(--card)" stroke="var(--card-border)" stroke-width="1.5" />
+          <text x="655" y="54" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--foreground)">Pressão na Tubulação (Tempo Real)</text>
+          <!-- Baseline -->
+          <line x1="528" y1="224" x2="784" y2="224" stroke="var(--muted-foreground)" stroke-width="1.2" />
+          <!-- Target steady pressure line (~1.1 mca) -->
+          <line x1="528" y1="146" x2="784" y2="146" stroke="#059669" stroke-dasharray="4 3" stroke-width="1.2" />
+          <text x="532" y="140" font-size="8" fill="#059669">Pressão média ideal (~1,1 mca)</text>
+          <!-- Danger spike line -->
+          <line x1="528" y1="84" x2="784" y2="84" stroke="#dc2626" stroke-dasharray="3 3" stroke-width="1.1" />
+          <text x="532" y="79" font-size="8" fill="#dc2626">Picos de golpe de aríete (esforço na biela)</text>
+          <!-- Animated SVG Polyline Waveform -->
+          <polyline id="wavePath" fill="none" stroke="#0284c7" stroke-width="2.6" points="" />
+          <text id="graphNote" x="655" y="244" text-anchor="middle" font-size="8.5" font-weight="600" fill="#059669">Ondulação mínima: protege biela e válvulas</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Physics Explanation -->
+    <section class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-5 md:p-6 shadow-sm space-y-3 text-xs leading-relaxed">
+      <h2 class="text-lg font-bold border-b border-[var(--card-border)] pb-2">1. Explicação Física: Por que funciona no início e por que pode falhar depois?</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-3.5 rounded-lg bg-[var(--background)] border border-[var(--card-border)] space-y-1.5">
+          <div class="font-bold text-[var(--primary)]">No 1º dia — Lei de Boyle ($P_1 V_1 = P_2 V_2$)</div>
+          <p class="text-[var(--muted-foreground)]">Como o tanque está apenas a ~1,1 m acima da bomba, a pressão da coluna d'água é só ~0,11 atm acima da atmosférica (1,11 atm absoluta). Pela Lei de Boyle, a água sobe apenas <b>~10%</b> dentro do tubo vertical e <b>90% continua sendo ar comprimido</b>. Quando o diafragma empurra 85 mL de água num pulso rápido, a câmara de ar absorve o pico e solta a água suavemente no meio-ciclo seguinte.</p>
+        </div>
+        <div class="p-3.5 rounded-lg bg-[var(--background)] border border-[var(--card-border)] space-y-1.5">
+          <div class="font-bold text-[var(--danger)]">Após semanas sem membrana — Lei de Henry (Você acertou!)</div>
+          <p class="text-[var(--muted-foreground)]">Se o ar ficar em <b>contato direto com a água</b> dentro de um tubo PVC simples, o oxigênio e nitrogênio vão lentamente se dissolvendo na água circulante. Após algumas semanas, o nível de água sobe até o topo, a câmara fica <b>100% cheia de água ("encharcada")</b> e deixa de amortecer. Por isso, em engenharia hidráulica real usamos <b>membrana interna (bexiga)</b> ou <b>bico de recarga</b>!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Materials: DIY vs Buy Ready vs Flexible Hose Alternative -->
+    <section class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-5 md:p-6 shadow-sm space-y-4 text-xs">
+      <h2 class="text-lg font-bold border-b border-[var(--card-border)] pb-2">2. Como Fazer (que NÃO encharca) vs. Comprar Pronto (Para cada uma das 2 linhas)</h2>
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr><th>Opção</th><th>Materiais / Produto</th><th>Custo est. (unid.)</th><th>Avaliação Prática</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>A. Comprar Pronto (Mais confiável!)</strong></td>
+              <td><strong>Mini Vaso de Expansão / Acumulador de Pressão 0,75 L</strong> (ex.: <em>Seaflo 0.75L</em> p/ barcos/motorhomes, já vem com membrana interna de borracha + bico Schrader, rosca 1/2" — calibrar com apenas ~2–3 PSI!)</td>
+              <td>~R$ 95 – R$ 150</td>
+              <td><strong>Zero manutenção e nunca encharca.</strong> Instala num Tê lateral logo após a válvula de saída. (Precisa de 2 un. — uma para Linha A, outra para Linha B).</td>
+            </tr>
+            <tr>
+              <td><strong>B. DIY com Bexiga Interna (Não encharca!)</strong></td>
+              <td>1× Tê PVC 25 mm + redução 25→50 mm + tubo PVC 50 mm × 30 cm + 1 Cap roscável 50 mm + <strong>1 câmara de ar de bicicleta aro 12/16 (ou balão grosso de látex/garrafa PET flexível fechada)</strong> dobrada dentro do tubo antes de rosquear o Cap!</td>
+              <td>~R$ 30 – R$ 45</td>
+              <td><strong>Solução caseira genial:</strong> o ar fica preso <em>dentro</em> da câmara de bicicleta — nunca encosta direto na água e não dissolve! Se furar, basta desrosquear o Cap e trocar.</td>
+            </tr>
+            <tr>
+              <td><strong>C. Alternativa Simplificada (Sem Câmara de Ar!)</strong></td>
+              <td>Usar <strong>2 a 3 metros de mangueira flexível macia (silicone ou borracha 3/4" parede média)</strong> saindo direto da válvula de saída antes de entrar no cano rígido de PVC</td>
+              <td>~R$ 35 – R$ 60</td>
+              <td>Como a pressão no CHOP2 é baixíssima (0,11 kgf/cm²), uma mangueira elástica já dilata levemente e absorve boa parte do golpe sem precisar de câmara vertical. (No Modo Híbrido Solar 12V centrífugo, <strong>não precisa de câmara de ar nenhuma!</strong>)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const simBtns = document.querySelectorAll('.sim-btn');
+    const simStatus = document.getElementById('simStatus');
+    const chamberBody = document.getElementById('chamberBody');
+    const chamberWaterRect = document.getElementById('chamberWaterRect');
+    const bladderGroup = document.getElementById('bladderGroup');
+    const bladderShape = document.getElementById('bladderShape');
+    const waterloggedGroup = document.getElementById('waterloggedGroup');
+    const wavePath = document.getElementById('wavePath');
+    const graphNote = document.getElementById('graphNote');
+    const inDot = document.getElementById('inDot');
+    const outDot = document.getElementById('outDot');
+
+    let simMode = 'membrana'; // 'membrana' | 'encharcada' | 'sem'
+    let t = 0;
+    const history = new Array(64).fill(146);
+
+    function applySimMode() {
+      simBtns.forEach(b => {
+        const active = b.dataset.sim === simMode;
+        b.classList.toggle('active', active);
+        if (!active) b.classList.add('bg-[var(--background)]');
+        else b.classList.remove('bg-[var(--background)]');
+      });
+
+      if (simMode === 'membrana') {
+        chamberBody.setAttribute('opacity', '1');
+        bladderGroup.setAttribute('opacity', '1');
+        waterloggedGroup.setAttribute('opacity', '0');
+        simStatus.textContent = 'Fluxo suave • Nunca encharca';
+        simStatus.style.color = 'var(--success)';
+        graphNote.textContent = 'Ondulação mínima: protege biela e válvulas';
+        graphNote.setAttribute('fill', '#059669');
+      } else if (simMode === 'encharcada') {
+        chamberBody.setAttribute('opacity', '1');
+        bladderGroup.setAttribute('opacity', '0');
+        waterloggedGroup.setAttribute('opacity', '1');
+        chamberWaterRect.setAttribute('y', '38');
+        chamberWaterRect.setAttribute('height', '136');
+        simStatus.textContent = 'Tubo cheio d\'água • Perdeu o efeito!';
+        simStatus.style.color = 'var(--danger)';
+        graphNote.textContent = 'Sem colchão de ar = mesmos picos que sem câmara!';
+        graphNote.setAttribute('fill', '#dc2626');
+      } else {
+        chamberBody.setAttribute('opacity', '0.12');
+        bladderGroup.setAttribute('opacity', '0');
+        waterloggedGroup.setAttribute('opacity', '0');
+        simStatus.textContent = 'Golpe de aríete direto nas válvulas';
+        simStatus.style.color = 'var(--warning)';
+        graphNote.textContent = 'Picos fortes a cada batida do diafragma (0 → 2,2× pressão)';
+        graphNote.setAttribute('fill', '#d97706');
+      }
+    }
+
+    simBtns.forEach(b => b.addEventListener('click', () => {
+      simMode = b.dataset.sim;
+      applySimMode();
+    }));
+
+    function animate() {
+      t += 0.08;
+      // Pump delivers half-sine pulses (positive half of cycle = compression, negative = suction/zero output)
+      const pulse = Math.max(0, Math.sin(t));
+
+      let pressureY;
+      if (simMode === 'membrana') {
+        // Smoothed gentle ripple around y=146
+        pressureY = 146 - Math.sin(t) * 11;
+        // Animate bladder compressing slightly as water level rises slightly
+        const waterLift = Math.sin(t) * 10;
+        chamberWaterRect.setAttribute('y', (126 - waterLift).toFixed(1));
+        chamberWaterRect.setAttribute('height', (48 + waterLift).toFixed(1));
+        bladderShape.setAttribute('ry', (38 - waterLift * 0.45).toFixed(1));
+        bladderShape.setAttribute('cy', (82 - waterLift * 0.45).toFixed(1));
+      } else {
+        // Sharp spikes when compressing, drops near zero during suction!
+        pressureY = 212 - Math.pow(pulse, 0.7) * 136;
+      }
+
+      history.shift();
+      history.push(pressureY);
+      const pts = history.map((y, i) => `${(530 + i * 4).toFixed(0)},${y.toFixed(1)}`).join(' ');
+      wavePath.setAttribute('points', pts);
+      wavePath.setAttribute('stroke', simMode === 'membrana' ? '#059669' : '#dc2626');
+
+      // Dots animation
+      const inX = 30 + ((t * 28) % 190);
+      const outSpeed = simMode === 'membrana' ? 28 : (pulse > 0.1 ? 48 : 3);
+      const outX = 270 + ((t * 28 + (simMode === 'membrana' ? 0 : Math.sin(t) * 14)) % 195);
+      inDot.setAttribute('cx', inX.toFixed(1));
+      outDot.setAttribute('cx', Math.max(270, Math.min(468, outX)).toFixed(1));
+
+      requestAnimationFrame(animate);
+    }
+
+    applySimMode();
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>

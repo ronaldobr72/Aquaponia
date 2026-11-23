@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Componente — Bomba de Diafragma para Água (Dupla PVC Ø 75 mm)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --background: #f8fafc;
+      --card: #ffffff;
+      --card-border: #cbd5e1;
+      --foreground: #0f172a;
+      --muted-foreground: #475569;
+      --primary: #0284c7;
+      --secondary: #6366f1;
+      --success: #059669;
+      --warning: #d97706;
+      --danger: #dc2626;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #0f172a;
+        --card: #1e293b;
+        --card-border: #334155;
+        --foreground: #f1f5f9;
+        --muted-foreground: #94a3b8;
+        --primary: #38bdf8;
+        --secondary: #818cf8;
+        --success: #34d399;
+        --warning: #fbbf24;
+        --danger: #f87171;
+      }
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid var(--card-border); padding: 0.5rem 0.7rem; text-align: left; }
+    th { background: var(--background); font-weight: 700; }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased min-h-screen p-3 md:p-6">
+
+  <!-- Unified Navigation Bar -->
+  <nav class="max-w-5xl mx-auto mb-4 bg-[var(--card)] border border-[var(--card-border)] rounded-xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs shadow-sm">
+    <a href="../index.html" class="font-bold text-[var(--primary)]">🌊 Aquaponia &amp; Aeradores</a>
+    <div class="flex flex-wrap items-center gap-1.5">
+      <a href="../index.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Início</a>
+      <a href="../documentacao.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Documentação</a>
+      <a href="../plantas/planta_aquaponia_6000l.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Aquaponia CHOP2</a>
+      <a href="./bomba_diafragma_agua.html" class="px-2 py-1 rounded bg-[var(--primary)] text-white font-semibold">Bomba d'Água</a>
+      <a href="./camara_de_ar.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Câmara de Ar</a>
+      <a href="./rotor_savonius.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Rotor Savonius</a>
+      <a href="../plantas/detalhe_excentrico_duplo.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Excêntrico 3D</a>
+    </div>
+  </nav>
+
+  <main class="max-w-5xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <section class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-5 md:p-6 shadow-sm space-y-3">
+      <div class="flex flex-wrap items-start justify-between gap-3 border-b border-[var(--card-border)] pb-3">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-[var(--primary)]">Componente 1 • Detalhamento Construtivo</span>
+          <h1 class="text-xl md:text-2xl font-extrabold">Bomba de Diafragma para Água (2 Câmaras PVC Ø 75 mm)</h1>
+          <p class="text-xs md:text-sm text-[var(--muted-foreground)]">
+            Sim — no projeto CHOP2 100% eólico elas <b>movimentam água limpa</b> (do Sump para os Tanques A e B). Por isso, mudam a vedação, as válvulas de retenção e a altura de instalação em relação ao aerador de ar!
+          </p>
+        </div>
+        <div class="flex items-center gap-2 text-xs">
+          <button id="toggleAnim" class="px-3 py-1.5 rounded bg-[var(--primary)] text-white font-semibold cursor-pointer">Pausar Corte</button>
+          <span id="cycleBadge" class="font-mono px-2.5 py-1.5 rounded bg-[var(--background)] border border-[var(--card-border)] font-bold text-[var(--success)]">
+            Recalque (empurra água)
+          </span>
+        </div>
+      </div>
+
+      <!-- Interactive Cutaway Animation of ONE Water Diaphragm Chamber -->
+      <div class="w-full overflow-x-auto bg-[var(--background)] border border-[var(--card-border)] rounded-lg p-3">
+        <svg viewBox="0 0 820 320" class="w-full min-w-[650px] h-auto block" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="waterChamber" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.45" />
+              <stop offset="100%" stop-color="#0284c7" stop-opacity="0.78" />
+            </linearGradient>
+          </defs>
+
+          <!-- Top Outlet Pipe (PVC Ø 25 mm -> Air Chamber -> Tank) -->
+          <rect x="295" y="16" width="38" height="80" fill="url(#waterChamber)" stroke="var(--foreground)" stroke-width="2" />
+          <!-- Top Check Valve (Portinhola / Válvula de Retenção Ø 25 mm) -->
+          <rect x="286" y="54" width="56" height="28" rx="4" fill="#e2e8f0" stroke="var(--foreground)" stroke-width="2" />
+          <line id="topFlap" x1="296" y1="74" x2="332" y2="74" stroke="#0284c7" stroke-width="4.5" stroke-linecap="round" />
+          <circle cx="296" cy="74" r="3" fill="var(--foreground)" />
+          <text x="352" y="42" font-size="10.5" font-weight="700" fill="#0284c7">SAÍDA p/ Tanque (PVC Ø 25 mm)</text>
+          <text x="352" y="56" font-size="9.5" fill="var(--muted-foreground)">Válvula de Retenção p/ ÁGUA (portinhola leve)</text>
+          <text x="352" y="69" font-size="9" fill="var(--muted-foreground)">→ Abre quando o diafragma empurra; fecha na sucção</text>
+
+          <!-- Bottom Inlet Pipe (Flooded Suction Ø 32-40 mm from Sump) -->
+          <rect x="295" y="224" width="38" height="80" fill="url(#waterChamber)" stroke="var(--foreground)" stroke-width="2" />
+          <!-- Bottom Check Valve (Admissão) -->
+          <rect x="286" y="238" width="56" height="28" rx="4" fill="#e2e8f0" stroke="var(--foreground)" stroke-width="2" />
+          <line id="botFlap" x1="296" y1="258" x2="332" y2="258" stroke="#059669" stroke-width="4.5" stroke-linecap="round" />
+          <circle cx="296" cy="258" r="3" fill="var(--foreground)" />
+          <text x="352" y="252" font-size="10.5" font-weight="700" fill="#059669">ENTRADA Afogada do Sump (PVC Ø 32–40 mm)</text>
+          <text x="352" y="266" font-size="9.5" fill="var(--muted-foreground)">Válvula de Retenção de Admissão (mola removida/leve)</text>
+          <text x="352" y="279" font-size="9" fill="var(--muted-foreground)">→ Água entra por gravidade (bomba abaixo do Sump)</text>
+
+          <!-- Main Rigid PVC Chamber (Cap + Luva/Flange Ø 75 mm) -->
+          <path d="M 240,96 L 395,96 L 395,224 L 240,224 Z" fill="var(--card)" stroke="var(--foreground)" stroke-width="3" />
+          <!-- Water inside chamber (width animated) -->
+          <rect id="chamberWater" x="242" y="98" width="146" height="124" fill="url(#waterChamber)" />
+
+          <!-- Rigid Outer Clamping Flange (Anel de aperto parafusado - 6 ou 8 parafusos M6) -->
+          <rect x="395" y="84" width="16" height="152" rx="3" fill="#64748b" stroke="var(--foreground)" stroke-width="1.8" />
+          <rect x="415" y="84" width="14" height="152" rx="3" fill="#94a3b8" stroke="var(--foreground)" stroke-width="1.8" />
+          <!-- Flange bolts top & bottom -->
+          <line x1="388" y1="92" x2="436" y2="92" stroke="#f59e0b" stroke-width="4" />
+          <line x1="388" y1="228" x2="436" y2="228" stroke="#f59e0b" stroke-width="4" />
+
+          <!-- Rubber Diaphragm Membrane (EPDM 3 mm / Câmara de ar de caminhão) -->
+          <path id="diaphCurve" d="M 413,94 Q 375,160 413,226" fill="none" stroke="#1e293b" stroke-width="6.5" stroke-linecap="round" />
+          <path id="diaphCore" d="M 413,94 Q 375,160 413,226" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" />
+
+          <!-- Backing Plates / Large Washers (Ø 45 mm) clamping the rubber cleanly! -->
+          <rect id="washerIn" x="384" y="132" width="6" height="56" rx="2" fill="#cbd5e1" stroke="var(--foreground)" stroke-width="1.4" />
+          <rect id="washerOut" x="396" y="132" width="6" height="56" rx="2" fill="#cbd5e1" stroke="var(--foreground)" stroke-width="1.4" />
+
+          <!-- Connecting Rod (Biela from Eccentric) -->
+          <line id="rodShaft" x1="398" y1="160" x2="575" y2="160" stroke="var(--foreground)" stroke-width="7" stroke-linecap="round" />
+          <circle id="rodBolt" cx="394" cy="160" r="5" fill="#ef4444" stroke="var(--foreground)" stroke-width="1.2" />
+
+          <!-- Eccentric crank reference on right -->
+          <circle cx="605" cy="160" r="36" fill="var(--card)" stroke="var(--foreground)" stroke-width="2" />
+          <circle cx="605" cy="160" r="22" fill="none" stroke="#ef4444" stroke-dasharray="3 3" stroke-width="1.4" />
+          <circle cx="605" cy="160" r="6" fill="var(--foreground)" />
+          <circle id="crankPin" cx="583" cy="160" r="5.5" fill="#ef4444" stroke="var(--foreground)" stroke-width="1.2" />
+          <text x="605" y="212" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--foreground)">Excêntrico (r = 15 mm)</text>
+          <text x="605" y="225" text-anchor="middle" font-size="8.5" fill="var(--muted-foreground)">Curso total = 30 mm (~85 mL/volta)</text>
+
+          <!-- Annotations (Left & Bottom) -->
+          <text x="20" y="114" font-size="10" font-weight="700" fill="var(--foreground)">Corpo da Câmara:</text>
+          <text x="20" y="128" font-size="9" fill="var(--muted-foreground)">Tê ou Cap + Luva</text>
+          <text x="20" y="140" font-size="9" fill="var(--muted-foreground)">PVC Esgoto/Marrom Ø 75 mm</text>
+          <line x1="168" y1="126" x2="238" y2="126" stroke="var(--muted-foreground)" stroke-dasharray="3 2" />
+
+          <text x="20" y="175" font-size="10" font-weight="700" fill="#f59e0b">Membrana (Diafragma):</text>
+          <text x="20" y="189" font-size="9" fill="var(--muted-foreground)">Borracha EPDM 3 mm ou</text>
+          <text x="20" y="201" font-size="9" fill="var(--muted-foreground)">Câmara de ar de caminhão</text>
+
+          <text x="444" y="102" font-size="9.5" font-weight="700" fill="var(--foreground)">Flange + 6 parafusos M6</text>
+          <text x="444" y="114" font-size="8.5" fill="var(--muted-foreground)">(pode imprimir em 3D PETG)</text>
+          <text x="444" y="138" font-size="9.5" font-weight="700" fill="var(--foreground)">2 Arruelas largas Ø 45 mm</text>
+          <text x="444" y="150" font-size="8.5" fill="var(--muted-foreground)">(evitam rasgar a borracha)</text>
+
+          <!-- Animated water particles -->
+          <circle id="dropIn" cx="314" cy="295" r="4.5" fill="#34d399" />
+          <circle id="dropOut" cx="314" cy="40" r="4.5" fill="#38bdf8" />
+        </svg>
+      </div>
+    </section>
+
+    <!-- What changes from Air to Water -->
+    <section class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-5 md:p-6 shadow-sm space-y-3 text-sm">
+      <h2 class="text-lg font-bold border-b border-[var(--card-border)] pb-2">1. O que muda ao bombear ÁGUA (em vez de ar)?</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs leading-relaxed">
+        <div class="p-3.5 rounded-lg bg-[var(--background)] border border-[var(--card-border)] space-y-1.5">
+          <div class="font-bold text-[var(--primary)]">1. Válvulas de Retenção para ÁGUA (Crítico!)</div>
+          <p class="text-[var(--muted-foreground)]">Válvulas de aquário (Ø 6 mm) <b>não servem</b>. Use <b>válvulas de retenção horizontais/portinhola (tipo "flap" / swing) de PVC ou latão Ø 25 mm (3/4")</b> — elas abrem quase sem força (diferente das válvulas de poço com mola dura, que travam o Savonius). Se comprar válvula com mola leve, muitas vezes compensa trocar por mola bem macia ou usar válvula de portinhola na posição correta.</p>
+        </div>
+        <div class="p-3.5 rounded-lg bg-[var(--background)] border border-[var(--card-border)] space-y-1.5">
+          <div class="font-bold text-[var(--warning)]">2. Membrana Mais Resistente + Arruelas Largas</div>
+          <p class="text-[var(--muted-foreground)]">Com água a ΔH = 1,1 m (~5,4 kgf de força de pico), câmara de ar fina de bicicleta estica feito balão (perdendo vazão). Use <b>lençol de borracha EPDM/Neoprene 2,5 a 3 mm com lona</b> ou <b>câmara de ar grossa de caminhão/trator</b>, presa entre <b>2 arruelas largas Ø 45 mm</b> (ou discos impressos em PETG com bordas arredondadas) + cola/silicone vedante no furo do parafuso M6 central.</p>
+        </div>
+        <div class="p-3.5 rounded-lg bg-[var(--background)] border border-[var(--card-border)] space-y-1.5">
+          <div class="font-bold text-[var(--success)]">3. Instalação Afogada + Água 100% Limpa</div>
+          <p class="text-[var(--muted-foreground)]">Instale as duas câmaras <b>abaixo do nível da água do Sump (+0,40 m)</b>. A gravidade mantém as câmaras sempre cheias (escorva automática). No CHOP2, como o Sump só tem água limpa vinda da horta, nenhuma sujeira trava as portinholas.</p>
+        </div>
+        <div class="p-3.5 rounded-lg bg-[var(--background)] border border-[var(--card-border)] space-y-1.5">
+          <div class="font-bold text-[var(--secondary)]">4. Saídas Individualizadas (Câmara A→A, B→B)</div>
+          <p class="text-[var(--muted-foreground)]">Cada câmara tem sua saída Ø 25 mm independente indo para seu tanque exclusivo, com sua própria <a href="./camara_de_ar.html" class="underline font-bold">Câmara de Ar amortecedora</a> logo após a válvula de saída. A sucção pode vir de um único tubo grosso Ø 40 mm do Sump dividido num Tê curto.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIY vs Buy Ready Comparison -->
+    <section class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-5 md:p-6 shadow-sm space-y-4 text-xs">
+      <h2 class="text-lg font-bold border-b border-[var(--card-border)] pb-2">2. Fazer em Casa (DIY) vs. Comprar Pronta</h2>
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr><th>Opção</th><th>O que comprar / usar</th><th>Custo est. (BR)</th><th>Prós e Contras</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>A. DIY em PVC 75 mm + Flanges 3D</strong> <em>(Modo 100% Eólico)</em></td>
+              <td>2 conjuntos de Tê/Cap PVC 75 mm + flanges impressos em PETG + borracha EPDM 3 mm + 4 válvulas portinhola Ø 25 mm</td>
+              <td>~R$ 180 – R$ 280 <em>(as 2 câmaras)</em></td>
+              <td>Baixo custo, fácil de abrir e trocar a borracha, curso exato de 3 cm para o Savonius. Exige capricho na vedação dos flanges.</td>
+            </tr>
+            <tr>
+              <td><strong>B. Comprar Bomba de Diafragma Manual Náutica (para acoplar no Savonius)</strong></td>
+              <td>2× <strong>Bomba Manual de Porão de Diafragma</strong> (tipo <em>Seaflo / Whale Gusher</em> 720 GPH — basta retirar a alavanca manual e ligar a biela do excêntrico no pino!)</td>
+              <td>~R$ 160 – R$ 250 <em>cada</em> (~R$ 350–500 o par)</td>
+              <td><strong>Atalho excelente para 100% Eólico!</strong> Já vem estanque, com membrana reforçada de EPDM e válvulas de borracha próprias para água de baixíssimo atrito! Só precisa ajustar o curso do excêntrico ao curso da bomba (~25–30 mm).</td>
+            </tr>
+            <tr>
+              <td><strong>C. Comprar 2 Bombas Elétricas 12V Brushless</strong> <em>(Modo Híbrido Solar)</em></td>
+              <td>2× <strong>Bomba Submersa 12V DC Brushless (sem escovas) 15–18 W</strong>, vazão ~800–1.000 L/h, altura máx. 3–5 m (ex.: modelos JT-500 / JT-750D / similar solar)</td>
+              <td>~R$ 90 – R$ 150 <em>cada</em> (~R$ 200–300 o par)</td>
+              <td><strong>Mais prático e confiável 24h</strong> (junto com painel 200 W + bateria). 50/50 perfeito, zero vazamento de flange e redundância se uma falhar.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Full BOM for DIY Dual Water Diaphragm Pump -->
+    <section class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-5 md:p-6 shadow-sm space-y-4 text-xs">
+      <h2 class="text-lg font-bold border-b border-[var(--card-border)] pb-2">3. Lista Completa de Materiais — Par de Bombas DIY (Câmara A + Câmara B)</h2>
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr><th>Item</th><th>Qtd.</th><th>Especificação Exata</th><th>Onde encontrar</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Corpo das Câmaras</strong></td><td>2 conj.</td><td>Tê PVC Soldável/Esgoto Ø 75 mm + 1 Cap Ø 75 mm + 2 reduções excêntricas p/ Ø 25 mm (ou Flange PVC 75 mm)</td><td>Casa de materiais de construção</td></tr>
+            <tr><td><strong>Flanges de Aperto (Anéis)</strong></td><td>4 un.</td><td>Anéis Ø int. 75 mm / Ø ext. 125 mm, espessura 10 mm com 6 furos M6 (imprimir em 3D PETG ou cortar em chapa PVC/alumínio 6 mm)</td><td>Impressora 3D (PETG/ASA) ou serralheria</td></tr>
+            <tr><td><strong>Membrana do Diafragma</strong></td><td>2 discos</td><td>Ø 125 mm em <strong>lençol de borracha EPDM/Neoprene 3 mm</strong> ou câmara de ar grossa de caminhão (furos batendo com o flange)</td><td>Loja de borrachas técnicas / borracharia</td></tr>
+            <tr><td><strong>Arruelas de Apoio Central</strong></td><td>4 un.</td><td>Arruelas largas de aço inox Ø 45 mm × furo 6,5 mm (bordas lixadas sem rebarba!) + 2 anéis o-ring/silicone de vedação</td><td>Loja de parafusos / ferragens</td></tr>
+            <tr><td><strong>Parafusos Inox</strong></td><td>14 conj.</td><td>12× Parafuso M6×35 mm inox (flanges) + 2× Parafuso M6×40 mm inox c/ porca autotravante Nyloc (centro do diafragma)</td><td>Loja de parafusos (use sempre <strong>Inox 304</strong>!)</td></tr>
+            <tr><td><strong>Válvulas de Retenção (Água)</strong></td><td>4 un.</td><td><strong>Válvula de Retenção Portinhola (Horizontal/Swing) Ø 25 mm (3/4")</strong> PVC ou Latão — <em>NÃO usar válvula de poço com mola dura</em></td><td>Casa de hidráulica / Mercado Livre</td></tr>
+            <tr><td><strong>Tubos e Conexões</strong></td><td>1 kit</td><td>Sucção: tubo PVC marrom Ø 40 mm + 1 Tê 40 mm + reduções p/ 25 mm. Recalque: 2 linhas independentes PVC marrom Ø 25 mm (ou mangueira cristal trançada 3/4")</td><td>Casa de materiais de construção</td></tr>
+            <tr><td><strong>Mecanismo Excêntrico + Bielas</strong></td><td>1 conj.</td><td>Peças do arquivo <a href="../3d/excentrico_duplo_5000l.scad" download class="text-[var(--primary)] underline font-semibold">excentrico_duplo_5000l.scad</a> (PETG) + 2 rolamentos 608-2RS + 1 parafuso aço M8×60 mm</td><td>Impressora 3D + casa de rolamentos</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const toggleAnim = document.getElementById('toggleAnim');
+    const cycleBadge = document.getElementById('cycleBadge');
+    const diaphCurve = document.getElementById('diaphCurve');
+    const diaphCore = document.getElementById('diaphCore');
+    const washerIn = document.getElementById('washerIn');
+    const washerOut = document.getElementById('washerOut');
+    const rodShaft = document.getElementById('rodShaft');
+    const rodBolt = document.getElementById('rodBolt');
+    const crankPin = document.getElementById('crankPin');
+    const chamberWater = document.getElementById('chamberWater');
+    const topFlap = document.getElementById('topFlap');
+    const botFlap = document.getElementById('botFlap');
+    const dropIn = document.getElementById('dropIn');
+    const dropOut = document.getElementById('dropOut');
+
+    let running = true;
+    let angle = 0;
+    let lastTime = performance.now();
+
+    toggleAnim.addEventListener('click', () => {
+      running = !running;
+      toggleAnim.textContent = running ? 'Pausar Corte' : 'Continuar';
+    });
+
+    function animate(now) {
+      const dt = Math.min((now - lastTime) / 1000, 0.05);
+      lastTime = now;
+
+      if (running) {
+        angle = (angle + 1.8 * dt) % (Math.PI * 2);
+        const c = Math.cos(angle);
+        const s = Math.sin(angle);
+
+        // Pin position on crank
+        const pinX = 605 + 22 * c;
+        const pinY = 160 + 22 * s;
+        crankPin.setAttribute('cx', pinX.toFixed(1));
+        crankPin.setAttribute('cy', pinY.toFixed(1));
+
+        // Diaphragm X displacement (moves left to compress when s > 0 -> velocity -s < 0)
+        const centerX = 398 + 20 * c;
+        const ctrlX = 413 + 38 * c;
+        const dStr = `M 413,94 Q ${ctrlX.toFixed(1)},160 413,226`;
+        diaphCurve.setAttribute('d', dStr);
+        diaphCore.setAttribute('d', dStr);
+
+        washerIn.setAttribute('x', (centerX - 10).toFixed(1));
+        washerOut.setAttribute('x', (centerX + 2).toFixed(1));
+        rodBolt.setAttribute('cx', centerX.toFixed(1));
+        rodShaft.setAttribute('x1', (centerX + 4).toFixed(1));
+        rodShaft.setAttribute('x2', pinX.toFixed(1));
+        rodShaft.setAttribute('y2', pinY.toFixed(1));
+
+        chamberWater.setAttribute('width', Math.max(115, (centerX - 246)).toFixed(1));
+
+        // Velocity along X is -sin(angle). When sin > 0, diaphragm moves LEFT -> COMPRESSES water -> Top valve opens!
+        const compressing = s > 0.08;
+        const sucking = s < -0.08;
+
+        if (compressing) {
+          cycleBadge.textContent = 'RECALQUE: empurra água p/ o tanque ↑';
+          cycleBadge.style.color = 'var(--primary)';
+          // Open top flap upward
+          topFlap.setAttribute('x2', '320');
+          topFlap.setAttribute('y2', '50');
+          // Close bottom flap
+          botFlap.setAttribute('x2', '332');
+          botFlap.setAttribute('y2', '258');
+          dropOut.setAttribute('opacity', '1');
+          dropOut.setAttribute('cy', (60 - ((angle / Math.PI) * 44)).toFixed(1));
+          dropIn.setAttribute('opacity', '0');
+        } else if (sucking) {
+          cycleBadge.textContent = 'SUCÇÃO: água limpa entra do Sump ↑';
+          cycleBadge.style.color = 'var(--success)';
+          // Close top flap
+          topFlap.setAttribute('x2', '332');
+          topFlap.setAttribute('y2', '74');
+          // Open bottom flap upward
+          botFlap.setAttribute('x2', '320');
+          botFlap.setAttribute('y2', '234');
+          dropOut.setAttribute('opacity', '0');
+          dropIn.setAttribute('opacity', '1');
+          const phase = (angle - Math.PI) / Math.PI;
+          dropIn.setAttribute('cy', (300 - phase * 65).toFixed(1));
+        } else {
+          cycleBadge.textContent = 'Inversão de curso (ponto morto)';
+          cycleBadge.style.color = 'var(--muted-foreground)';
+          topFlap.setAttribute('x2', '332');
+          topFlap.setAttribute('y2', '74');
+          botFlap.setAttribute('x2', '332');
+          botFlap.setAttribute('y2', '258');
+          dropOut.setAttribute('opacity', '0');
+          dropIn.setAttribute('opacity', '0');
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>

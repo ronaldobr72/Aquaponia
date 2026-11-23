@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Componente — Rotor Savonius 2 Estágios (1,80 m × 0,95 m) + Lista Completa de Materiais</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --background: #f8fafc;
+      --card: #ffffff;
+      --card-border: #cbd5e1;
+      --foreground: #0f172a;
+      --muted-foreground: #475569;
+      --primary: #0284c7;
+      --success: #059669;
+      --warning: #d97706;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #0f172a;
+        --card: #1e293b;
+        --card-border: #334155;
+        --foreground: #f1f5f9;
+        --muted-foreground: #94a3b8;
+        --primary: #38bdf8;
+        --success: #34d399;
+        --warning: #fbbf24;
+      }
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid var(--card-border); padding: 0.5rem 0.7rem; text-align: left; }
+    th { background: var(--background); font-weight: 700; }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased min-h-screen p-3 md:p-6">
+
+  <!-- Unified Navigation Bar -->
+  <nav class="max-w-5xl mx-auto mb-4 bg-[var(--card)] border border-[var(--card-border)] rounded-xl px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs shadow-sm">
+    <a href="../index.html" class="font-bold text-[var(--primary)]">🌊 Aquaponia &amp; Aeradores</a>
+    <div class="flex flex-wrap items-center gap-1.5">
+      <a href="../index.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Início</a>
+      <a href="../documentacao.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Documentação</a>
+      <a href="../plantas/planta_aquaponia_6000l.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Aquaponia CHOP2</a>
+      <a href="./bomba_diafragma_agua.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Bomba d'Água</a>
+      <a href="./camara_de_ar.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Câmara de Ar</a>
+      <a href="./rotor_savonius.html" class="px-2 py-1 rounded bg-[var(--primary)] text-white font-semibold">Rotor Savonius</a>
+      <a href="../plantas/detalhe_excentrico_duplo.html" class="px-2 py-1 rounded border border-[var(--card-border)] hover:border-[var(--primary)] transition">Excêntrico 3D</a>
+    </div>
+  </nav>
+
+  <main class="max-w-5xl mx-auto space-y-6">
+
+    <!-- Header + Dual View SVG -->
+    <section class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-5 md:p-6 shadow-sm space-y-4">
+      <div class="flex flex-wrap items-start justify-between gap-3 border-b border-[var(--card-border)] pb-3">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-[var(--primary)]">Componente 3 • Projeto Estrutural &amp; Lista Completa</span>
+          <h1 class="text-xl md:text-2xl font-extrabold">Rotor Eólico Savonius 2 Estágios (1,80 m × 0,95 m)</h1>
+          <p class="text-xs md:text-sm text-[var(--muted-foreground)]">
+            Dimensionado para gerar <b>~2,1 N·m de torque de partida a 12 km/h</b> (capaz de acionar as 2 bombas de diafragma de água ou ar) usando <b>2 tambores de 200 L cortados ao meio</b>.
+          </p>
+        </div>
+        <button id="spinBtn" class="px-3 py-1.5 rounded bg-[var(--primary)] text-white text-xs font-semibold cursor-pointer">
+          Pausar Giro
+        </button>
+      </div>
+
+      <!-- Two Technical Views Side by Side: Top Overlap Cutaway + Front Structural Elevation -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <!-- VIEW 1: TOP VIEW (15% OVERLAP AERODYNAMICS) -->
+        <div class="bg-[var(--background)] border border-[var(--card-border)] rounded-lg p-3">
+          <div class="text-xs font-bold mb-1 flex justify-between">
+            <span>1. Corte de Topo — Segredo da Sobreposição de 15%</span>
+            <span class="text-[var(--primary)]">Ø Total ≈ 95 cm</span>
+          </div>
+          <svg viewBox="0 0 380 260" class="w-full h-auto block" xmlns="http://www.w3.org/2000/svg">
+            <!-- Wind incoming from left -->
+            <g stroke="#0ea5e9" stroke-width="1.8" stroke-linecap="round" opacity="0.8">
+              <line x1="12" y1="75" x2="62" y2="75" /><polyline points="55,70 62,75 55,80" fill="none" />
+              <line x1="12" y1="130" x2="62" y2="130" /><polyline points="55,125 62,130 55,135" fill="none" />
+              <line x1="12" y1="185" x2="62" y2="185" /><polyline points="55,180 62,185 55,190" fill="none" />
+            </g>
+            <text x="14" y="56" font-size="9.5" font-weight="700" fill="#0ea5e9">Vento</text>
+
+            <!-- Outer Separator Disk (Ø 100 cm) -->
+            <circle cx="215" cy="130" r="96" fill="var(--card)" stroke="var(--muted-foreground)" stroke-width="2" stroke-dasharray="5 3" />
+
+            <!-- Rotating S-Shape Savonius Blades (Stage 1 solid, Stage 2 ghost at 90°) -->
+            <g id="topRotorGroup" transform="rotate(0 215 130)">
+              <!-- Stage 2 ghost (90° offset) -->
+              <g opacity="0.25" transform="rotate(90 215 130)">
+                <path d="M 135,130 A 46,46 0 0,1 227,130" fill="none" stroke="#64748b" stroke-width="8" stroke-linecap="round" />
+                <path d="M 295,130 A 46,46 0 0,1 203,130" fill="none" stroke="#64748b" stroke-width="8" stroke-linecap="round" />
+              </g>
+              <!-- Stage 1 active blades with 15% overlap gap in center! -->
+              <!-- Top-left scoop catching wind -->
+              <path d="M 135,130 A 46,46 0 0,1 227,130" fill="#0284c7" fill-opacity="0.22" stroke="#0284c7" stroke-width="7" stroke-linecap="round" />
+              <!-- Bottom-right scoop returning -->
+              <path d="M 295,130 A 46,46 0 0,1 203,130" fill="#38bdf8" fill-opacity="0.22" stroke="#0369a1" stroke-width="7" stroke-linecap="round" />
+
+              <!-- Internal airflow arrow through 15% overlap gap -->
+              <path d="M 190,108 Q 215,130 240,152" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="4 3" />
+            </g>
+
+            <!-- Central Shaft Ø 25 mm -->
+            <circle cx="215" cy="130" r="8" fill="var(--foreground)" stroke="#f59e0b" stroke-width="2" />
+
+            <!-- Overlap Dimension Callout -->
+            <text x="215" y="246" text-anchor="middle" font-size="9" font-weight="700" fill="#d97706">
+              Fresta central (sobreposição 15% ≈ 8,5 cm) aumenta o torque em ~20%!
+            </text>
+            <text x="215" y="22" text-anchor="middle" font-size="8.8" fill="var(--muted-foreground)">
+              2 meias-calhas de tambor Ø 58 cm (total ≈ 95–105 cm) • Estágio 2 a 90°
+            </text>
+          </svg>
+        </div>
+
+        <!-- VIEW 2: FRONT STRUCTURAL ELEVATION -->
+        <div class="bg-[var(--background)] border border-[var(--card-border)] rounded-lg p-3">
+          <div class="text-xs font-bold mb-1 flex justify-between">
+            <span>2. Estrutura, Mancais P205 &amp; Estaiamento</span>
+            <span class="text-[var(--success)]">Altura Rotor = 1,80 m</span>
+          </div>
+          <svg viewBox="0 0 380 260" class="w-full h-auto block" xmlns="http://www.w3.org/2000/svg">
+            <!-- Guy wires (3 cables at 120° anchored to ground) -->
+            <line x1="125" y1="22" x2="26" y2="242" stroke="var(--warning)" stroke-width="1.5" stroke-dasharray="4 3" />
+            <line x1="255" y1="22" x2="354" y2="242" stroke="var(--warning)" stroke-width="1.5" stroke-dasharray="4 3" />
+            <text x="28" y="236" font-size="8" font-weight="700" fill="var(--warning)">Estai (cabo aço 4 mm)</text>
+
+            <!-- Outer Metalon 40x40 Frame -->
+            <path d="M 110,242 L 125,22 L 255,22 L 270,242" fill="none" stroke="var(--muted-foreground)" stroke-width="3" />
+            <line x1="115" y1="184" x2="265" y2="184" stroke="var(--muted-foreground)" stroke-width="3" />
+            <line x1="18" y1="242" x2="362" y2="242" stroke="var(--foreground)" stroke-width="2" />
+
+            <!-- Steel Shaft Ø 25 mm (1") -->
+            <line x1="190" y1="16" x2="190" y2="232" stroke="var(--foreground)" stroke-width="5.5" stroke-linecap="round" />
+
+            <!-- Top & Bottom Pillow Block Bearings (Mancal P205) -->
+            <rect x="174" y="16" width="32" height="12" rx="2" fill="#f59e0b" stroke="var(--foreground)" stroke-width="1.2" />
+            <rect x="174" y="178" width="32" height="12" rx="2" fill="#f59e0b" stroke="var(--foreground)" stroke-width="1.2" />
+
+            <!-- 3 Separator Disks (Ø 100 cm) -->
+            <rect x="136" y="36" width="108" height="4.5" rx="1.5" fill="var(--foreground)" />
+            <rect x="136" y="102" width="108" height="4.5" rx="1.5" fill="var(--foreground)" />
+            <rect x="136" y="168" width="108" height="4.5" rx="1.5" fill="var(--foreground)" />
+
+            <!-- Stage 1 (88 cm) & Stage 2 (88 cm) -->
+            <rect x="142" y="40.5" width="48" height="61.5" fill="#0284c7" fill-opacity="0.75" stroke="var(--foreground)" stroke-width="1.2" />
+            <rect x="190" y="40.5" width="48" height="61.5" fill="#38bdf8" fill-opacity="0.45" stroke="var(--foreground)" stroke-width="1.2" />
+            <rect x="156" y="106.5" width="34" height="61.5" fill="#0369a1" fill-opacity="0.7" stroke="var(--foreground)" stroke-width="1.2" />
+            <rect x="190" y="106.5" width="34" height="61.5" fill="#7dd3fc" fill-opacity="0.5" stroke="var(--foreground)" stroke-width="1.2" />
+
+            <!-- Eccentric disk at bottom -->
+            <ellipse cx="190" cy="216" rx="20" ry="7" fill="var(--card)" stroke="#ef4444" stroke-width="2" />
+
+            <!-- Labels -->
+            <text x="266" y="25" font-size="8.5" font-weight="700" fill="var(--foreground)">Mancal P205 (topo)</text>
+            <text x="266" y="74" font-size="8.5" fill="var(--muted-foreground)">Estágio 1 (0°): 88 cm</text>
+            <text x="266" y="140" font-size="8.5" fill="var(--muted-foreground)">Estágio 2 (90°): 88 cm</text>
+            <text x="272" y="186" font-size="8.5" font-weight="700" fill="var(--foreground)">Mancal P205 (base)</text>
+            <text x="220" y="220" font-size="8.5" font-weight="700" fill="#ef4444">← Excêntrico + Bielas</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Build vs Buy Options -->
+    <section class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-5 md:p-6 shadow-sm space-y-3 text-xs leading-relaxed">
+      <h2 class="text-lg font-bold border-b border-[var(--card-border)] pb-2">1. Opções de Construção das Pás (Fazer em Casa vs. Comprar / Serralheria)</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div class="p-3.5 rounded-lg bg-[var(--background)] border border-[var(--card-border)] space-y-1">
+          <div class="font-bold text-[var(--success)]">A. Tambores 200 L Plásticos (PEAD) — Recomendado DIY</div>
+          <p class="text-[var(--muted-foreground)]">2 bombonas/tambores azuis de 200 L cortados no comprimento com serra tico-tico. <b>Leves, nunca enferrujam</b>, baratos (~R$ 70–100 cada usados) e fáceis de furar e parafusar nos discos!</p>
+        </div>
+        <div class="p-3.5 rounded-lg bg-[var(--background)] border border-[var(--card-border)] space-y-1">
+          <div class="font-bold text-[var(--primary)]">B. Tambores 200 L Metálicos</div>
+          <p class="text-[var(--muted-foreground)]">Mais pesados (maior inércia para partir em brisa leve) e exigem pintura anticorrosiva (zarcão + esmalte), mas permitem <b>soldar direto</b> nos discos e no eixo em serralheria.</p>
+        </div>
+        <div class="p-3.5 rounded-lg bg-[var(--background)] border border-[var(--card-border)] space-y-1">
+          <div class="font-bold text-[var(--warning)]">C. Calandra em Chapa Galvanizada / Alumínio</div>
+          <p class="text-[var(--muted-foreground)]">Encomendar em calheiraria 4 meias-luas de chapa galvanizada #24 (ou alumínio 1 mm) com Ø 50–55 cm × 90 cm. Acabamento profissional, super leve e durável por 15+ anos.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPLETE BILL OF MATERIALS (EVERYTHING NEEDED!) -->
+    <section class="bg-[var(--card)] border border-[var(--card-border)] rounded-xl p-5 md:p-6 shadow-sm space-y-4 text-xs">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--card-border)] pb-2">
+        <h2 class="text-lg font-bold">2. Lista Completa de Materiais — Rotor Savonius 1,80 m × 0,95 m (Tudo Incluído)</h2>
+        <a href="../3d/excentrico_duplo_5000l.scad" download class="px-3 py-1 rounded bg-[var(--warning)]/15 text-[var(--warning)] border border-[var(--warning)]/40 font-semibold">
+          ⬇ Baixar Modelo 3D (.scad)
+        </a>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr><th>Categoria</th><th>Item</th><th>Qtd.</th><th>Especificação Exata</th><th>Onde Comprar</th></tr>
+          </thead>
+          <tbody>
+            <!-- ROTOR -->
+            <tr>
+              <td rowspan="4"><strong>Rotor (Pás e Discos)</strong></td>
+              <td>Tambores 200 L (PEAD azul)</td>
+              <td>2 un.</td>
+              <td>Altura ~88 cm × Ø ~58 cm — cortar ao meio no comprimento (gera <strong>4 meias-calhas</strong>). Aparar ~5 cm da largura se quiser Ø total exato de 95 cm.</td>
+              <td>Sucata / depósitos de bombonas / OLX</td>
+            </tr>
+            <tr>
+              <td>Discos Separadores</td>
+              <td>3 un.</td>
+              <td>Compensado naval 15 mm (envernizado/selado) ou chapa aço/alumínio 2 mm — <strong>Ø 100 cm</strong> (fixam as pás com <strong>15% de sobreposição central ≈ 8,5 cm</strong>)</td>
+              <td>Madeireira / serralheria</td>
+            </tr>
+            <tr>
+              <td>Cantoneiras de Fixação das Pás</td>
+              <td>24 un.</td>
+              <td>Cantoneira "L" galvanizada/inox 25×25 mm + parafusos M6×25 mm inox com arruela larga e porca autotravante (prende o plástico PEAD nos 3 discos)</td>
+              <td>Ferragens / loja de parafusos</td>
+            </tr>
+            <tr>
+              <td>Flanges de Fixação Disco-Eixo</td>
+              <td>3 un.</td>
+              <td>Flange metálica soldada com furo Ø 25 mm + parafuso prisioneiro (ou colarinho de aperto Ø 25 mm) para travar os 3 discos no eixo sem patinar</td>
+              <td>Serralheria / casa de peças agrícolas</td>
+            </tr>
+
+            <!-- EIXO E MANCAIS -->
+            <tr>
+              <td rowspan="3"><strong>Eixo e Rolamentos</strong></td>
+              <td>Eixo Vertical Principal</td>
+              <td>1 un.</td>
+              <td><strong>Barra redonda aço SAE 1020 trefilado Ø 25 mm (1")</strong> ou tubo galvanizado Schedule 40 (parede grossa 3 mm) × <strong>2,40 m</strong> de comprimento</td>
+              <td>Distribuidora de ferro e aço</td>
+            </tr>
+            <tr>
+              <td>Mancais com Rolamento</td>
+              <td>2 un.</td>
+              <td><strong>Mancal autoalinhante P205 (eixo Ø 25 mm)</strong> ou flangeado F205 — já vêm com rolamento blindado e parafusos allen para travar no eixo!</td>
+              <td>Casa de rolamentos / Mercado Livre (~R$ 45–65 cada)</td>
+            </tr>
+            <tr>
+              <td>Anel de Apoio Axial (Colar)</td>
+              <td>1 un.</td>
+              <td>Anel/colar trava Ø 25 mm logo acima do mancal inferior para sustentar todo o peso do rotor (evita o eixo escorregar para baixo)</td>
+              <td>Casa de rolamentos / serralheria</td>
+            </tr>
+
+            <!-- ESTRUTURA E ESTAIAMENTO -->
+            <tr>
+              <td rowspan="3"><strong>Torre e Estaiamento</strong></td>
+              <td>Pórtico / Gaiola Estrutural</td>
+              <td>~12 m</td>
+              <td><strong>Metalon galvanizado 40×40 mm (parede 1,5 ou 2,0 mm)</strong> — forma a moldura externa (largura interna ≥ 1,15 m para folga das pás!) com travessas para parafusar os 2 mancais P205</td>
+              <td>Serralheria / distribuidora de aço</td>
+            </tr>
+            <tr>
+              <td>Base / Chumbamento</td>
+              <td>4 conj.</td>
+              <td>Chumbadores parabolt 3/8" em base de concreto (ou pés enterrados 50 cm com concreto) — <strong>obrigatório</strong> contra tombamento em tempestades</td>
+              <td>Casa de materiais de construção</td>
+            </tr>
+            <tr>
+              <td>Kit de Estaiamento (3 pontas a 120°)</td>
+              <td>1 kit</td>
+              <td>15 m cabo de aço galvanizado Ø 4 mm (5/32") + 3 esticadores gancho/olhal 1/4" + 12 grampos clips 3/16" + 3 estacas/olhais chumbados no chão</td>
+              <td>Casa de ferragens / agropecuária</td>
+            </tr>
+
+            <!-- TRANSMISSAO -->
+            <tr>
+              <td rowspan="3"><strong>Transmissão (Base)</strong></td>
+              <td>Disco Excêntrico + 2 Bielas + Espaçador</td>
+              <td>1 conj.</td>
+              <td>Imprimir em 3D (<strong>PETG ou ASA</strong>, 4–5 paredes, 40% infill) usando <a href="../3d/excentrico_duplo_5000l.scad" download class="text-[var(--primary)] underline font-semibold">excentrico_duplo_5000l.scad</a> — ou usinar em aço/nylon em tornearia</td>
+              <td>Impressora 3D / tornearia</td>
+            </tr>
+            <tr>
+              <td>Pino Excêntrico + Parafusos Trava</td>
+              <td>1 kit</td>
+              <td>1× Parafuso aço classe 8.8 <strong>M8×65 mm</strong> + porca Nyloc (pino excêntrico) + 2× Parafusos M6×50 mm (travar cubo no eixo Ø 25 mm)</td>
+              <td>Loja de parafusos</td>
+            </tr>
+            <tr>
+              <td>Rolamentos das Bielas</td>
+              <td>2 un.</td>
+              <td><strong>Rolamento 608-2RS</strong> (padrão skate, furo 8 mm × externo 22 mm × largura 7 mm, blindado com borracha)</td>
+              <td>Casa de rolamentos / skate shop (~R$ 8–15 cada)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="p-3.5 rounded-lg bg-[var(--background)] border border-[var(--warning)]/50 text-xs space-y-1">
+        <div class="font-bold text-[var(--warning)]">Custo Estimado Total do Rotor Savonius Completo (DIY):</div>
+        <div class="text-[var(--muted-foreground)]">
+          Com tambores de 200 L usados + metalon + 2 mancais P205 + eixo 1" + estaiamento + peças 3D em PETG: <strong>~R$ 650 a R$ 950</strong> (ou até menos se reaproveitar madeira tratada/ferro usado na torre).
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const topRotorGroup = document.getElementById('topRotorGroup');
+    const spinBtn = document.getElementById('spinBtn');
+    let deg = 0;
+    let spinning = true;
+    let lastTime = performance.now();
+
+    spinBtn.addEventListener('click', () => {
+      spinning = !spinning;
+      spinBtn.textContent = spinning ? 'Pausar Giro' : 'Girar Rotor';
+    });
+
+    function animate(now) {
+      const dt = Math.min((now - lastTime) / 1000, 0.05);
+      lastTime = now;
+      if (spinning) {
+        deg = (deg + 55 * dt) % 360;
+        topRotorGroup.setAttribute('transform', `rotate(${deg.toFixed(1)} 215 130)`);
+      }
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>
