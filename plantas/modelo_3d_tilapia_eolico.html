@@ -291,13 +291,17 @@
       savoniusGroup.add(foot);
     });
 
-    // 3 Guy wires at 120° anchored to ground
-    const guyMat = new THREE.LineBasicMaterial({ color: 0xfbbf24, transparent: true, opacity: 0.55 });
-    [0, 120, 240].forEach(deg => {
-      const r = (deg * Math.PI) / 180;
+    // 4 Guy wires attached to the OUTER TOP CORNERS of the frame (NEVER crossing the spinning blades!)
+    const guyMat = new THREE.LineBasicMaterial({ color: 0xfbbf24, transparent: true, opacity: 0.65 });
+    [
+      [[-frameW / 2, frameH - 0.02, 0], [-frameW / 2 - 0.75, 0.01,  0.75]],
+      [[-frameW / 2, frameH - 0.02, 0], [-frameW / 2 - 0.75, 0.01, -0.75]],
+      [[ frameW / 2, frameH - 0.02, 0], [ frameW / 2 + 0.55, 0.01,  0.75]],
+      [[ frameW / 2, frameH - 0.02, 0], [ frameW / 2 + 0.55, 0.01, -0.75]]
+    ].forEach(([a, b]) => {
       const gGeo = new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(0, frameH - 0.04, 0),
-        new THREE.Vector3(Math.cos(r) * 1.15, 0.01, Math.sin(r) * 1.15)
+        new THREE.Vector3(...a),
+        new THREE.Vector3(...b)
       ]);
       savoniusGroup.add(new THREE.Line(gGeo, guyMat));
     });
@@ -309,14 +313,14 @@
       savoniusGroup.add(brg);
     });
 
-    // Rotating Rotor Assembly (Shaft + 3 Disks + 2 Stages of Half-Cylinders with 15% Overlap!)
+    // Rotating Rotor Assembly (Shaft + 3 Disks + 2 Stages of 2-Tone Half-Drums with 18% S-Overlap!)
     const rotorSpin = new THREE.Group();
-    const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 2.02, 16), matSteel);
+    const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 2.02, 16), matSteel);
     shaft.position.y = 1.24;
     rotorSpin.add(shaft);
 
-    const diskGeo = new THREE.CylinderGeometry(0.37, 0.37, 0.018, 32);
-    const diskMat = makeTankShellMat(0xe2e8f0);
+    const diskGeo = new THREE.CylinderGeometry(0.37, 0.37, 0.014, 36);
+    const diskMat = makeTankShellMat(0xcbd5e1);
     [0.72, 1.42, 2.12].forEach(y => {
       const d = new THREE.Mesh(diskGeo, diskMat);
       d.position.y = y;
@@ -324,52 +328,78 @@
       rotorSpin.add(d);
     });
 
-    // Helper: create 1 TRUE S-shaped Savonius stage (thick extruded half-cylinders with 15% central overlap!)
-    function addSavoniusStage(yCenter, rotY, colorHex) {
+    // Helper: create 1 TRUE S-shaped Savonius stage with distinct OUTER (colored) & INNER (bright silver) faces + dark cut lips!
+    function addSavoniusStage(yCenter, rotY, outerColor, innerColor) {
       const stg = new THREE.Group();
       stg.position.y = yCenter;
       stg.rotation.y = rotY;
 
-      // Extrude a thick 3D C-shaped semicircular scoop (R = 0.19 m, wall = 9 mm, height = 0.68 m)
       const rOut = 0.192;
-      const rIn = 0.183;
-      const arcShape = new THREE.Shape();
-      arcShape.absarc(0, 0, rOut, 0, Math.PI, false);
-      arcShape.absarc(0, 0, rIn, Math.PI, 0, true);
-      arcShape.closePath();
+      const rIn = 0.184;
+      const h = 0.675;
 
-      const bladeGeo = new THREE.ExtrudeGeometry(arcShape, {
-        depth: 0.68,
-        bevelEnabled: false,
-        curveSegments: 28
-      });
-      bladeGeo.translate(0, 0, -0.34);
-      bladeGeo.rotateX(-Math.PI / 2); // vertical along Y; semicircle curves into -Z, concave opening faces +Z
+      // CylinderGeometry: x = r*sin(theta), z = r*cos(theta).
+      // theta in [PI/2, 3*PI/2] -> z <= 0 (curves toward -Z, concave mouth opens toward +Z!)
+      const outerGeo = new THREE.CylinderGeometry(rOut, rOut, h, 32, 1, true, Math.PI / 2, Math.PI);
+      const innerGeo = new THREE.CylinderGeometry(rIn, rIn, h, 32, 1, true, Math.PI / 2, Math.PI);
+      const edgeGeo = new THREE.BoxGeometry(0.012, h, 0.012);
 
-      const bladeMat = new THREE.MeshStandardMaterial({
-        color: colorHex,
-        roughness: 0.35,
-        metalness: 0.15
-      });
+      const outerMat = new THREE.MeshStandardMaterial({ color: outerColor, roughness: 0.35, metalness: 0.2, side: THREE.FrontSide });
+      const innerMat = new THREE.MeshStandardMaterial({ color: innerColor, roughness: 0.45, metalness: 0.15, side: THREE.BackSide });
+      const edgeMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.6 });
 
-      // Center offset = R - (overlap / 2) = 0.19 - 0.03 = 0.16 m -> true S-shape with 15% overlap gap past shaft!
-      const b1 = new THREE.Mesh(bladeGeo, bladeMat);
-      b1.position.set(0.16, 0, 0);
-      b1.castShadow = true;
-      b1.receiveShadow = true;
+      function buildScoop() {
+        const sc = new THREE.Group();
+        const outMesh = new THREE.Mesh(outerGeo, outerMat);
+        outMesh.castShadow = true;
+        outMesh.receiveShadow = true;
+        sc.add(outMesh);
+
+        const inMesh = new THREE.Mesh(innerGeo, innerMat);
+        inMesh.receiveShadow = true;
+        sc.add(inMesh);
+
+        // Two dark straight cut-edge trims at the semicircular lips (+r and -r along X, z=0)
+        [-0.188, 0.188].forEach(ex => {
+          const edge = new THREE.Mesh(edgeGeo, edgeMat);
+          edge.position.set(ex, 0, 0);
+          sc.add(edge);
+        });
+        return sc;
+      }
+
+      // Blade 1 centered at (+0.155, 0, 0): outer tip +0.347, inner tip -0.037 (crosses past shaft!), curves into -Z
+      const b1 = buildScoop();
+      b1.position.set(0.155, 0, 0);
       stg.add(b1);
 
-      const b2 = new THREE.Mesh(bladeGeo, bladeMat);
-      b2.position.set(-0.16, 0, 0);
-      b2.rotation.y = Math.PI; // curves into +Z, concave opening faces -Z
-      b2.castShadow = true;
-      b2.receiveShadow = true;
+      // Blade 2 centered at (-0.155, 0, 0), rotated 180°: outer tip -0.347, inner tip +0.037, curves into +Z -> TRUE S-SHAPE!
+      const b2 = buildScoop();
+      b2.position.set(-0.155, 0, 0);
+      b2.rotation.y = Math.PI;
       stg.add(b2);
 
       rotorSpin.add(stg);
     }
-    addSavoniusStage(1.77, 0, 0x0284c7);         // Stage 1 (0°)
-    addSavoniusStage(1.07, Math.PI / 2, 0x38bdf8); // Stage 2 (90° offset)
+    addSavoniusStage(1.77, 0, 0x0284c7, 0xe0f2fe);           // Stage 1 (0°): royal blue outside, pale ice-white scoop inside
+    addSavoniusStage(1.07, Math.PI / 2, 0x0369a1, 0xbae6fd); // Stage 2 (90°): deep blue outside, sky-silver scoop inside
+
+    // Animated 3D Wind Arrows approaching Savonius from +Z (hitting concave scoop & spinning convex-back-first!)
+    const windArrows3D = [];
+    const arrowMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.75 });
+    [1.05, 1.42, 1.80].forEach((wy, idx) => {
+      const aGrp = new THREE.Group();
+      const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.28, 8), arrowMat);
+      stem.rotation.x = Math.PI / 2;
+      aGrp.add(stem);
+      const head = new THREE.Mesh(new THREE.ConeGeometry(0.028, 0.075, 10), arrowMat);
+      head.rotation.x = -Math.PI / 2;
+      head.position.z = -0.16;
+      aGrp.add(head);
+      aGrp.position.set(-0.12 + idx * 0.12, wy, 0.85);
+      savoniusGroup.add(aGrp);
+      windArrows3D.push({ grp: aGrp, baseZ: 0.85, phase: idx * 0.33 });
+    });
 
     // Eccentric Disk + Pin at Bottom of Shaft (y = 0.36 m)
     const eccDisk = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.065, 0.02, 24), matSteel);
@@ -907,6 +937,15 @@
         : 'Savonius parado (<11 km/h) • Venturi Solar 24h ativo';
 
       if (running) {
+        // 0. 3D Wind arrows gliding toward the Savonius concave scoops
+        windArrows3D.forEach(w => {
+          w.grp.visible = wind > 0;
+          if (wind > 0) {
+            const prog = (elapsed * (0.35 + wind * 0.04) + w.phase) % 1;
+            w.grp.position.z = w.baseZ - prog * 0.34;
+          }
+        });
+
         // 1. Savonius rotor + eccentric connecting rod reciprocation
         if (savRunning) {
           rotorSpin.rotation.y += (1.2 + (wind - 10) * 0.22) * dt;
